@@ -23,10 +23,12 @@ export function AppFooter() {
 
   const FooterSection = ({ 
     title, 
-    links 
+    links,
+    useFooterTranslation = false
   }: { 
     title: string; 
-    links: Array<{ key: string; href: string }> 
+    links: Array<{ key: string; href: string }>;
+    useFooterTranslation?: boolean;
   }) => (
     <div className="space-y-3">
       <h3 className="text-sm font-semibold text-foreground">{title}</h3>
@@ -38,7 +40,7 @@ export function AppFooter() {
                 href={link.href}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
               >
-                {link.key.startsWith('footer.') ? t(link.key) : navT(link.key)}
+                {useFooterTranslation ? t(link.key) : navT(link.key)}
                 <ExternalLink className="h-3 w-3" />
               </a>
             ) : link.href.startsWith('http') ? (
@@ -48,7 +50,7 @@ export function AppFooter() {
                 rel="noopener noreferrer"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
               >
-                {link.key.startsWith('footer.') ? t(link.key) : navT(link.key)}
+                {useFooterTranslation ? t(link.key) : navT(link.key)}
                 <ExternalLink className="h-3 w-3" />
               </a>
             ) : (
@@ -56,7 +58,7 @@ export function AppFooter() {
                 to={link.href}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                {link.key.startsWith('footer.') ? t(link.key) : navT(link.key)}
+                {useFooterTranslation ? t(link.key) : navT(link.key)}
               </Link>
             )}
           </li>
@@ -98,18 +100,21 @@ export function AppFooter() {
           <FooterSection
             title={t('resources')}
             links={FOOTER_LINKS.resources}
+            useFooterTranslation={true}
           />
 
           {/* Legal */}
           <FooterSection
             title={t('legal')}
             links={FOOTER_LINKS.legal}
+            useFooterTranslation={true}
           />
 
           {/* Company */}
           <FooterSection
             title={t('company')}
             links={FOOTER_LINKS.company}
+            useFooterTranslation={true}
           />
         </div>
 

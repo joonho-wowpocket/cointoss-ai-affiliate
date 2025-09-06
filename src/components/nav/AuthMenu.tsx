@@ -32,10 +32,10 @@ export function AuthMenu() {
     return (
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" asChild>
-          <Link to="/auth/login">{t('nav.signIn')}</Link>
+          <Link to="/auth/login">{t('signIn')}</Link>
         </Button>
         <Button size="sm" asChild>
-          <Link to="/auth/signup">{t('nav.getStarted')}</Link>
+          <Link to="/auth/signup">{t('getStarted')}</Link>
         </Button>
       </div>
     );
@@ -86,7 +86,7 @@ export function AuthMenu() {
           className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
         >
           <LogOut className="h-4 w-4" />
-          <span>{t('nav.signOut')}</span>
+          <span>{t('signOut')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
