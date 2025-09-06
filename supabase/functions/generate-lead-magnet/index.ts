@@ -1,76 +1,29 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.57.2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface LeadMagnetInput {
-  locale: 'ko' | 'en';
-  target_audience: string;
-  lead_goal: 'email' | 'telegram' | 'phone' | 'form';
+interface LeadMagnetRequest {
+  partnerId: string;
+  magnetType: "pdf" | "quiz" | "gated";
   topic: string;
-  format: 'pdf_report' | 'checklist' | 'quiz' | 'workbook' | 'infographic';
-  depth: 'lite' | 'standard' | 'pro';
-  brand: {
-    partner_name: string;
-    primary_color: string;
-    logo_url: string;
+  targetAudience: string;
+  branding: {
+    logoUrl?: string;
+    colorScheme?: string;
+    partnerName: string;
   };
-  compliance: {
-    disclaimers_required: boolean;
-    jurisdiction: 'KR' | 'US' | 'EU' | 'GLOBAL';
+  language: "ko" | "en" | "ja" | "id" | "vi";
+  leadCapture: {
+    type: "email" | "telegram";
+    required: boolean;
   };
-  ab_test: boolean;
-  length_pages: number;
-}
-
-interface LeadMagnetOutput {
-  meta: {
-    title: string;
-    locale: string;
-    topic: string;
-    format: string;
-    lead_goal: string;
-    ab_test: boolean;
-    created_at: string;
-  };
-  copy: {
-    headline_variants: string[];
-    subheadline: string;
-    cta_variants: string[];
-    gating_copy: string;
-    benefit_bullets: string[];
-  };
-  document: {
-    markdown: string;
-  };
-  design: {
-    brand_color: string;
-    accent_color: string;
-    font_stack: string[];
-    layout_notes: string;
-  };
-  assets: {
-    outline: string[];
-    quiz_or_checklist: {
-      items: string[];
-      scoring_or_key: string;
-    };
-    disclaimers: string[];
-  };
-  validation: {
-    gates_present: boolean;
-    cta_present: boolean;
-    placeholders_present: boolean;
-    compliance_notes: string;
-  };
-  diagnostics: {
-    warnings: string[];
-    suggested_inputs: string[];
-  };
+  leadGoal: string;
+  depth: string;
 }
 
 serve(async (req) => {
@@ -79,142 +32,175 @@ serve(async (req) => {
   }
 
   try {
-    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
-    if (!openAIApiKey) {
-      throw new Error('OpenAI API key not configured');
-    }
-
-    const supabaseClient = createClient(
+    const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      {
-        global: {
-          headers: { Authorization: req.headers.get('Authorization')! },
-        },
-      }
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
+    const { 
+      partnerId, 
+      magnetType, 
+      topic, 
+      targetAudience, 
+      branding, 
+      language,
+      leadCapture,
+      leadGoal,
+      depth 
+    }: LeadMagnetRequest = await req.json();
 
-    const input: LeadMagnetInput = await req.json();
-    console.log('Lead magnet generation request:', input);
+    console.log('Generating lead magnet for:', { partnerId, magnetType, topic, targetAudience });
 
-    // System prompt for LeadMagnet-Writer
-    const systemPrompt = `You are "LeadMagnet-Writer", an AI marketing assistant for CoinToss partners.
-Your single purpose is to generate HIGH-CONVERTING lead magnets that capture contact info
-(e.g., email, Telegram, phone) BEFORE delivering premium content.
+    // Create AI prompts based on magnet type and language
+    const prompts = {
+      ko: {
+        pdf: `${topic}에 대한 전문적인 PDF 리포트를 생성해주세요. 대상 고객: ${targetAudience}. 스타일: 명확하고 신뢰할 수 있으며 실행 가능한 내용. 포함할 내용: 3-5개의 핵심 인사이트, 통계 데이터, 실용적인 조언. 암호화폐 투자 조언은 피하고 교육적 내용에 집중해주세요.`,
+        quiz: `${targetAudience}를 위한 "${topic}" 관련 interactive 퀴즈를 만들어주세요. 5-7개의 질문으로 구성하고, 각 질문마다 3-4개의 선택지를 제공하세요. 결과는 사용자의 성향이나 지식 수준을 분석해주는 형태로 작성해주세요.`,
+        gated: `${topic}에 대한 독점적인 분석 리포트를 작성해주세요. 대상: ${targetAudience}. 이메일 제공 후 접근 가능한 고품질 콘텐츠로 제작해주세요. 5-7개 섹션으로 구성하고 각 섹션마다 핵심 인사이트를 제공해주세요.`
+      },
+      en: {
+        pdf: `Generate a professional PDF report about ${topic} for ${targetAudience}. Style: Clear, credible, and actionable content. Include: 3-5 key insights, statistics, and practical advice. Avoid investment advice and focus on educational content.`,
+        quiz: `Create an interactive quiz about "${topic}" for ${targetAudience}. Structure with 5-7 questions, each with 3-4 answer choices. Results should analyze user's knowledge level or trading style.`,
+        gated: `Write an exclusive analysis report about ${topic} for ${targetAudience}. This should be high-value content accessible after email capture. Structure in 5-7 sections with key insights in each.`
+      },
+      ja: {
+        pdf: `${targetAudience}向けの${topic}に関する専門的なPDFレポートを生成してください。スタイル：明確で信頼性があり実行可能な内容。含める内容：3-5の主要な洞察、統計データ、実用的なアドバイス。投資アドバイスは避け、教育的な内容に焦点を当ててください。`,
+        quiz: `${targetAudience}向けの「${topic}」に関するインタラクティブクイズを作成してください。5-7の質問で構成し、各質問に3-4の選択肢を提供してください。結果はユーザーの知識レベルや取引スタイルを分析する形式で作成してください。`,
+        gated: `${targetAudience}向けの${topic}に関する独占分析レポートを作成してください。メール提供後にアクセス可能な高価値コンテンツとして制作してください。5-7セクションで構成し、各セクションに主要な洞察を提供してください。`
+      },
+      id: {
+        pdf: `Buat laporan PDF profesional tentang ${topic} untuk ${targetAudience}. Gaya: Konten yang jelas, kredibel, dan dapat ditindaklanjuti. Sertakan: 3-5 wawasan utama, statistik, dan saran praktis. Hindari saran investasi dan fokus pada konten edukatif.`,
+        quiz: `Buat kuis interaktif tentang "${topic}" untuk ${targetAudience}. Struktur dengan 5-7 pertanyaan, masing-masing dengan 3-4 pilihan jawaban. Hasil harus menganalisis tingkat pengetahuan atau gaya trading pengguna.`,
+        gated: `Tulis laporan analisis eksklusif tentang ${topic} untuk ${targetAudience}. Ini harus berupa konten bernilai tinggi yang dapat diakses setelah email ditangkap. Struktur dalam 5-7 bagian dengan wawasan utama di setiap bagian.`
+      },
+      vi: {
+        pdf: `Tạo báo cáo PDF chuyên nghiệp về ${topic} cho ${targetAudience}. Phong cách: Nội dung rõ ràng, đáng tin cậy và có thể thực hiện được. Bao gồm: 3-5 thông tin quan trọng, thống kê và lời khuyên thực tế. Tránh lời khuyên đầu tư và tập trung vào nội dung giáo dục.`,
+        quiz: `Tạo câu đố tương tác về "${topic}" cho ${targetAudience}. Cấu trúc với 5-7 câu hỏi, mỗi câu có 3-4 lựa chọn trả lời. Kết quả nên phân tích mức độ kiến thức hoặc phong cách giao dịch của người dùng.`,
+        gated: `Viết báo cáo phân tích độc quyền về ${topic} cho ${targetAudience}. Đây phải là nội dung có giá trị cao có thể truy cập sau khi thu thập email. Cấu trúc trong 5-7 phần với những hiểu biết quan trọng trong mỗi phần.`
+      }
+    };
 
-Always:
-- Optimize for conversion (clear value, scarcity, credibility).
-- Write concise, scannable, design-ready copy (headlines, bullets, short paragraphs).
-- Include explicit lead-capture CTAs and gating copy.
-- Brand the output with partner name/logo placeholders.
-- Produce layout-ready Markdown that can be rendered to PDF or web components.
-- Respect locale: write in the language requested (default: Korean).
-- Never fabricate legal/financial claims; add safety notes where needed.
-- Keep markdown semantic (H1~H4, lists, tables if needed) and avoid overly long sentences.`;
-
-    const developerPrompt = `- You must strictly return a single JSON object that matches the Output Schema below.
-- The "document.markdown" field must be valid UTF-8 Markdown without extraneous JSON.
-- Keep all numeric values or KPIs as ranges or examples unless provided by the user.
-- Placeholders: use {{PARTNER_NAME}}, {{PARTNER_LOGO_URL}}, {{CAPTURE_FORM_URL}}, {{BRAND_COLOR}}.
-- Include a "gating" section that explicitly instructs to collect leads BEFORE download/view.
-- Provide 3 headline variants and 2 CTA variants for A/B tests.
-- Include a compact design spec for PDF (colors, spacing, font suggestions) in "design".
-- For quizzes/checklists, include answer key or scoring rubric in "assets".
-- Comply with "validation" rules and set "diagnostics" with warnings if inputs are weak.`;
-
-    const userPrompt = JSON.stringify(input);
+    const prompt = prompts[language as keyof typeof prompts][magnetType];
 
     // Call OpenAI API
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
+        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4.1-2025-04-14',
+        model: 'gpt-5-2025-08-07',
         messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'system', content: developerPrompt },
-          { role: 'user', content: userPrompt }
+          {
+            role: 'system',
+            content: `You are a professional content creator for crypto education. Generate ${magnetType === 'quiz' ? 'structured JSON' : 'well-formatted'} content that is educational and compliant. Never provide investment advice. Always include clear disclaimers about crypto risks.`
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
         ],
-        temperature: 0.6,
-        max_tokens: 4000,
-        top_p: 0.9,
-        presence_penalty: 0.1,
-        frequency_penalty: 0.2
+        max_completion_tokens: 2000,
       }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('OpenAI API error:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
+    if (!openAIResponse.ok) {
+      throw new Error(`OpenAI API error: ${openAIResponse.statusText}`);
     }
 
-    const data = await response.json();
-    const generatedContent = data.choices[0].message.content;
+    const openAIData = await openAIResponse.json();
+    const generatedContent = openAIData.choices[0].message.content;
 
-    // Parse the JSON response
-    let leadMagnetData: LeadMagnetOutput;
-    try {
-      leadMagnetData = JSON.parse(generatedContent);
-    } catch (parseError) {
-      console.error('Failed to parse OpenAI response:', generatedContent);
-      throw new Error('Invalid JSON response from AI');
+    console.log('Generated content length:', generatedContent.length);
+
+    // Process content based on type
+    let contentJson = {};
+    let title = `${topic} - ${branding.partnerName}`;
+
+    if (magnetType === 'quiz') {
+      try {
+        // Try to parse as JSON for quiz
+        contentJson = JSON.parse(generatedContent);
+      } catch {
+        // If not valid JSON, structure it
+        contentJson = {
+          title: title,
+          description: `Interactive quiz about ${topic}`,
+          questions: [
+            {
+              question: generatedContent.split('\n')[0] || 'Sample question',
+              options: ['Option 1', 'Option 2', 'Option 3'],
+              correct: 0
+            }
+          ]
+        };
+      }
+    } else {
+      contentJson = {
+        title: title,
+        content: generatedContent,
+        sections: generatedContent.split('\n\n').filter(section => section.trim()),
+        type: magnetType
+      };
     }
 
     // Save to database
-    const { data: savedMagnet, error: saveError } = await supabaseClient
+    const { data: leadMagnet, error: insertError } = await supabase
       .from('lead_magnets')
       .insert({
-        user_id: user.id,
-        title: leadMagnetData.meta.title,
-        topic: input.topic,
-        format: input.format,
-        target_audience: input.target_audience,
-        lead_goal: input.lead_goal,
-        depth: input.depth,
-        locale: input.locale,
-        content_json: leadMagnetData,
-        brand_settings: input.brand,
-        compliance_settings: input.compliance,
-        status: 'draft'
+        user_id: partnerId,
+        title: title,
+        topic: topic,
+        target_audience: targetAudience,
+        lead_goal: leadGoal,
+        depth: depth,
+        format: magnetType,
+        locale: language,
+        content_json: contentJson,
+        brand_settings: branding,
+        compliance_settings: {
+          disclaimer_enabled: true,
+          risk_warning: true,
+          educational_only: true
+        },
+        status: 'published'
       })
       .select()
       .single();
 
-    if (saveError) {
-      console.error('Database save error:', saveError);
-      throw new Error('Failed to save lead magnet');
+    if (insertError) {
+      console.error('Database insert error:', insertError);
+      throw new Error(`Failed to save lead magnet: ${insertError.message}`);
     }
 
-    console.log('Lead magnet generated successfully:', savedMagnet.id);
+    console.log('Lead magnet created successfully:', leadMagnet.id);
 
-    return new Response(JSON.stringify({
-      success: true,
-      data: leadMagnetData,
-      magnet_id: savedMagnet.id
-    }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({
+        success: true,
+        leadMagnetId: leadMagnet.id,
+        title: title,
+        content: contentJson,
+        publicUrl: `${Deno.env.get('SUPABASE_URL')}/lead-magnet/${leadMagnet.id}`,
+        downloadUrl: magnetType === 'pdf' ? `/api/generate-pdf/${leadMagnet.id}` : null
+      }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
+    );
 
   } catch (error) {
     console.error('Error in generate-lead-magnet function:', error);
-    return new Response(JSON.stringify({ 
-      success: false,
-      error: error.message 
-    }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({
+        error: 'Failed to generate lead magnet',
+        details: error.message
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
+    );
   }
 });
