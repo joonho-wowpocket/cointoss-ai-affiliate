@@ -15,10 +15,10 @@ export function GuestBanner({ onLoginClick, className = "" }: GuestBannerProps) 
   if (isAuthenticated) return null;
 
   return (
-    <div className={`max-w-4xl mx-auto mb-6 ${className}`}>
-      <Alert className="border-primary/30 bg-gradient-to-r from-primary/10 to-transparent py-3 mx-auto">
-        <Eye className="h-4 w-4 text-primary mx-auto" />
-        <AlertDescription className="flex items-center justify-center w-full text-center">
+    <div className={`max-w-4xl mx-auto mb-6 flex justify-center ${className}`}>
+      <Alert className="border-primary/30 bg-gradient-to-r from-primary/10 to-transparent py-3 w-full">
+        <Eye className="h-4 w-4 text-primary" />
+        <AlertDescription className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
             <span className="font-medium text-sm">미리보기 모드</span>
             <span className="text-xs text-muted-foreground">
