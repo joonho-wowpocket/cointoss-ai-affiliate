@@ -57,6 +57,31 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // CoinToss Web3 Colors
+        crypto: {
+          gold: "hsl(var(--crypto-gold))",
+          silver: "hsl(var(--crypto-silver))",
+          bronze: "hsl(var(--crypto-bronze))",
+        },
+        neon: {
+          blue: "hsl(var(--neon-blue))",
+          purple: "hsl(var(--neon-purple))",
+        },
+        profit: "hsl(var(--profit-green))",
+        loss: "hsl(var(--loss-red))",
+      },
+      backgroundImage: {
+        'gradient-primary': 'var(--gradient-primary)',
+        'gradient-crypto': 'var(--gradient-crypto)',
+        'gradient-dark': 'var(--gradient-dark)',
+        'gradient-card': 'var(--gradient-card)',
+        'gradient-glass': 'var(--gradient-glass)',
+      },
+      boxShadow: {
+        'glow': 'var(--shadow-glow)',
+        'crypto': 'var(--shadow-crypto)',
+        'glass': 'var(--shadow-glass)',
+        'depth': 'var(--shadow-depth)',
       },
       borderRadius: {
         lg: "var(--radius)",
