@@ -21,14 +21,24 @@ import {
 } from "lucide-react";
 
 interface ExchangeCard {
-  exchange: string;
-  rate_display: string;
-  state_badge: string;
+  exchange_code: string;
+  exchange_name: string;
+  rate_label?: string;
+  rate_value?: string;
+  base_rate?: string;
+  approved_rate?: string;
+  state_badge: string | { text: string; color: string };
+  cta?: {
+    text: string;
+    url: string;
+  };
   ctas?: Array<{
     label: string;
     action: string;
     payload: Record<string, any>;
   }>;
+  cta_label?: string;
+  cta_url?: string;
   nudge?: string;
 }
 
@@ -191,13 +201,13 @@ const PartnerHub = () => {
                     <Card key={index} className="bg-gradient-card border-border/50 glass">
                       <CardHeader>
                         <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">{card.exchange}</CardTitle>
+                          <CardTitle className="text-lg">{card.exchange_name || 'Unknown Exchange'}</CardTitle>
                           <Badge variant="outline" className="flex items-center gap-1">
-                            {getStateIcon(card.state_badge)}
-                            {card.state_badge}
+                            {getStateIcon(typeof card.state_badge === 'string' ? card.state_badge : card.state_badge?.text || '')}
+                            {typeof card.state_badge === 'string' ? card.state_badge : card.state_badge?.text || 'Unknown'}
                           </Badge>
                         </div>
-                        <CardDescription>{card.rate_display}</CardDescription>
+                        <CardDescription>{card.rate_label || card.rate_value || 'Rate not available'}</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         {card.nudge && (
@@ -223,8 +233,8 @@ const PartnerHub = () => {
                           <div className="w-full border-t border-border/50 pt-3 mt-2">
                             <div className="flex flex-wrap gap-2">
                               <CampaignModal
-                                exchangeId={card.exchange.toLowerCase()}
-                                exchangeName={card.exchange}
+                                exchangeId={card.exchange_code || ''}
+                                exchangeName={card.exchange_name || 'Unknown'}
                                 preset="campaign:new"
                               >
                                 <Button variant="secondary" size="sm" className="bg-primary/10 text-primary hover:bg-primary/20">
@@ -234,8 +244,8 @@ const PartnerHub = () => {
                               </CampaignModal>
                               
                               <CampaignModal
-                                exchangeId={card.exchange.toLowerCase()}
-                                exchangeName={card.exchange}
+                                exchangeId={card.exchange_code || ''}
+                                exchangeName={card.exchange_name || 'Unknown'}
                                 preset="campaign:reactivate"
                               >
                                 <Button variant="secondary" size="sm" className="bg-accent/10 text-accent hover:bg-accent/20">
@@ -264,13 +274,13 @@ const PartnerHub = () => {
                     <Card key={index} className="bg-gradient-card border-border/50 glass">
                       <CardHeader>
                         <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">{card.exchange}</CardTitle>
+                          <CardTitle className="text-lg">{card.exchange_name || 'Unknown Exchange'}</CardTitle>
                           <Badge variant="outline" className="flex items-center gap-1">
-                            {getStateIcon(card.state_badge)}
-                            {card.state_badge}
+                            {getStateIcon(typeof card.state_badge === 'string' ? card.state_badge : card.state_badge?.text || '')}
+                            {typeof card.state_badge === 'string' ? card.state_badge : card.state_badge?.text || 'Unknown'}
                           </Badge>
                         </div>
-                        <CardDescription>{card.rate_display}</CardDescription>
+                        <CardDescription>{card.rate_label || card.rate_value || 'Rate not available'}</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="flex flex-wrap gap-2">
@@ -291,8 +301,8 @@ const PartnerHub = () => {
                           <div className="w-full border-t border-border/50 pt-3 mt-2">
                             <div className="flex flex-wrap gap-2">
                               <CampaignModal
-                                exchangeId={card.exchange.toLowerCase()}
-                                exchangeName={card.exchange}
+                                exchangeId={card.exchange_code || ''}
+                                exchangeName={card.exchange_name || 'Unknown'}
                                 preset="campaign:new"
                               >
                                 <Button variant="secondary" size="sm" className="bg-primary/10 text-primary hover:bg-primary/20">
@@ -302,8 +312,8 @@ const PartnerHub = () => {
                               </CampaignModal>
                               
                               <CampaignModal
-                                exchangeId={card.exchange.toLowerCase()}
-                                exchangeName={card.exchange}
+                                exchangeId={card.exchange_code || ''}
+                                exchangeName={card.exchange_name || 'Unknown'}
                                 preset="campaign:reactivate"
                               >
                                 <Button variant="secondary" size="sm" className="bg-accent/10 text-accent hover:bg-accent/20">
