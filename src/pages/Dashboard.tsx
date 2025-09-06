@@ -159,8 +159,6 @@ export default function Dashboard() {
         )}
       </div>
 
-      <GuestBanner onLoginClick={() => setShowLoginModal(true)} />
-
       {/* 주요 통계 (게스트용 샘플 데이터) */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
