@@ -412,6 +412,156 @@ export type Database = {
           },
         ]
       }
+      partner_mylink_products: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_visible: boolean | null
+          label_override: string | null
+          partner_id: string
+          position: number | null
+          product_id: string | null
+          theme: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_visible?: boolean | null
+          label_override?: string | null
+          partner_id: string
+          position?: number | null
+          product_id?: string | null
+          theme?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_visible?: boolean | null
+          label_override?: string | null
+          partner_id?: string
+          position?: number | null
+          product_id?: string | null
+          theme?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_mylink_products_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_posts: {
+        Row: {
+          attachments: Json | null
+          body: string | null
+          created_at: string | null
+          id: string
+          product_id: string | null
+          published_at: string | null
+          title: string | null
+          updated_at: string | null
+          visibility: string | null
+        }
+        Insert: {
+          attachments?: Json | null
+          body?: string | null
+          created_at?: string | null
+          id?: string
+          product_id?: string | null
+          published_at?: string | null
+          title?: string | null
+          updated_at?: string | null
+          visibility?: string | null
+        }
+        Update: {
+          attachments?: Json | null
+          body?: string | null
+          created_at?: string | null
+          id?: string
+          product_id?: string | null
+          published_at?: string | null
+          title?: string | null
+          updated_at?: string | null
+          visibility?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_posts_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          billing_period: string | null
+          category: string
+          cover_image: string | null
+          created_at: string | null
+          delivery_cycle: string | null
+          description: string | null
+          id: string
+          metrics: Json | null
+          price_usdt: number
+          slug: string
+          status: string | null
+          summary: string | null
+          title: string
+          updated_at: string | null
+          vendor_id: string | null
+        }
+        Insert: {
+          billing_period?: string | null
+          category: string
+          cover_image?: string | null
+          created_at?: string | null
+          delivery_cycle?: string | null
+          description?: string | null
+          id?: string
+          metrics?: Json | null
+          price_usdt: number
+          slug: string
+          status?: string | null
+          summary?: string | null
+          title: string
+          updated_at?: string | null
+          vendor_id?: string | null
+        }
+        Update: {
+          billing_period?: string | null
+          category?: string
+          cover_image?: string | null
+          created_at?: string | null
+          delivery_cycle?: string | null
+          description?: string | null
+          id?: string
+          metrics?: Json | null
+          price_usdt?: number
+          slug?: string
+          status?: string | null
+          summary?: string | null
+          title?: string
+          updated_at?: string | null
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       settlements: {
         Row: {
           address: string
@@ -450,6 +600,53 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          amt_usdt: number | null
+          created_at: string | null
+          end_at: string | null
+          id: string
+          product_id: string | null
+          start_at: string | null
+          status: string | null
+          tx_hash: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amt_usdt?: number | null
+          created_at?: string | null
+          end_at?: string | null
+          id?: string
+          product_id?: string | null
+          start_at?: string | null
+          status?: string | null
+          tx_hash?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amt_usdt?: number | null
+          created_at?: string | null
+          end_at?: string | null
+          id?: string
+          product_id?: string | null
+          start_at?: string | null
+          status?: string | null
+          tx_hash?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       uids: {
         Row: {
@@ -500,6 +697,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      vendors: {
+        Row: {
+          created_at: string | null
+          display_name: string | null
+          id: string
+          logo_url: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          display_name?: string | null
+          id?: string
+          logo_url?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          display_name?: string | null
+          id?: string
+          logo_url?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
     }
     Views: {
