@@ -1,26 +1,38 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useAuthGate } from "@/lib/auth/withAuthGate";
+import { useAuth } from "@/contexts/AuthContext";
 import { Exchanges } from "@/components/partner-hub/Exchanges";
 import { UIDRegistry } from "@/components/partner-hub/UIDRegistry";
 import { Approvals } from "@/components/partner-hub/Approvals";
 import { Customers } from "@/components/partner-hub/Customers";
-import { useTranslations } from "@/contexts/I18nContext";
 
 const PartnerHub = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { guardLink } = useAuthGate();
-  const t = useTranslations('nav');
+  const { isAuthenticated, loading } = useAuth();
   const activeTab = searchParams.get('tab') || 'exchanges';
 
   // Auth guard - redirect if not authenticated
   useEffect(() => {
-    if (!guardLink('/partner-hub')) {
+    if (!loading && !isAuthenticated) {
       navigate('/auth/signup?next=' + encodeURIComponent('/partner-hub'));
     }
-  }, [navigate, guardLink]);
+  }, [isAuthenticated, loading, navigate]);
+
+  // Show loading spinner while checking auth
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated (will redirect)
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const handleTabChange = (value: string) => {
     // Performance optimization: avoid unnecessary re-renders

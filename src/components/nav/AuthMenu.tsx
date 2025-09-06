@@ -14,18 +14,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useTranslations } from '@/contexts/I18nContext';
-import { useAuthGate } from '@/lib/auth/withAuthGate';
+import { useAuth } from '@/contexts/AuthContext';
 import { ACCOUNT_MENU_ITEMS } from '@/lib/navigation/menuConfig';
 
 export function AuthMenu() {
   const t = useTranslations('nav');
-  const { isAuthenticated, guardAction } = useAuthGate();
+  const { isAuthenticated, user, signOut } = useAuth();
 
-  const handleSignOut = () => {
-    guardAction(() => {
-      // TODO: Implement actual sign out logic
-      console.log('Signing out...');
-    });
+  const handleSignOut = async () => {
+    await signOut();
   };
 
   if (!isAuthenticated) {
@@ -46,9 +43,9 @@ export function AuthMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-9 w-9 rounded-full">
           <Avatar className="h-9 w-9">
-            <AvatarImage src="/placeholder.svg" alt="Profile" />
+            <AvatarImage src={user?.user_metadata?.avatar_url || '/placeholder.svg'} alt="Profile" />
             <AvatarFallback className="bg-primary text-primary-foreground">
-              CT
+              {user?.email?.charAt(0).toUpperCase() || 'CT'}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -60,9 +57,11 @@ export function AuthMenu() {
       >
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">CoinToss User</p>
+            <p className="text-sm font-medium leading-none">
+              {user?.user_metadata?.full_name || 'CoinToss User'}
+            </p>
             <p className="text-xs leading-none text-muted-foreground">
-              user@cointoss.app
+              {user?.email || 'user@cointoss.app'}
             </p>
           </div>
         </DropdownMenuLabel>
