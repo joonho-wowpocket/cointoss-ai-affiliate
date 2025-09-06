@@ -47,61 +47,10 @@ const Index = () => {
 
   if (activeTab !== "overview") {
     return (
-      <div className="min-h-screen bg-gradient-dark">
-        <nav className="border-b border-border bg-card/50 backdrop-blur-lg">
-          <div className="container mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-                  <Coins className="w-6 h-6 text-primary-foreground font-bold" />
-                </div>
-                <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                  CoinToss
-                </h1>
-              </div>
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-auto">
-                <TabsList className="bg-muted/50">
-                  <TabsTrigger value="overview" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                    Overview
-                  </TabsTrigger>
-                  <TabsTrigger value="dashboard" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                    Dashboard
-                  </TabsTrigger>
-                <TabsTrigger 
-                  value="partnerhub" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  onClick={() => navigate("/partner-hub")}
-                >
-                  Partner Hub
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="leadgen" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  onClick={() => navigate("/lead-generator")}
-                >
-                  Lead Generator
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="ai-assistants" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  onClick={() => navigate("/ai-assistants")}
-                >
-                  AI Assistants
-                </TabsTrigger>
-                  <TabsTrigger value="tokens" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                    Tokens
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-          </div>
-        </nav>
-
-        <div className="container mx-auto px-6 py-8">
-          {activeTab === "dashboard" && <Dashboard />}
-          {activeTab === "ai" && <AIAssistant />}
-          {activeTab === "tokens" && <TokenManager />}
-        </div>
+      <div className="container mx-auto px-6 py-8">
+        {activeTab === "dashboard" && <Dashboard />}
+        {activeTab === "ai" && <AIAssistant />}
+        {activeTab === "tokens" && <TokenManager />}
       </div>
     );
   }
@@ -130,20 +79,6 @@ const Index = () => {
                 </TabsTrigger>
                 <TabsTrigger value="dashboard" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                   Dashboard
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="partnerhub" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  onClick={() => navigate("/partner-hub")}
-                >
-                  Partner Hub
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="leadgen" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  onClick={() => navigate("/lead-generator")}
-                >
-                  Lead Generator
                 </TabsTrigger>
                 <TabsTrigger value="ai" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                   AI Assistant

@@ -1,23 +1,23 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { CampaignModal } from "@/components/CampaignModal";
 import { supabase } from "@/integrations/supabase/client";
 import { 
-  Coins, 
   Copy, 
   ExternalLink, 
-  TrendingUp, 
   CheckCircle, 
   Clock, 
   XCircle,
-  Loader2
+  Loader2,
+  Sparkles,
+  Zap
 } from "lucide-react";
 
 interface ExchangeCard {
@@ -33,7 +33,6 @@ interface ExchangeCard {
 }
 
 const PartnerHub = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(false);
@@ -156,70 +155,6 @@ const PartnerHub = () => {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      {/* Navigation */}
-      <nav className="border-b border-border bg-card/50 backdrop-blur-lg sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center glow-primary">
-                <Coins className="w-6 h-6 text-primary-foreground font-bold" />
-              </div>
-              <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                CoinToss
-              </h1>
-              <Badge variant="secondary" className="bg-accent/20 text-accent border-accent/30">
-                MVP
-              </Badge>
-            </div>
-            <Tabs value="partnerhub" className="w-auto">
-              <TabsList className="bg-muted/50">
-                <TabsTrigger 
-                  value="overview" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  onClick={() => navigate("/")}
-                >
-                  Overview
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="dashboard" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  onClick={() => navigate("/")}
-                >
-                  Dashboard
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="partnerhub" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                >
-                  Partner Hub
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="leadgen" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  onClick={() => navigate("/lead-generator")}
-                >
-                  Lead Generator
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="ai" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  onClick={() => navigate("/")}
-                >
-                  AI Assistant
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="tokens" 
-                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                  onClick={() => navigate("/")}
-                >
-                  Tokens
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        </div>
-      </nav>
-
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
         <div className="space-y-8">
@@ -278,6 +213,33 @@ const PartnerHub = () => {
                               {cta.label}
                             </Button>
                           ))}
+                          
+                          {/* AI Campaign Buttons */}
+                          <div className="w-full border-t border-border/50 pt-3 mt-2">
+                            <div className="flex flex-wrap gap-2">
+                              <CampaignModal
+                                exchangeId={card.exchange.toLowerCase()}
+                                exchangeName={card.exchange}
+                                preset="campaign:new"
+                              >
+                                <Button variant="secondary" size="sm" className="bg-primary/10 text-primary hover:bg-primary/20">
+                                  <Sparkles className="w-4 h-4 mr-2" />
+                                  신규 캠페인 생성
+                                </Button>
+                              </CampaignModal>
+                              
+                              <CampaignModal
+                                exchangeId={card.exchange.toLowerCase()}
+                                exchangeName={card.exchange}
+                                preset="campaign:reactivate"
+                              >
+                                <Button variant="secondary" size="sm" className="bg-accent/10 text-accent hover:bg-accent/20">
+                                  <Zap className="w-4 h-4 mr-2" />
+                                  휴면 리액티베이션
+                                </Button>
+                              </CampaignModal>
+                            </div>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -319,6 +281,33 @@ const PartnerHub = () => {
                               {cta.label}
                             </Button>
                           ))}
+                          
+                          {/* AI Campaign Buttons */}
+                          <div className="w-full border-t border-border/50 pt-3 mt-2">
+                            <div className="flex flex-wrap gap-2">
+                              <CampaignModal
+                                exchangeId={card.exchange.toLowerCase()}
+                                exchangeName={card.exchange}
+                                preset="campaign:new"
+                              >
+                                <Button variant="secondary" size="sm" className="bg-primary/10 text-primary hover:bg-primary/20">
+                                  <Sparkles className="w-4 h-4 mr-2" />
+                                  신규 캠페인 생성
+                                </Button>
+                              </CampaignModal>
+                              
+                              <CampaignModal
+                                exchangeId={card.exchange.toLowerCase()}
+                                exchangeName={card.exchange}
+                                preset="campaign:reactivate"
+                              >
+                                <Button variant="secondary" size="sm" className="bg-accent/10 text-accent hover:bg-accent/20">
+                                  <Zap className="w-4 h-4 mr-2" />
+                                  휴면 리액티베이션
+                                </Button>
+                              </CampaignModal>
+                            </div>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
