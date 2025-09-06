@@ -35,6 +35,7 @@ export function MobileMenu({ items }: MobileMenuProps) {
     if (item.href && item.protected && !isAuthenticated) {
       event.preventDefault();
       setOpen(false);
+      window.location.href = `/auth/signup?next=${encodeURIComponent(item.href)}`;
       return;
     }
     setOpen(false);

@@ -45,7 +45,7 @@ export function HeaderNav() {
             <div className="flex flex-col">
               <span className="text-lg font-bold leading-none">CoinToss</span>
               <span className="hidden text-xs text-muted-foreground sm:block leading-none">
-                {t('subtitle')}
+                Referral Revolution
               </span>
             </div>
           </Link>

@@ -45,7 +45,8 @@ export function DesktopNav({ items, className }: DesktopNavProps) {
   const handleClick = (event: React.MouseEvent, item: NavItem) => {
     if (item.href && item.protected && !isAuthenticated) {
       event.preventDefault();
-      // Redirect to login will be handled by routing
+      // Use window.location or navigate to redirect to login
+      window.location.href = `/auth/signup?next=${encodeURIComponent(item.href)}`;
     }
   };
 
