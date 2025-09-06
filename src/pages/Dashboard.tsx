@@ -147,17 +147,9 @@ export default function Dashboard() {
             }
           </p>
         </div>
-        
-        {isGuest && (
-          <Button 
-            onClick={() => setShowLoginModal(true)}
-            className="flex items-center gap-2"
-          >
-            <UserPlus className="w-4 h-4" />
-            무료 시작하기
-          </Button>
-        )}
       </div>
+
+      <GuestBanner onLoginClick={() => setShowLoginModal(true)} />
 
       {/* 주요 통계 (게스트용 샘플 데이터) */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
