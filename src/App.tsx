@@ -12,6 +12,7 @@ import LeadGenerator from "./pages/LeadGenerator";
 import PartnerHub from "./pages/PartnerHub";
 import Earnings from "./pages/Earnings";
 import AIAssistants from "./pages/AIAssistants";
+import TranslationManagerPage from "./pages/TranslationManager";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,15 +35,16 @@ const App = () => (
               <div className="flex-1 flex flex-col">
                 <Header />
                 <main className="flex-1 overflow-auto">
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/lead-generator" element={<LeadGenerator />} />
-                    <Route path="/partner-hub" element={<PartnerHub />} />
-                    <Route path="/ai-assistants" element={<AIAssistants />} />
-                    <Route path="/earnings" element={<Earnings />} />
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/lead-generator" element={<LeadGenerator />} />
+                <Route path="/partner-hub" element={<PartnerHub />} />
+                <Route path="/ai-assistants" element={<AIAssistants />} />
+                <Route path="/earnings" element={<Earnings />} />
+                <Route path="/translation-manager" element={<TranslationManagerPage />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
                 </main>
               </div>
             </div>

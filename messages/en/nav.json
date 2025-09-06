@@ -1,0 +1,23 @@
+{
+  "dashboard": "Dashboard",
+  "partnerHub": "Partner Hub",
+  "exchanges": "Exchanges",
+  "links": "Links",
+  "uidRegistry": "UID Registry",
+  "approvals": "Approvals",
+  "customers": "Customers",
+  "aiTeam": "AI Partner Team",
+  "aiAssistants": "AI Assistants",
+  "taskCenter": "Task Center",
+  "pipelines": "Pipelines",
+  "presets": "Presets",
+  "myLink": "MyLink",
+  "marketplace": "Marketplace", 
+  "earnings": "Earnings",
+  "translationManager": "Translation Manager",
+  "subtitle": "AI Partner Hub",
+  "openMenu": "Open menu",
+  "closeSidebar": "Close sidebar",
+  "expandSidebar": "Expand sidebar",
+  "collapseSidebar": "Collapse sidebar"
+}

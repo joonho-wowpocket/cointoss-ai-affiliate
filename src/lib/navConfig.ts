@@ -13,6 +13,7 @@ import {
   ExternalLink,
   ShoppingBag,
   DollarSign,
+  Languages,
 } from "lucide-react";
 
 export interface NavItem {
@@ -65,5 +66,10 @@ export const navigationConfig: NavItem[] = [
     labelKey: "earnings",
     icon: DollarSign,
     href: "/earnings",
+  },
+  {
+    labelKey: "translationManager",
+    icon: Languages,
+    href: "/translation-manager",
   },
 ];

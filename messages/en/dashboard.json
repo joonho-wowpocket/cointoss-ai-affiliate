@@ -1,0 +1,20 @@
+{
+  "welcome": "Welcome, {user}!",
+  "totalEarnings": "Total Earnings",
+  "monthlyGrowth": "Monthly Growth",
+  "activeReferrals": "Active Referrals",
+  "ctossBalance": "CTOSS Balance",
+  "aiTasks": "AI Tasks",
+  "tier": "{tier} Tier",
+  "earnings": "${amount}",
+  "growth": "+{percentage}% this month",
+  "referrals": "{count} active referrals",
+  "balance": "{amount} CTOSS",
+  "tasks": "{count} automated tasks",
+  "stats": {
+    "totalCommission": "Total Commission",
+    "pendingSettlement": "Pending Settlement",
+    "thisMonth": "This Month",
+    "lastMonth": "Last Month"
+  }
+}

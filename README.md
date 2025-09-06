@@ -1,73 +1,124 @@
-# Welcome to your Lovable project
+# CoinToss MVP
 
-## Project info
+A crypto referral platform with AI-powered partner assistance and multi-language support.
 
-**URL**: https://lovable.dev/projects/79c3606c-811b-410d-8194-b694cd5ac9a6
+## Features
 
-## How can I edit this code?
+- 🌐 **Multi-language Support**: 5 languages (Korean, Japanese, Indonesian, Vietnamese, English)
+- 🤖 **AI Translation**: Automated translation using ChatGPT API  
+- 📱 **Responsive Design**: Mobile-first approach with collapsible sidebar
+- 🎨 **Theme Support**: Light/Dark/System themes
+- 🔐 **Supabase Integration**: Backend API and authentication ready
+- ⚡ **Modern Stack**: React, TypeScript, Tailwind CSS, Vite
 
-There are several ways of editing your application.
+## Translation System
 
-**Use Lovable**
+### Quick Start
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/79c3606c-811b-410d-8194-b694cd5ac9a6) and start prompting.
+1. Set up your OpenAI API key in Supabase secrets (already configured)
 
-Changes made via Lovable will be committed automatically to this repo.
+2. Edit English translation files in `messages/en/`:
+   - `nav.json` - Navigation labels
+   - `common.json` - Common UI elements  
+   - `dashboard.json` - Dashboard content
 
-**Use your preferred IDE**
+3. Run the translation script:
+   ```bash
+   npm run translate
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Available Commands
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+# Translate all files to all languages
+npm run translate
 
-Follow these steps:
+# Check which translations are missing
+npm run translate:check
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# Translate specific file to specific languages  
+npm run translate:file messages/en/nav.json --langs ko,ja
 ```
 
-**Edit a file directly in GitHub**
+### Translation Rules
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. **English Only**: Only edit files in `messages/en/` - all other languages are auto-generated
+2. **Placeholders**: Keep `{user}`, `{amount}`, `{count}` etc. unchanged
+3. **UI Labels**: Keep navigation and button labels short (1-3 words)
+4. **Professional Tone**: Maintain trustworthy, financial services appropriate language
+5. **Missing Translations**: Look for `__MISSING__` in generated files and manually fix if needed
 
-**Use GitHub Codespaces**
+### File Structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+messages/
+├── en/          # ✅ Edit these files
+│   ├── nav.json
+│   ├── common.json
+│   └── dashboard.json
+├── ko/          # 🤖 Auto-generated
+├── ja/          # 🤖 Auto-generated
+├── id/          # 🤖 Auto-generated
+└── vi/          # 🤖 Auto-generated
+```
 
-## What technologies are used for this project?
+### Adding New Content
 
-This project is built with:
+1. Add new keys to appropriate English JSON files
+2. Run `npm run translate` to generate translations
+3. Review generated translations for accuracy
+4. Manually fix any `__MISSING__` values
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Development
 
-## How can I deploy this project?
+```bash
+# Install dependencies
+npm install
 
-Simply open [Lovable](https://lovable.dev/projects/79c3606c-811b-410d-8194-b694cd5ac9a6) and click on Share -> Publish.
+# Start development server
+npm run dev
 
-## Can I connect a custom domain to my Lovable project?
+# Build for production
+npm run build
 
-Yes, you can!
+# Preview production build
+npm run preview
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Project Structure
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```
+src/
+├── components/          # UI components
+│   ├── ui/             # shadcn/ui components
+│   ├── Header.tsx      # App header with theme/language switchers
+│   ├── ResponsiveSidebar.tsx  # Collapsible sidebar
+│   └── ...
+├── contexts/           # React contexts
+│   └── I18nContext.tsx # Internationalization
+├── lib/               # Utilities
+│   ├── i18n.ts        # Translation constants
+│   └── i18n-file-based.ts  # File-based translation loader
+├── pages/             # Application pages
+└── ...
+```
+
+## Deployment
+
+The application is configured to work with:
+- **Supabase**: Backend services and authentication
+- **Vercel/Netlify**: Frontend hosting  
+- **GitHub Actions**: CI/CD (optional)
+
+OpenAI API key is securely stored in Supabase secrets for the translation system.
+
+## Contributing
+
+1. Edit only English translation files
+2. Run `npm run translate` before committing
+3. Test in multiple languages using the language switcher
+4. Ensure responsive design works on mobile/desktop
+
+---
+
+Built with ❤️ by the CoinToss team
