@@ -24,21 +24,33 @@ export function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
-          <Globe className="h-4 w-4 mr-2" />
-          <span className="hidden sm:inline">{currentLanguage.flag} {currentLanguage.code.toUpperCase()}</span>
-          <span className="sm:hidden">{currentLanguage.flag}</span>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="h-9 px-2"
+          aria-label="Change language"
+        >
+          <Globe className="h-4 w-4 mr-1" />
+          <span className="hidden sm:inline text-xs font-medium">
+            {currentLanguage.code.toUpperCase()}
+          </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent 
+        align="end" 
+        className="bg-background/95 backdrop-blur-xl border shadow-lg"
+      >
         {SUPPORTED_LOCALES.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => handleLanguageChange(lang.code)}
-            className={locale === lang.code ? 'bg-primary/10' : ''}
+            className={`cursor-pointer ${locale === lang.code ? 'bg-accent' : ''}`}
           >
-            <span className="mr-2">{lang.flag}</span>
+            <span className="mr-2 text-base">{lang.flag}</span>
             <span>{lang.name}</span>
+            {locale === lang.code && (
+              <div className="ml-auto w-2 h-2 bg-primary rounded-full" />
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
