@@ -81,9 +81,13 @@ const Index = () => {
                 >
                   Lead Generator
                 </TabsTrigger>
-                  <TabsTrigger value="ai" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                    AI Assistant
-                  </TabsTrigger>
+                <TabsTrigger 
+                  value="ai-assistants" 
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  onClick={() => navigate("/ai-assistants")}
+                >
+                  AI Assistants
+                </TabsTrigger>
                   <TabsTrigger value="tokens" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                     Tokens
                   </TabsTrigger>

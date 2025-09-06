@@ -85,3 +85,33 @@ export type SettlementRequestInput = z.infer<typeof settlementRequestSchema>;
 export type EarningsQueryInput = z.infer<typeof earningsQuerySchema>;
 export type DashboardKpiInput = z.infer<typeof dashboardKpiInputSchema>;
 export type PartnerHubInput = z.infer<typeof partnerHubInputSchema>;
+
+// AI Assistant schemas
+export const aiTaskSchema = z.object({
+  agent: z.enum(['CREA', 'DANNY', 'RAY', 'LEO', 'ALPHA', 'GUARDIAN']),
+  name: z.string().min(1),
+  input: z.object({}).passthrough(),
+  correlationId: z.string().optional(),
+});
+
+export const aiPipelineSchema = z.object({
+  name: z.string().min(1),
+  context: z.object({}).passthrough(),
+  steps: z.array(z.object({
+    agent: z.enum(['CREA', 'DANNY', 'RAY', 'LEO', 'ALPHA', 'GUARDIAN']),
+    name: z.string(),
+    input: z.object({}).passthrough().optional(),
+    inputFrom: z.string().optional(), // "$step[0].output.topics" or "$pipeline.context"
+  })),
+});
+
+export const aiWebhookSchema = z.object({
+  event: z.string(),
+  url: z.string().url(),
+  secret: z.string().min(10),
+});
+
+// Type inference from AI schemas
+export type AITaskInput = z.infer<typeof aiTaskSchema>;
+export type AIPipelineInput = z.infer<typeof aiPipelineSchema>;
+export type AIWebhookInput = z.infer<typeof aiWebhookSchema>;

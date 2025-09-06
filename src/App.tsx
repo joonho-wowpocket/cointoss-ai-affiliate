@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import LeadGenerator from "./pages/LeadGenerator";
 import PartnerHub from "./pages/PartnerHub";
 import Earnings from "./pages/Earnings";
+import AIAssistants from "./pages/AIAssistants";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,7 +22,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/lead-generator" element={<LeadGenerator />} />
           <Route path="/partner-hub" element={<PartnerHub />} />
-          <Route path="/earnings" element={<Earnings />} />
+        <Route path="/ai-assistants" element={<AIAssistants />} />
+        <Route path="/earnings" element={<Earnings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

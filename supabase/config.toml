@@ -27,3 +27,12 @@ verify_jwt = true
 
 [functions.settlements]
 verify_jwt = true
+
+[functions.ai-agents]
+verify_jwt = true
+
+[functions.ai-tasks]
+verify_jwt = true
+
+[functions.ai-pipelines]
+verify_jwt = true

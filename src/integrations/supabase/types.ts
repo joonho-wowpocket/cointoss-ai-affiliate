@@ -14,6 +14,128 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_pipelines: {
+        Row: {
+          context: Json
+          created_at: string
+          id: string
+          name: string
+          status: Database["public"]["Enums"]["ai_pipeline_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          context?: Json
+          created_at?: string
+          id?: string
+          name: string
+          status?: Database["public"]["Enums"]["ai_pipeline_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          context?: Json
+          created_at?: string
+          id?: string
+          name?: string
+          status?: Database["public"]["Enums"]["ai_pipeline_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_tasks: {
+        Row: {
+          agent: Database["public"]["Enums"]["ai_agent"]
+          correlation_id: string | null
+          created_at: string
+          error_code: string | null
+          error_message: string | null
+          finished_at: string | null
+          id: string
+          input: Json
+          name: string
+          output: Json | null
+          pipeline_id: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["ai_task_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agent: Database["public"]["Enums"]["ai_agent"]
+          correlation_id?: string | null
+          created_at?: string
+          error_code?: string | null
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          input?: Json
+          name: string
+          output?: Json | null
+          pipeline_id?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["ai_task_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agent?: Database["public"]["Enums"]["ai_agent"]
+          correlation_id?: string | null
+          created_at?: string
+          error_code?: string | null
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          input?: Json
+          name?: string
+          output?: Json | null
+          pipeline_id?: string | null
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["ai_task_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_tasks_pipeline_id_fkey"
+            columns: ["pipeline_id"]
+            isOneToOne: false
+            referencedRelation: "ai_pipelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_webhooks: {
+        Row: {
+          created_at: string
+          event: string
+          id: string
+          is_active: boolean
+          secret: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event: string
+          id?: string
+          is_active?: boolean
+          secret: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event?: string
+          id?: string
+          is_active?: boolean
+          secret?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       earnings: {
         Row: {
           amount: number
@@ -387,7 +509,14 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      ai_agent: "CREA" | "DANNY" | "RAY" | "LEO" | "ALPHA" | "GUARDIAN"
+      ai_pipeline_status:
+        | "PENDING"
+        | "RUNNING"
+        | "PARTIAL"
+        | "SUCCEEDED"
+        | "FAILED"
+      ai_task_status: "QUEUED" | "RUNNING" | "SUCCEEDED" | "FAILED" | "CANCELED"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -514,6 +643,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      ai_agent: ["CREA", "DANNY", "RAY", "LEO", "ALPHA", "GUARDIAN"],
+      ai_pipeline_status: [
+        "PENDING",
+        "RUNNING",
+        "PARTIAL",
+        "SUCCEEDED",
+        "FAILED",
+      ],
+      ai_task_status: ["QUEUED", "RUNNING", "SUCCEEDED", "FAILED", "CANCELED"],
+    },
   },
 } as const
