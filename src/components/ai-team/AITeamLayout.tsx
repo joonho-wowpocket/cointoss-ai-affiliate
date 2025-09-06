@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bot, Workflow, Zap, Sparkles } from "lucide-react";
@@ -66,30 +66,6 @@ export const AITeamLayout = () => {
             </TabsTrigger>
           </TabsList>
 
-          <Routes>
-            <Route path="/" element={
-              <TabsContent value="chat" className="mt-6">
-                <ChatInterface />
-              </TabsContent>
-            } />
-            <Route path="/tasks" element={
-              <TabsContent value="tasks" className="mt-6">
-                <TaskCenter />
-              </TabsContent>
-            } />
-            <Route path="/pipelines" element={
-              <TabsContent value="pipelines" className="mt-6">
-                <Pipelines />
-              </TabsContent>
-            } />
-            <Route path="/presets" element={
-              <TabsContent value="presets" className="mt-6">
-                <Presets />
-              </TabsContent>
-            } />
-          </Routes>
-
-          {/* Show content based on current tab regardless of routing */}
           <TabsContent value="chat" className="mt-6">
             <ChatInterface />
           </TabsContent>
