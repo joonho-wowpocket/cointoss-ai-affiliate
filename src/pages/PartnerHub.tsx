@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
+import { AuthGuard } from "@/components/AuthGuard";
 import { Exchanges } from "@/components/partner-hub/Exchanges";
 import { UIDRegistry } from "@/components/partner-hub/UIDRegistry";
 import { Approvals } from "@/components/partner-hub/Approvals";
@@ -137,19 +138,43 @@ const PartnerHub = () => {
         {/* Tab Content */}
         <div className="container mx-auto px-6 py-8">
           <TabsContent value="exchanges" className="mt-0 space-y-6 focus:outline-none" tabIndex={-1}>
-            <Exchanges />
+            {isAuthenticated ? (
+              <Exchanges />
+            ) : (
+              <AuthGuard message="거래소 관리 기능을 사용하려면 로그인이 필요합니다.">
+                <Exchanges />
+              </AuthGuard>
+            )}
           </TabsContent>
           
           <TabsContent value="uid" className="mt-0 space-y-6 focus:outline-none" tabIndex={-1}>
-            <UIDRegistry />
+            {isAuthenticated ? (
+              <UIDRegistry />
+            ) : (
+              <AuthGuard message="UID 등록 기능을 사용하려면 로그인이 필요합니다.">
+                <UIDRegistry />
+              </AuthGuard>
+            )}
           </TabsContent>
           
           <TabsContent value="approvals" className="mt-0 space-y-6 focus:outline-none" tabIndex={-1}>
-            <Approvals />
+            {isAuthenticated ? (
+              <Approvals />
+            ) : (
+              <AuthGuard message="승인 현황을 확인하려면 로그인이 필요합니다.">
+                <Approvals />
+              </AuthGuard>
+            )}
           </TabsContent>
           
           <TabsContent value="customers" className="mt-0 space-y-6 focus:outline-none" tabIndex={-1}>
-            <Customers />
+            {isAuthenticated ? (
+              <Customers />
+            ) : (
+              <AuthGuard message="고객 관리 기능을 사용하려면 로그인이 필요합니다.">
+                <Customers />
+              </AuthGuard>
+            )}
           </TabsContent>
         </div>
       </Tabs>

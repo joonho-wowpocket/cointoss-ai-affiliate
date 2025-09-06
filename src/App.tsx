@@ -19,6 +19,7 @@ import Marketplace from "./pages/Marketplace";
 import TranslationManagerPage from "./pages/TranslationManager";
 import SignUp from "./pages/auth/SignUp";
 import Login from "./pages/auth/Login";
+import EmailConfirm from "./pages/auth/EmailConfirm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -53,6 +54,7 @@ const App = () => (
                   <Route path="/translation-manager" element={<TranslationManagerPage />} />
                   <Route path="/auth/signup" element={<SignUp />} />
                   <Route path="/auth/login" element={<Login />} />
+                  <Route path="/auth/confirm" element={<EmailConfirm />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

@@ -19,25 +19,25 @@ export const NAV_ITEMS: NavItem[] = [
   { 
     key: 'partnerHub', 
     href: '/partner-hub',
-    protected: true,
+    protected: false, // 페이지는 볼 수 있지만 실제 기능은 로그인 필요
     testId: 'nav-partner-hub'
   },
   { 
     key: 'aiTeam', 
     href: '/ai-assistants',
-    protected: true,
+    protected: false, // 페이지는 볼 수 있지만 실제 기능은 로그인 필요
     testId: 'nav-ai-team'
   },
   { 
     key: 'myLink', 
     href: '/mylink',
-    protected: true,
+    protected: false, // 페이지는 볼 수 있지만 실제 기능은 로그인 필요
     testId: 'nav-mylink'
   },
   { 
     key: 'marketplace', 
     href: '/marketplace',
-    protected: true,
+    protected: false, // 페이지는 볼 수 있지만 실제 기능은 로그인 필요
     testId: 'nav-marketplace'
   },
 ];
