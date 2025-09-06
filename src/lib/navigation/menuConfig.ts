@@ -25,31 +25,31 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { 
-    key: 'nav.dashboard', 
+    key: 'dashboard', 
     href: '/dashboard', 
     protected: true,
     testId: 'nav-dashboard'
   },
   { 
-    key: 'nav.partnerHub', 
+    key: 'partnerHub', 
     href: '/partner-hub',
     protected: true,
     testId: 'nav-partner-hub'
   },
   { 
-    key: 'nav.aiTeam', 
+    key: 'aiTeam', 
     href: '/ai', 
     protected: true,
     testId: 'nav-ai-team'
   },
   { 
-    key: 'nav.myLink', 
+    key: 'myLink', 
     href: '/mylink', 
     protected: true,
     testId: 'nav-mylink'
   },
   { 
-    key: 'nav.marketplace', 
+    key: 'marketplace', 
     href: '/marketplace', 
     protected: true,
     testId: 'nav-marketplace'
@@ -58,19 +58,19 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const ACCOUNT_MENU_ITEMS: NavItem[] = [
   {
-    key: 'nav.profile',
+    key: 'profile',
     href: '/account/profile',
     protected: true,
     testId: 'nav-profile'
   },
   {
-    key: 'nav.security',
+    key: 'security',
     href: '/account/security',
     protected: true,
     testId: 'nav-security'
   },
   {
-    key: 'nav.tokens',
+    key: 'tokens',
     href: '/account/tokens',
     protected: true,
     testId: 'nav-tokens'
@@ -79,11 +79,11 @@ export const ACCOUNT_MENU_ITEMS: NavItem[] = [
 
 export const FOOTER_LINKS = {
   product: [
-    { key: 'nav.dashboard', href: '/dashboard' },
-    { key: 'nav.partnerHub', href: '/partner-hub' },
-    { key: 'nav.aiTeam', href: '/ai' },
-    { key: 'nav.myLink', href: '/mylink' },
-    { key: 'nav.marketplace', href: '/marketplace' },
+    { key: 'dashboard', href: '/dashboard' },
+    { key: 'partnerHub', href: '/partner-hub' },
+    { key: 'aiTeam', href: '/ai' },
+    { key: 'myLink', href: '/mylink' },
+    { key: 'marketplace', href: '/marketplace' },
   ],
   resources: [
     { key: 'footer.docs', href: '/docs' },

@@ -1,0 +1,18 @@
+{
+  "dashboard": "대시보드",
+  "partnerHub": "파트너 허브", 
+  "aiTeam": "AI 파트너 팀",
+  "myLink": "마이링크",
+  "marketplace": "마켓플레이스",
+  "earnings": "수익 현황",
+  "account": "계정",
+  "profile": "프로필",
+  "security": "보안 / 2단계 인증",
+  "tokens": "토큰 (CTOSS)",
+  "menu": "메뉴",
+  "signIn": "로그인",
+  "signOut": "로그아웃",
+  "getStarted": "시작하기",
+  "openMenu": "메뉴 열기",
+  "subtitle": "AI 파트너 허브"
+}

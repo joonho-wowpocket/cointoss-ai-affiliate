@@ -1,0 +1,18 @@
+{
+  "dashboard": "ダッシュボード",
+  "partnerHub": "パートナーハブ", 
+  "aiTeam": "AIパートナーチーム",
+  "myLink": "マイリンク",
+  "marketplace": "マーケットプレイス",
+  "earnings": "収益状況",
+  "account": "アカウント",
+  "profile": "プロフィール",
+  "security": "セキュリティ / 2段階認証",
+  "tokens": "トークン (CTOSS)",
+  "menu": "メニュー",
+  "signIn": "ログイン",
+  "signOut": "ログアウト",
+  "getStarted": "始める",
+  "openMenu": "メニューを開く",
+  "subtitle": "AIパートナーハブ"
+}
