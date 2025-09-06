@@ -243,11 +243,7 @@ export function LeadMagnetGenerator() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">리드 마그넷 생성기</h1>
-        <p className="text-gray-600">AI로 전문적인 리드 마그넷을 생성하여 잠재 고객의 연락처를 수집하세요</p>
-      </div>
+    <div className="max-w-2xl mx-auto space-y-6">
 
       <Card>
         <CardHeader>
