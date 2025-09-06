@@ -125,7 +125,7 @@ export function AppFooter() {
           <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-muted-foreground">
             <span>© {currentYear} CoinToss. All rights reserved.</span>
             <span className="hidden sm:inline">•</span>
-            <span>Company No. 12345678 • Singapore</span>
+            <span>Industry-leading crypto partner hub with AI growth tools</span>
           </div>
 
           {/* Social Links */}
@@ -135,7 +135,7 @@ export function AppFooter() {
                 key={social.name}
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 hover:bg-primary/10 transition-colors"
                 asChild
               >
                 <a

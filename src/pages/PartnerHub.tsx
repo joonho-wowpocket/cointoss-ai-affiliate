@@ -23,6 +23,9 @@ const PartnerHub = () => {
   }, [navigate, guardLink]);
 
   const handleTabChange = (value: string) => {
+    // Performance optimization: avoid unnecessary re-renders
+    if (value === activeTab) return;
+    
     navigate(`/partner-hub?tab=${value}`, { replace: true });
     
     // Track tab change event
@@ -30,8 +33,14 @@ const PartnerHub = () => {
       (window as any).gtag('event', 'tab_change', {
         event_category: 'partner_hub',
         event_label: value,
+        value: 1
       });
     }
+    
+    // Custom event for other analytics systems
+    window.dispatchEvent(new CustomEvent('partnerHub.tab_change', { 
+      detail: { tab_name: value } 
+    }));
   };
 
   // Track page view
@@ -40,8 +49,14 @@ const PartnerHub = () => {
       (window as any).gtag('event', 'page_view', {
         event_category: 'partner_hub',
         event_label: activeTab,
+        value: 1
       });
     }
+    
+    // Custom event for other analytics systems
+    window.dispatchEvent(new CustomEvent('partnerHub.page_view', { 
+      detail: { tab_name: activeTab } 
+    }));
   }, [activeTab]);
 
   return (
@@ -60,31 +75,45 @@ const PartnerHub = () => {
 
       {/* Tab Navigation */}
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-        <div className="sticky top-14 bg-background border-b z-30">
+        <div className="sticky top-14 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b z-30 shadow-sm">
           <div className="container mx-auto px-6">
             <div className="overflow-x-auto scrollbar-hide">
-              <TabsList className="h-12 w-full min-w-max justify-start bg-transparent p-0 gap-4 sm:gap-8">
+              <TabsList 
+                className="h-12 w-full min-w-max justify-start bg-transparent p-0 gap-6 sm:gap-8"
+                onKeyDown={(e) => {
+                  const tabs = ['exchanges', 'uid', 'approvals', 'customers'];
+                  const currentIndex = tabs.indexOf(activeTab);
+                  
+                  if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                    e.preventDefault();
+                    handleTabChange(tabs[currentIndex - 1]);
+                  } else if (e.key === 'ArrowRight' && currentIndex < tabs.length - 1) {
+                    e.preventDefault();
+                    handleTabChange(tabs[currentIndex + 1]);
+                  }
+                }}
+              >
                 <TabsTrigger 
                   value="exchanges"
-                  className="relative h-12 px-3 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap"
+                  className="relative h-12 px-4 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   거래소 관리
                 </TabsTrigger>
                 <TabsTrigger 
                   value="uid"
-                  className="relative h-12 px-3 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap"
+                  className="relative h-12 px-4 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   UID 등록
                 </TabsTrigger>
                 <TabsTrigger 
                   value="approvals"
-                  className="relative h-12 px-3 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap"
+                  className="relative h-12 px-4 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   승인 현황
                 </TabsTrigger>
                 <TabsTrigger 
                   value="customers"
-                  className="relative h-12 px-3 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap"
+                  className="relative h-12 px-4 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   내 파트너/고객
                 </TabsTrigger>
@@ -95,19 +124,19 @@ const PartnerHub = () => {
 
         {/* Tab Content */}
         <div className="container mx-auto px-6 py-8">
-          <TabsContent value="exchanges" className="mt-0 space-y-6">
+          <TabsContent value="exchanges" className="mt-0 space-y-6 focus:outline-none" tabIndex={-1}>
             <Exchanges />
           </TabsContent>
           
-          <TabsContent value="uid" className="mt-0 space-y-6">
+          <TabsContent value="uid" className="mt-0 space-y-6 focus:outline-none" tabIndex={-1}>
             <UIDRegistry />
           </TabsContent>
           
-          <TabsContent value="approvals" className="mt-0 space-y-6">
+          <TabsContent value="approvals" className="mt-0 space-y-6 focus:outline-none" tabIndex={-1}>
             <Approvals />
           </TabsContent>
           
-          <TabsContent value="customers" className="mt-0 space-y-6">
+          <TabsContent value="customers" className="mt-0 space-y-6 focus:outline-none" tabIndex={-1}>
             <Customers />
           </TabsContent>
         </div>
