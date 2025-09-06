@@ -107,7 +107,7 @@ export const ChatInterface = () => {
   const currentMessages = messages.filter(msg => msg.agentId === selectedAgent.id);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[600px]">
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 max-h-[calc(100vh-300px)] min-h-[500px]">
       {/* Left Panel - AI Agents */}
       <div className="lg:col-span-1">
         <AIAgentList 
@@ -138,9 +138,9 @@ export const ChatInterface = () => {
           
           <Separator />
           
-          <CardContent className="flex flex-col h-full p-0">
+          <CardContent className="flex flex-col p-0" style={{ height: 'calc(100% - 120px)' }}>
             {/* Messages */}
-            <ScrollArea className="flex-1 p-4">
+            <ScrollArea className="flex-1 p-4 overflow-y-auto" style={{ maxHeight: 'calc(100% - 120px)' }}>
               <div className="space-y-4">
                 {currentMessages.length === 0 && (
                   <div className="text-center py-8">
