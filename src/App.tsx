@@ -48,6 +48,7 @@ const App = () => (
                   <Route path="/partner-hub" element={<PartnerHub />} />
                   <Route path="/partner-hub/*" element={<PartnerHub />} />
                   <Route path="/ai-assistants" element={<AIAssistants />} />
+                  <Route path="/ai-assistants/*" element={<AIAssistants />} />
                   <Route path="/mylink" element={<MyLink />} />
                   <Route path="/marketplace" element={<Marketplace />} />
                   <Route path="/earnings" element={<Earnings />} />
