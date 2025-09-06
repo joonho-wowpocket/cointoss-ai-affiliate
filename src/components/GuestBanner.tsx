@@ -15,8 +15,8 @@ export function GuestBanner({ onLoginClick, className = "" }: GuestBannerProps) 
   if (isAuthenticated) return null;
 
   return (
-    <div className={`max-w-4xl mx-auto mb-6 flex justify-center ${className}`}>
-      <Alert className="border-primary/30 bg-gradient-to-r from-primary/10 to-transparent py-3 w-full">
+    <div className={`w-full mb-6 flex justify-center px-6 ${className}`}>
+      <Alert className="border-primary/30 bg-gradient-to-r from-primary/10 to-transparent py-3 max-w-4xl w-full">
         <Eye className="h-4 w-4 text-primary" />
         <AlertDescription className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
