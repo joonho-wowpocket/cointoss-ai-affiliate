@@ -29,6 +29,12 @@ export const NAV_ITEMS: NavItem[] = [
     testId: 'nav-ai-team'
   },
   { 
+    key: 'leadGenerator', 
+    href: '/lead-generator',
+    protected: false, // 페이지는 볼 수 있지만 실제 기능은 로그인 필요
+    testId: 'nav-lead-generator'
+  },
+  { 
     key: 'myLink', 
     href: '/mylink',
     protected: false, // 페이지는 볼 수 있지만 실제 기능은 로그인 필요
@@ -68,6 +74,7 @@ export const FOOTER_LINKS = {
     { key: 'dashboard', href: '/dashboard' },
     { key: 'partnerHub', href: '/partner-hub' },
     { key: 'aiTeam', href: '/ai-assistants' },
+    { key: 'leadGenerator', href: '/lead-generator' },
     { key: 'myLink', href: '/mylink' },
     { key: 'marketplace', href: '/marketplace' },
   ],
