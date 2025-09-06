@@ -80,22 +80,22 @@ export function AppSidebar() {
   const isGroupActive = (items: any[]) => items.some((item) => isActive(item.url));
   
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-accent/20 text-accent font-medium border-r-2 border-accent" : "hover:bg-muted/50";
+    isActive ? "bg-primary/20 text-primary font-medium border-r-2 border-primary" : "text-primary/70 hover:text-primary hover:bg-primary/10";
 
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
-        <div className="p-4 border-b">
+        <div className="p-4 border-b border-primary/20">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
               <Coins className="w-5 h-5 text-primary-foreground font-bold" />
             </div>
             {open && (
               <div>
-                <h2 className="text-lg font-bold bg-gradient-primary bg-clip-text text-transparent">
+                <h2 className="text-lg font-bold text-primary">
                   CoinToss
                 </h2>
-                <p className="text-xs text-muted-foreground">AI Partner Hub</p>
+                <p className="text-xs text-primary/60">AI Partner Hub</p>
               </div>
             )}
           </div>
@@ -105,7 +105,7 @@ export function AppSidebar() {
           <SidebarGroup key={item.title}>
             {item.items ? (
               <>
-                <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+                <SidebarGroupLabel className="text-primary/80">{item.title}</SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
                     {item.items.map((subItem) => (
