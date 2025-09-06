@@ -14,7 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      lead_captures: {
+        Row: {
+          captured_at: string
+          contact_info: Json
+          id: string
+          ip_address: unknown | null
+          lead_magnet_id: string
+          partner_id: string
+          source: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          captured_at?: string
+          contact_info: Json
+          id?: string
+          ip_address?: unknown | null
+          lead_magnet_id: string
+          partner_id: string
+          source?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          captured_at?: string
+          contact_info?: Json
+          id?: string
+          ip_address?: unknown | null
+          lead_magnet_id?: string
+          partner_id?: string
+          source?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_captures_lead_magnet_id_fkey"
+            columns: ["lead_magnet_id"]
+            isOneToOne: false
+            referencedRelation: "lead_magnets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lead_magnets: {
+        Row: {
+          brand_settings: Json
+          compliance_settings: Json
+          content_json: Json
+          created_at: string
+          depth: string
+          download_count: number
+          format: string
+          id: string
+          lead_goal: string
+          locale: string
+          status: string
+          target_audience: string
+          title: string
+          topic: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          brand_settings: Json
+          compliance_settings: Json
+          content_json: Json
+          created_at?: string
+          depth: string
+          download_count?: number
+          format: string
+          id?: string
+          lead_goal: string
+          locale?: string
+          status?: string
+          target_audience: string
+          title: string
+          topic: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          brand_settings?: Json
+          compliance_settings?: Json
+          content_json?: Json
+          created_at?: string
+          depth?: string
+          download_count?: number
+          format?: string
+          id?: string
+          lead_goal?: string
+          locale?: string
+          status?: string
+          target_audience?: string
+          title?: string
+          topic?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

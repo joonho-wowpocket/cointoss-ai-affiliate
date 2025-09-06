@@ -22,9 +22,11 @@ import {
   Pause,
   Settings,
   Clock,
-  Zap
+  Zap,
+  FileText
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { LeadMagnetGenerator } from "./LeadMagnetGenerator";
 
 const AIAssistant = () => {
   const { toast } = useToast();
@@ -163,10 +165,10 @@ const AIAssistant = () => {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">AI 어시스턴트</h1>
-          <p className="text-muted-foreground">24시간 자동화된 콘텐츠 생성과 데이터 분석</p>
-        </div>
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">AI 어시스턴트</h1>
+            <p className="text-muted-foreground">24시간 자동화된 콘텐츠 생성, 데이터 분석 및 리드마그넷 생성</p>
+          </div>
         <Badge variant="outline" className="border-neon-blue text-neon-blue pulse-slow">
           <Zap className="w-3 h-3 mr-1" />
           AI 활성화
@@ -222,6 +224,10 @@ const AIAssistant = () => {
           <TabsTrigger value="chat" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <MessageSquare className="w-4 h-4 mr-2" />
             채팅
+          </TabsTrigger>
+          <TabsTrigger value="leadmagnet" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <FileText className="w-4 h-4 mr-2" />
+            리드마그넷 생성기
           </TabsTrigger>
           <TabsTrigger value="content" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
             <Sparkles className="w-4 h-4 mr-2" />
@@ -322,6 +328,14 @@ const AIAssistant = () => {
                     <Button 
                       variant="outline" 
                       className="w-full justify-start"
+                      onClick={() => setChatMessage("리드마그넷을 생성해주세요")}
+                    >
+                      <FileText className="w-4 h-4 mr-2" />
+                      리드마그넷 생성
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
                       onClick={() => setChatMessage("오늘의 시장 분석 SNS 포스트를 작성해주세요")}
                     >
                       <TrendingUp className="w-4 h-4 mr-2" />
@@ -375,6 +389,10 @@ const AIAssistant = () => {
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+
+        <TabsContent value="leadmagnet" className="space-y-6">
+          <LeadMagnetGenerator />
         </TabsContent>
 
         <TabsContent value="content" className="space-y-6">
