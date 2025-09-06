@@ -7,6 +7,7 @@ interface I18nContextType {
   setLocale: (locale: Locale) => void;
   t: (namespace: string, key: string) => string;
   tAsync: (namespace: string, key: string) => Promise<string>;
+  isLoading: boolean;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -20,6 +21,7 @@ const syncCache: { [locale: string]: { [namespace: string]: any } } = {};
 
 export function I18nProvider({ children }: I18nProviderProps) {
   const [locale, setLocaleState] = useState<Locale>(getCurrentLocale);
+  const [isLoading, setIsLoading] = useState(true);
 
   const setLocale = useCallback((newLocale: Locale) => {
     setCurrentLocale(newLocale);
@@ -51,17 +53,29 @@ export function I18nProvider({ children }: I18nProviderProps) {
   // Preload common namespaces
   useEffect(() => {
     const preloadNamespaces = ['nav', 'common'];
-    preloadNamespaces.forEach(async (namespace) => {
+    const preloadPromises = preloadNamespaces.map(async (namespace) => {
       const messages = await loadMessages(locale, namespace);
       if (!syncCache[locale]) {
         syncCache[locale] = {};
       }
       syncCache[locale][namespace] = messages;
     });
+    
+    Promise.all(preloadPromises).finally(() => {
+      setIsLoading(false);
+    });
   }, [locale]);
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
   return (
-    <I18nContext.Provider value={{ locale, setLocale, t, tAsync }}>
+    <I18nContext.Provider value={{ locale, setLocale, t, tAsync, isLoading }}>
       {children}
     </I18nContext.Provider>
   );
