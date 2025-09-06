@@ -9,7 +9,7 @@ interface Translations {
 const translations: Translations = {
   ko: {
     nav: {
-      dashboard: "대시보드",
+      dashboard: "거래소 관리",
       partnerHub: "파트너 허브",
       exchanges: "거래소",
       links: "링크",
@@ -129,7 +129,7 @@ const translations: Translations = {
   },
   en: {
     nav: {
-      dashboard: "Dashboard",
+      dashboard: "Exchange Management",
       partnerHub: "Partner Hub",
       exchanges: "Exchanges",
       links: "Links",

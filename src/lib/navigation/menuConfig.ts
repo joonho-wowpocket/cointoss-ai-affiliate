@@ -13,7 +13,7 @@ export const NAV_ITEMS: NavItem[] = [
   { 
     key: 'dashboard', 
     href: '/dashboard', 
-    protected: true,
+    protected: false, // 페이지는 볼 수 있지만 실제 기능은 로그인 필요
     testId: 'nav-dashboard'
   },
   { 
