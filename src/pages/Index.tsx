@@ -1,32 +1,22 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { 
   TrendingUp, 
-  Wallet, 
   Bot, 
-  Coins, 
+  Coins,
   BarChart3, 
   Shield, 
-  Zap,
   Star,
   ArrowUpRight,
   DollarSign,
   Users,
-  Target,
-  Sparkles,
-  FileText
+  Sparkles
 } from "lucide-react";
-import Dashboard from "@/components/Dashboard";
-import AIAssistant from "@/components/AIAssistant";
-import TokenManager from "@/components/TokenManager";
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState("overview");
   const navigate = useNavigate();
 
   // Mock data for demo
@@ -45,52 +35,8 @@ const Index = () => {
     { name: "Gate.io", commission: 70, status: "available", logo: "🔵" }
   ];
 
-  if (activeTab !== "overview") {
-    return (
-      <div className="container mx-auto px-6 py-8">
-        {activeTab === "dashboard" && <Dashboard />}
-        {activeTab === "ai" && <AIAssistant />}
-        {activeTab === "tokens" && <TokenManager />}
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-dark">
-      {/* Navigation */}
-      <nav className="border-b border-border bg-card/50 backdrop-blur-lg sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center glow-primary">
-                <Coins className="w-6 h-6 text-primary-foreground font-bold" />
-              </div>
-              <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                CoinToss
-              </h1>
-              <Badge variant="secondary" className="bg-accent/20 text-accent border-accent/30">
-                MVP
-              </Badge>
-            </div>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-auto">
-              <TabsList className="bg-muted/50">
-                <TabsTrigger value="overview" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  Overview
-                </TabsTrigger>
-                <TabsTrigger value="dashboard" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  Dashboard
-                </TabsTrigger>
-                <TabsTrigger value="ai" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  AI Assistant
-                </TabsTrigger>
-                <TabsTrigger value="tokens" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  Tokens
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-gradient-dark p-6 space-y-8">{/* Removed duplicate navigation - now using unified sidebar */}
 
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
@@ -128,7 +74,7 @@ const Index = () => {
             <Button 
               size="lg" 
               className="bg-gradient-primary hover:shadow-glow transition-all duration-300 font-semibold px-8 py-6 text-lg"
-              onClick={() => setActiveTab("dashboard")}
+              onClick={() => navigate("/partner-hub")}
             >
               플랫폼 시작하기
               <ArrowUpRight className="w-5 h-5 ml-2" />
@@ -334,16 +280,16 @@ const Index = () => {
                 <Button 
                   size="lg" 
                   className="bg-gradient-primary hover:shadow-glow transition-all duration-300 font-semibold px-8"
-                  onClick={() => setActiveTab("dashboard")}
+                  onClick={() => navigate("/partner-hub")}
                 >
-                  대시보드 보기
+                  파트너 허브 보기
                   <BarChart3 className="w-5 h-5 ml-2" />
                 </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
                 className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                onClick={() => setActiveTab("ai")}
+                onClick={() => navigate("/ai-assistants")}
               >
                 AI 어시스턴트 체험
                 <Bot className="w-5 h-5 ml-2" />

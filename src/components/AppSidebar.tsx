@@ -80,7 +80,7 @@ export function AppSidebar() {
   const isGroupActive = (items: any[]) => items.some((item) => isActive(item.url));
   
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-primary/10 text-primary font-medium" : "hover:bg-muted/50";
+    isActive ? "bg-accent/20 text-accent font-medium border-r-2 border-accent" : "hover:bg-muted/50";
 
   return (
     <Sidebar collapsible="icon">
