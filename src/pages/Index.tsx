@@ -67,13 +67,20 @@ const Index = () => {
                   <TabsTrigger value="dashboard" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                     Dashboard
                   </TabsTrigger>
-                  <TabsTrigger 
-                    value="leadgen" 
-                    className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                    onClick={() => navigate("/lead-generator")}
-                  >
-                    Lead Generator
-                  </TabsTrigger>
+                <TabsTrigger 
+                  value="partnerhub" 
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  onClick={() => navigate("/partner-hub")}
+                >
+                  Partner Hub
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="leadgen" 
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  onClick={() => navigate("/lead-generator")}
+                >
+                  Lead Generator
+                </TabsTrigger>
                   <TabsTrigger value="ai" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                     AI Assistant
                   </TabsTrigger>
@@ -119,6 +126,13 @@ const Index = () => {
                 </TabsTrigger>
                 <TabsTrigger value="dashboard" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                   Dashboard
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="partnerhub" 
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  onClick={() => navigate("/partner-hub")}
+                >
+                  Partner Hub
                 </TabsTrigger>
                 <TabsTrigger 
                   value="leadgen" 
@@ -378,14 +392,14 @@ const Index = () => {
               업계 최고의 커미션율과 AI 자동화로 새로운 수익 기회를 창출하세요
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button 
-                size="lg" 
-                className="bg-gradient-primary hover:shadow-glow transition-all duration-300 font-semibold px-8"
-                onClick={() => setActiveTab("dashboard")}
-              >
-                대시보드 보기
-                <BarChart3 className="w-5 h-5 ml-2" />
-              </Button>
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-primary hover:shadow-glow transition-all duration-300 font-semibold px-8"
+                  onClick={() => setActiveTab("dashboard")}
+                >
+                  대시보드 보기
+                  <BarChart3 className="w-5 h-5 ml-2" />
+                </Button>
               <Button 
                 size="lg" 
                 variant="outline" 

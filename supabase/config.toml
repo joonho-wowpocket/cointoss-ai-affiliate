@@ -12,3 +12,9 @@ port = 54322
 
 [functions.generate-lead-magnet]
 verify_jwt = true
+
+[functions.generate-dashboard-kpi]
+verify_jwt = true
+
+[functions.generate-partner-hub]
+verify_jwt = true

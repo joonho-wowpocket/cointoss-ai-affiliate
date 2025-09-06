@@ -41,8 +41,16 @@ const LeadGenerator = () => {
                   Dashboard
                 </TabsTrigger>
                 <TabsTrigger 
+                  value="partnerhub" 
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  onClick={() => navigate("/partner-hub")}
+                >
+                  Partner Hub
+                </TabsTrigger>
+                <TabsTrigger 
                   value="leadgen" 
                   className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  onClick={() => navigate("/lead-generator")}
                 >
                   Lead Generator
                 </TabsTrigger>
