@@ -18,3 +18,12 @@ verify_jwt = true
 
 [functions.generate-partner-hub]
 verify_jwt = true
+
+[functions.partner-exchanges]
+verify_jwt = true
+
+[functions.earnings]
+verify_jwt = true
+
+[functions.settlements]
+verify_jwt = true

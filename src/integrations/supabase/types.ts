@@ -14,6 +14,96 @@ export type Database = {
   }
   public: {
     Tables: {
+      earnings: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          date: string
+          exchange_id: string
+          id: string
+          mode: string
+          uid_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          date: string
+          exchange_id: string
+          id?: string
+          mode: string
+          uid_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          date?: string
+          exchange_id?: string
+          id?: string
+          mode?: string
+          uid_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "earnings_exchange_id_fkey"
+            columns: ["exchange_id"]
+            isOneToOne: false
+            referencedRelation: "exchanges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "earnings_uid_id_fkey"
+            columns: ["uid_id"]
+            isOneToOne: false
+            referencedRelation: "uids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exchanges: {
+        Row: {
+          approved_rate: number | null
+          base_rate: number
+          base_url: string
+          created_at: string
+          id: string
+          logo_url: string | null
+          name: string
+          ref_param: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          approved_rate?: number | null
+          base_rate?: number
+          base_url: string
+          created_at?: string
+          id: string
+          logo_url?: string | null
+          name: string
+          ref_param?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          approved_rate?: number | null
+          base_rate?: number
+          base_url?: string
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          name?: string
+          ref_param?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lead_captures: {
         Row: {
           captured_at: string
@@ -111,6 +201,183 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      links: {
+        Row: {
+          clicks: number
+          conversions: number
+          created_at: string
+          exchange_id: string
+          id: string
+          mode: string
+          updated_at: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          clicks?: number
+          conversions?: number
+          created_at?: string
+          exchange_id: string
+          id?: string
+          mode: string
+          updated_at?: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          clicks?: number
+          conversions?: number
+          created_at?: string
+          exchange_id?: string
+          id?: string
+          mode?: string
+          updated_at?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "links_exchange_id_fkey"
+            columns: ["exchange_id"]
+            isOneToOne: false
+            referencedRelation: "exchanges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_exchange_status: {
+        Row: {
+          application_data: Json | null
+          created_at: string
+          exchange_id: string
+          id: string
+          mode: string
+          ref_code: string | null
+          state: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          application_data?: Json | null
+          created_at?: string
+          exchange_id: string
+          id?: string
+          mode: string
+          ref_code?: string | null
+          state: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          application_data?: Json | null
+          created_at?: string
+          exchange_id?: string
+          id?: string
+          mode?: string
+          ref_code?: string | null
+          state?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_exchange_status_exchange_id_fkey"
+            columns: ["exchange_id"]
+            isOneToOne: false
+            referencedRelation: "exchanges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      settlements: {
+        Row: {
+          address: string
+          amount: number
+          created_at: string
+          fee: number | null
+          id: string
+          network: string
+          status: string
+          tx_hash: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address: string
+          amount: number
+          created_at?: string
+          fee?: number | null
+          id?: string
+          network?: string
+          status?: string
+          tx_hash?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string
+          amount?: number
+          created_at?: string
+          fee?: number | null
+          id?: string
+          network?: string
+          status?: string
+          tx_hash?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      uids: {
+        Row: {
+          created_at: string
+          exchange_id: string
+          id: string
+          memo: string | null
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          uid: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          exchange_id: string
+          id?: string
+          memo?: string | null
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          uid: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          exchange_id?: string
+          id?: string
+          memo?: string | null
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          uid?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "uids_exchange_id_fkey"
+            columns: ["exchange_id"]
+            isOneToOne: false
+            referencedRelation: "exchanges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
