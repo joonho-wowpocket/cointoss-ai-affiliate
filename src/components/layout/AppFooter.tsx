@@ -1,154 +1,141 @@
-'use client';
-
 import { Link } from 'react-router-dom';
-import { Coins, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { useTranslations } from '@/contexts/I18nContext';
-import { LanguageSwitcher } from '@/components/nav/LanguageSwitcher';
-import { ThemeToggle } from '@/components/nav/ThemeToggle';
 import { FOOTER_LINKS } from '@/lib/navigation/menuConfig';
-
-const SOCIAL_LINKS = [
-  { name: 'X (Twitter)', href: 'https://x.com/cointoss', icon: '𝕏' },
-  { name: 'YouTube', href: 'https://youtube.com/@cointoss', icon: '▶️' },
-  { name: 'Telegram', href: 'https://t.me/cointoss', icon: '✈️' },
-  { name: 'LinkedIn', href: 'https://linkedin.com/company/cointoss', icon: '💼' },
-];
+import { Coins, Twitter, Send, Linkedin } from 'lucide-react';
 
 export function AppFooter() {
-  const t = useTranslations('footer');
   const navT = useTranslations('nav');
-  const currentYear = new Date().getFullYear();
-
-  const FooterSection = ({ 
-    title, 
-    links,
-    useFooterTranslation = false
-  }: { 
-    title: string; 
-    links: Array<{ key: string; href: string }>;
-    useFooterTranslation?: boolean;
-  }) => (
-    <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-      <ul className="space-y-2">
-        {links.map((link) => (
-          <li key={link.key}>
-            {link.href.startsWith('mailto:') ? (
-              <a
-                href={link.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
-              >
-                {useFooterTranslation ? t(link.key) : navT(link.key)}
-                <ExternalLink className="h-3 w-3" />
-              </a>
-            ) : link.href.startsWith('http') ? (
-              <a
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
-              >
-                {useFooterTranslation ? t(link.key) : navT(link.key)}
-                <ExternalLink className="h-3 w-3" />
-              </a>
-            ) : (
-              <Link
-                to={link.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {useFooterTranslation ? t(link.key) : navT(link.key)}
-              </Link>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  const footerT = useTranslations('footer');
 
   return (
-    <footer className="bg-muted/30 border-t">
-      <div className="mx-auto max-w-7xl px-4 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-          {/* Brand Section */}
-          <div className="col-span-2 md:col-span-1 space-y-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                <Coins className="w-5 h-5 text-primary-foreground font-bold" />
+    <footer className="border-t bg-muted/30">
+      <div className="container py-8 md:py-12">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
+          {/* Logo & Description */}
+          <div className="col-span-2 md:col-span-1 lg:col-span-2">
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80">
+                <Coins className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="text-lg font-bold bg-gradient-primary bg-clip-text text-transparent">
-                CoinToss
-              </span>
-            </Link>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {t('tagline')}
+              <span className="text-xl font-bold">CoinToss</span>
+            </div>
+            <p className="text-sm text-muted-foreground mb-4 max-w-xs">
+              업계 최고 85% 수수료율과 AI 자동화로 암호화폐 파트너 수익을 극대화하세요.
             </p>
-            <div className="flex items-center gap-2">
-              <LanguageSwitcher />
-              <ThemeToggle />
+            <div className="flex items-center space-x-3">
+              <Link
+                to="https://twitter.com/cointoss"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Twitter"
+              >
+                <Twitter className="h-5 w-5" />
+              </Link>
+              <Link
+                to="https://t.me/cointoss"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Telegram"
+              >
+                <Send className="h-5 w-5" />
+              </Link>
+              <Link
+                to="https://linkedin.com/company/cointoss"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-5 w-5" />
+              </Link>
             </div>
           </div>
 
-          {/* Product */}
-          <FooterSection
-            title={t('product')}
-            links={FOOTER_LINKS.product}
-          />
-
-          {/* Resources */}
-          <FooterSection
-            title={t('resources')}
-            links={FOOTER_LINKS.resources}
-            useFooterTranslation={true}
-          />
-
-          {/* Legal */}
-          <FooterSection
-            title={t('legal')}
-            links={FOOTER_LINKS.legal}
-            useFooterTranslation={true}
-          />
-
-          {/* Company */}
-          <FooterSection
-            title={t('company')}
-            links={FOOTER_LINKS.company}
-            useFooterTranslation={true}
-          />
-        </div>
-
-        <Separator className="my-8" />
-
-        {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-muted-foreground">
-            <span>© {currentYear} CoinToss. All rights reserved.</span>
-            <span className="hidden sm:inline">•</span>
-            <span>Industry-leading crypto partner hub with AI growth tools</span>
+          {/* Product Links */}
+          <div>
+            <h3 className="font-semibold text-sm mb-4">제품</h3>
+            <ul className="space-y-3">
+              {FOOTER_LINKS.product.map((link) => (
+                <li key={link.key}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {navT(link.key)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Social Links */}
-          <div className="flex items-center gap-2">
-            {SOCIAL_LINKS.map((social) => (
-              <Button
-                key={social.name}
-                variant="ghost"
-                size="sm"
-                className="h-8 w-8 p-0 hover:bg-primary/10 transition-colors"
-                asChild
-              >
-                <a
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.name}
-                  title={social.name}
-                >
-                  <span className="text-base">{social.icon}</span>
-                </a>
-              </Button>
-            ))}
+          {/* Resources */}
+          <div>
+            <h3 className="font-semibold text-sm mb-4">리소스</h3>
+            <ul className="space-y-3">
+              {FOOTER_LINKS.resources.map((link) => (
+                <li key={link.key}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {footerT(link.key)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company & Legal */}
+          <div>
+            <h3 className="font-semibold text-sm mb-4">회사</h3>
+            <ul className="space-y-3">
+              {FOOTER_LINKS.company.map((link) => (
+                <li key={link.key}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {footerT(link.key)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            
+            <h3 className="font-semibold text-sm mb-4 mt-6">법적고지</h3>
+            <ul className="space-y-3">
+              {FOOTER_LINKS.legal.map((link) => (
+                <li key={link.key}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {footerT(link.key)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Partner Logos Section */}
+        <div className="mt-8 pt-8 border-t">
+          <p className="text-xs text-muted-foreground text-center mb-6">파트너 거래소</p>
+          <div className="flex flex-wrap items-center justify-center gap-8 opacity-60">
+            <div className="text-sm font-medium text-muted-foreground">Binance</div>
+            <div className="text-sm font-medium text-muted-foreground">OKX</div>
+            <div className="text-sm font-medium text-muted-foreground">Bybit</div>
+            <div className="text-sm font-medium text-muted-foreground">Gate.io</div>
+            <div className="text-sm font-medium text-muted-foreground">MEXC</div>
+            <div className="text-sm font-medium text-muted-foreground">KuCoin</div>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="mt-8 pt-8 border-t">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <div className="text-xs text-muted-foreground text-center md:text-left">
+              © 2025 CoinToss. All rights reserved.
+            </div>
+            <div className="text-xs text-muted-foreground text-center md:text-right">
+              AI Partner Hub • 85% Commission • Global Crypto Community
+            </div>
           </div>
         </div>
       </div>

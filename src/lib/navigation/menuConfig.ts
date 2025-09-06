@@ -1,18 +1,4 @@
 import { ReactNode } from 'react';
-import { 
-  BarChart3, 
-  Building2, 
-  Users, 
-  FileCheck, 
-  UserCheck,
-  Bot,
-  ExternalLink,
-  ShoppingBag,
-  User,
-  Shield,
-  Coins,
-  LogOut
-} from 'lucide-react';
 
 export interface NavItem {
   key: string;              // i18n key e.g. 'nav.dashboard'
@@ -38,19 +24,19 @@ export const NAV_ITEMS: NavItem[] = [
   },
   { 
     key: 'aiTeam', 
-    href: '/ai', 
+    href: '/ai-assistants',
     protected: true,
     testId: 'nav-ai-team'
   },
   { 
     key: 'myLink', 
-    href: '/mylink', 
+    href: '/mylink',
     protected: true,
     testId: 'nav-mylink'
   },
   { 
     key: 'marketplace', 
-    href: '/marketplace', 
+    href: '/marketplace',
     protected: true,
     testId: 'nav-marketplace'
   },
@@ -64,16 +50,16 @@ export const ACCOUNT_MENU_ITEMS: NavItem[] = [
     testId: 'nav-profile'
   },
   {
-    key: 'security',
-    href: '/account/security',
-    protected: true,
-    testId: 'nav-security'
-  },
-  {
     key: 'tokens',
     href: '/account/tokens',
     protected: true,
     testId: 'nav-tokens'
+  },
+  {
+    key: 'settings',
+    href: '/account/settings',
+    protected: true,
+    testId: 'nav-settings'
   },
 ];
 
@@ -81,7 +67,7 @@ export const FOOTER_LINKS = {
   product: [
     { key: 'dashboard', href: '/dashboard' },
     { key: 'partnerHub', href: '/partner-hub' },
-    { key: 'aiTeam', href: '/ai' },
+    { key: 'aiTeam', href: '/ai-assistants' },
     { key: 'myLink', href: '/mylink' },
     { key: 'marketplace', href: '/marketplace' },
   ],

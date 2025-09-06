@@ -18,7 +18,7 @@ export function HeaderNav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 0);
+      setScrolled(window.scrollY > 10);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -27,35 +27,42 @@ export function HeaderNav() {
 
   return (
     <header className={cn(
-      'sticky top-0 z-40 w-full bg-background/80 backdrop-blur-xl border-b transition-shadow duration-200',
-      scrolled && 'shadow-sm'
+      'sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-200',
+      scrolled && 'shadow-sm h-14',
+      !scrolled && 'h-16'
     )}>
-      <div className="mx-auto max-w-7xl px-4 h-14 flex items-center justify-between">
+      <div className="container flex h-full items-center justify-between">
         {/* Left: Logo + Desktop Nav */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-8">
           <Link 
             to="/" 
             className="flex items-center space-x-2 transition-opacity hover:opacity-80"
             aria-label="CoinToss Home"
           >
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <Coins className="w-5 h-5 text-primary-foreground font-bold" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80">
+              <Coins className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="hidden sm:block text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              CoinToss
-            </span>
+            <div className="flex flex-col">
+              <span className="text-lg font-bold leading-none">CoinToss</span>
+              <span className="hidden text-xs text-muted-foreground sm:block leading-none">
+                {t('subtitle')}
+              </span>
+            </div>
           </Link>
           
           {/* Desktop Navigation - Hidden on mobile */}
-          <div className="hidden lg:block">
+          <nav className="hidden lg:flex">
             <DesktopNav items={NAV_ITEMS} />
-          </div>
+          </nav>
         </div>
 
         {/* Right: Actions */}
         <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <LanguageSwitcher />
+          <div className="hidden md:flex items-center gap-2">
+            <ThemeToggle />
+            <LanguageSwitcher />
+          </div>
+          
           <AuthMenu />
           
           {/* Mobile Menu - Only visible on mobile */}

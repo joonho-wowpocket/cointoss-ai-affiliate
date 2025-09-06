@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { User, LogOut } from 'lucide-react';
@@ -73,7 +71,6 @@ export function AuthMenu() {
               to={item.href!}
               className="flex items-center gap-2 cursor-pointer"
             >
-              {item.icon}
               <span>{t(item.key)}</span>
             </Link>
           </DropdownMenuItem>
