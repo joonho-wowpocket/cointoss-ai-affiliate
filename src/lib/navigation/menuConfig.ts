@@ -32,40 +32,9 @@ export const NAV_ITEMS: NavItem[] = [
   },
   { 
     key: 'nav.partnerHub', 
+    href: '/partner-hub',
     protected: true,
-    testId: 'nav-partner-hub',
-    children: [
-      { 
-        key: 'nav.exchangesBasic', 
-        href: '/partner-hub/exchanges?tab=basic', 
-        protected: true,
-        testId: 'nav-exchanges-basic'
-      },
-      { 
-        key: 'nav.exchangesApproved', 
-        href: '/partner-hub/exchanges?tab=approved', 
-        protected: true,
-        testId: 'nav-exchanges-approved'
-      },
-      { 
-        key: 'nav.uidRegistry', 
-        href: '/partner-hub/uid', 
-        protected: true,
-        testId: 'nav-uid-registry'
-      },
-      { 
-        key: 'nav.approvals', 
-        href: '/partner-hub/approvals', 
-        protected: true,
-        testId: 'nav-approvals'
-      },
-      { 
-        key: 'nav.customers', 
-        href: '/partner-hub/customers', 
-        protected: true,
-        testId: 'nav-customers'
-      },
-    ]
+    testId: 'nav-partner-hub'
   },
   { 
     key: 'nav.aiTeam', 
