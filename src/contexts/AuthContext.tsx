@@ -6,10 +6,11 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   isAuthenticated: boolean;
+  isGuest: boolean;
+  loading: boolean;
   signUp: (email: string, password: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
-  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,6 +19,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const isAuthenticated = !!user;
+  const isGuest = !isAuthenticated;
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -68,11 +72,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = {
     user,
     session,
-    isAuthenticated: !!user,
+    isAuthenticated,
+    isGuest,
+    loading,
     signUp,
     signIn,
-    signOut,
-    loading
+    signOut
   };
 
   return (
