@@ -24,7 +24,7 @@ interface ExchangeCard {
   exchange: string;
   rate_display: string;
   state_badge: string;
-  ctas: Array<{
+  ctas?: Array<{
     label: string;
     action: string;
     payload: Record<string, any>;
@@ -65,7 +65,12 @@ const PartnerHub = () => {
       if (error) throw error;
 
       if (data.success) {
-        setExchangeCards(data.data.cards);
+        // Normalize the data to ensure ctas is always an array
+        const normalizedCards = data.data.cards.map((card: any) => ({
+          ...card,
+          ctas: Array.isArray(card.ctas) ? card.ctas : []
+        }));
+        setExchangeCards(normalizedCards);
       } else {
         throw new Error(data.error);
       }
@@ -201,7 +206,7 @@ const PartnerHub = () => {
                           </div>
                         )}
                         <div className="flex flex-wrap gap-2">
-                          {card.ctas.map((cta, ctaIndex) => (
+                          {(card.ctas || []).map((cta, ctaIndex) => (
                             <Button
                               key={ctaIndex}
                               variant={ctaIndex === 0 ? "default" : "outline"}
@@ -269,7 +274,7 @@ const PartnerHub = () => {
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="flex flex-wrap gap-2">
-                          {card.ctas.map((cta, ctaIndex) => (
+                          {(card.ctas || []).map((cta, ctaIndex) => (
                             <Button
                               key={ctaIndex}
                               variant={ctaIndex === 0 ? "default" : "outline"}
