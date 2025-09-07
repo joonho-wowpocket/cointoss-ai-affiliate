@@ -227,7 +227,10 @@ export function MyUIDManager() {
         .order('updated_at', { ascending: false });
 
       if (error) throw error;
-      setPartnerUIDs(data || []);
+      setPartnerUIDs((data as any[])?.map(item => ({
+        ...item,
+        state: item.state as 'NotApplied' | 'Applied' | 'Reviewing' | 'Approved' | 'Rejected'
+      })) || []);
     } catch (error) {
       console.error('Error loading partner UIDs:', error);
     }
@@ -241,7 +244,7 @@ export function MyUIDManager() {
         .rpc('get_partner_uid_stats', { p_user_id: user.id });
 
       if (error) throw error;
-      setStats(data || {
+      setStats((data as any) || {
         total_exchanges: 0,
         approved_exchanges: 0,
         pending_exchanges: 0,
@@ -274,8 +277,9 @@ export function MyUIDManager() {
 
       if (validationError) throw validationError;
       
-      if (!validationResult.valid) {
-        throw new Error(validationResult.message);
+      const result = validationResult as any;
+      if (!result?.valid) {
+        throw new Error(result?.message || 'Validation failed');
       }
 
       // Update or insert partner exchange status

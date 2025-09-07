@@ -130,7 +130,10 @@ export function CustomerUIDManager() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setCustomerUIDs(data || []);
+      setCustomerUIDs((data as any[])?.map(item => ({
+        ...item,
+        status: item.status as 'pending' | 'approved' | 'rejected'
+      })) || []);
     } catch (error) {
       console.error('Error loading customer UIDs:', error);
     }
@@ -183,8 +186,9 @@ export function CustomerUIDManager() {
 
       if (validationError) throw validationError;
       
-      if (!validationResult.valid) {
-        throw new Error(validationResult.message);
+      const result = validationResult as any;
+      if (!result?.valid) {
+        throw new Error(result?.message || 'Validation failed');
       }
 
       // Register customer UID
@@ -195,7 +199,7 @@ export function CustomerUIDManager() {
           exchange_id: selectedExchange,
           customer_uid: newUID,
           status: 'pending',
-          validation_status: validationResult.validation_status,
+          validation_status: result?.validation_status || 'pending',
           partner_notes: partnerNotes || null,
           commission_rate: 0.25 // Default base rate
         });
