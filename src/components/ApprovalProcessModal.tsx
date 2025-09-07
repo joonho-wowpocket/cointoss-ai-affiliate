@@ -99,7 +99,6 @@ export function ApprovalProcessModal({
         }
       }
       
-      // Track modal open
       trackEvent('apply_opened', { exchange: selectedExchange });
     }
   }, [open, selectedExchange]);
@@ -126,7 +125,7 @@ export function ApprovalProcessModal({
       });
     }
     
-    // Custom events
+    // Custom events - using standardized event names from spec
     window.dispatchEvent(new CustomEvent(`approval.${event}`, { 
       detail: { exchange: selectedExchange, ...properties } 
     }));
@@ -192,43 +191,17 @@ export function ApprovalProcessModal({
     trackEvent('uid_submitted');
 
     try {
-      // Check for duplicate UID
-      const { data: existingUIDs, error: checkError } = await supabase
-        .from('uids')
-        .select('id, status')
-        .eq('exchange_id', selectedExchange)
-        .eq('uid', uid)
-        .limit(1);
-
-      if (checkError) throw checkError;
-
-      if (existingUIDs && existingUIDs.length > 0) {
-        toast({
-          title: "중복된 UID",
-          description: "이미 등록된 UID입니다.",
-          variant: "destructive"
-        });
-        trackEvent('application_failed', { reason: 'duplicate_uid' });
-        return;
-      }
-
-      // Submit UID and application
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Authentication required');
-
-      const { data, error } = await supabase
-        .from('uids')
-        .insert({
-          user_id: user.id,
-          exchange_id: selectedExchange,
+      // Call the new referral applications API
+      const { data, error } = await supabase.functions.invoke('referral-applications', {
+        body: {
+          exchange: selectedExchange,
           uid: uid,
-          status: 'Pending',
-          memo: `승인 신청: ${selectedExchangeInfo?.name || selectedExchange}`
-        })
-        .select('id')
-        .single();
+          refCode: selectedExchangeInfo?.id ? `COINTOSS_${selectedExchangeInfo.id.toUpperCase()}` : 'COINTOSS_DEFAULT'
+        }
+      });
 
       if (error) throw error;
+      if (data.error) throw new Error(data.message || data.error);
 
       setApplicationId(data.id);
       setStep('success');
@@ -238,7 +211,7 @@ export function ApprovalProcessModal({
       
       trackEvent('application_created', { 
         appId: data.id, 
-        status: 'review_pending' 
+        status: data.status
       });
 
       toast({
@@ -248,12 +221,29 @@ export function ApprovalProcessModal({
 
     } catch (error: any) {
       console.error('Application error:', error);
+      
+      // Handle specific error codes
+      let errorMessage = "승인 신청 중 오류가 발생했습니다.";
+      let errorReason = error.message;
+      
+      if (error.message?.includes('DUPLICATE')) {
+        errorMessage = "이미 신청된 거래소입니다.";
+        errorReason = 'duplicate_application';
+      } else if (error.message?.includes('UID_EXISTS')) {
+        errorMessage = "이미 등록된 UID입니다.";
+        errorReason = 'duplicate_uid';
+      } else if (error.message?.includes('UID_INVALID')) {
+        errorMessage = "올바른 UID 형식이 아닙니다.";
+        errorReason = 'invalid_uid_format';
+      }
+      
       toast({
         title: "신청 실패",
-        description: error.message || "승인 신청 중 오류가 발생했습니다.",
+        description: errorMessage,
         variant: "destructive"
       });
-      trackEvent('application_failed', { reason: error.message });
+      
+      trackEvent('application_failed', { reason: errorReason });
     } finally {
       setSubmitting(false);
     }
