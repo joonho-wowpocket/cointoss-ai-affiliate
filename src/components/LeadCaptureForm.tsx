@@ -68,9 +68,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
     setLoading(true);
     
     try {
-      // Get current user session to identify partner
-      const { data: { user } } = await supabase.auth.getUser();
-      
+      // Prepare contact information
       const contactInfo: any = {};
       if (formData.email) contactInfo.email = formData.email;
       if (formData.telegram) contactInfo.telegram = formData.telegram;
@@ -79,34 +77,19 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
       if (formData.company) contactInfo.company = formData.company;
       if (formData.notes) contactInfo.notes = formData.notes;
 
-      // Save lead capture to database
-      const { error } = await supabase
-        .from('lead_captures')
-        .insert({
-          lead_magnet_id: magnetId,
-          partner_id: user?.id || 'anonymous',
-          contact_info: contactInfo,
-          source: 'lead_magnet_form',
-          ip_address: null, // Could be populated on server side
-          user_agent: navigator.userAgent,
-        });
+      // Use secure endpoint to save encrypted lead capture
+      const { data, error } = await supabase.functions.invoke('secure-lead-capture', {
+        body: {
+          contactInfo,
+          leadMagnetId: magnetId,
+          source: 'lead_magnet_form'
+        }
+      });
 
       if (error) throw error;
-
-      // Update download count
-      const { data: currentMagnet } = await supabase
-        .from('lead_magnets')
-        .select('download_count')
-        .eq('id', magnetId)
-        .single();
       
-      if (currentMagnet) {
-        const { error: updateError } = await supabase
-          .from('lead_magnets')
-          .update({ download_count: currentMagnet.download_count + 1 })
-          .eq('id', magnetId);
-
-        if (updateError) console.warn('Failed to update download count:', updateError);
+      if (!data?.success) {
+        throw new Error(data?.error || 'Failed to save lead capture');
       }
 
       toast({

@@ -22,6 +22,7 @@ import Login from "./pages/auth/Login";
 import EmailConfirm from "./pages/auth/EmailConfirm";
 import NotFound from "./pages/NotFound";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import SecureLeadCapturesPage from "./pages/admin/SecureLeadCapturesPage";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
                   <Route path="/auth/confirm" element={<EmailConfirm />} />
                   <Route path="/admin" element={<AdminDashboardPage />} />
                   <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+                  <Route path="/admin/lead-captures" element={<SecureLeadCapturesPage />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

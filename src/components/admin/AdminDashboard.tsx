@@ -259,6 +259,12 @@ export function AdminDashboard() {
               승인 심사로 이동
             </Button>
             <Button 
+              onClick={() => navigate('/admin/lead-captures')}
+              variant="outline"
+            >
+              리드 캡처 관리
+            </Button>
+            <Button 
               onClick={() => navigate('/admin/token')}
               variant="outline"
             >

@@ -875,6 +875,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_download_count: {
+        Args: { magnet_id: string }
+        Returns: undefined
+      }
       is_admin: {
         Args: { _user_id: string }
         Returns: boolean
