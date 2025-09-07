@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { earningsApi } from "@/lib/api";
 import { 
   Coins, 
@@ -14,30 +17,42 @@ import {
   Calendar,
   Filter,
   Download,
-  Loader2
+  Loader2,
+  Plus,
+  ExternalLink,
+  AlertTriangle
 } from "lucide-react";
 
 const Earnings = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, isAuthenticated } = useAuth();
+  const { isAdmin, hasAnyRole, roles } = useAdminAuth();
   const [loading, setLoading] = useState(false);
   const [earningsData, setEarningsData] = useState<any>(null);
   const [period, setPeriod] = useState('30d');
   const [mode, setMode] = useState('all');
   const [selectedExchanges, setSelectedExchanges] = useState<string[]>([]);
 
+  // Check if user should see preview data
+  const canSeePreviewData = isAdmin || hasAnyRole(['SuperAdmin', 'Dev']);
+
   useEffect(() => {
-    loadEarnings();
-  }, [period, mode, selectedExchanges]);
+    if (isAuthenticated && user) {
+      loadEarnings();
+    }
+  }, [period, mode, selectedExchanges, isAuthenticated, user, canSeePreviewData]);
 
   const loadEarnings = async () => {
+    if (!isAuthenticated || !user) return;
+    
     setLoading(true);
     try {
       const data = await earningsApi.getEarnings({
         period: period as '7d' | '30d' | '90d',
         mode: mode as 'basic' | 'approved' | 'all',
         exchanges: selectedExchanges.length > 0 ? selectedExchanges : undefined,
-      });
+      }, roles);
 
       if (data.success) {
         setEarningsData(data.data);
@@ -46,11 +61,14 @@ const Earnings = () => {
       }
     } catch (error: any) {
       console.error('수익 데이터 로드 오류:', error);
-      toast({
-        title: "로드 실패",
-        description: error.message || "수익 데이터 로드 중 오류가 발생했습니다.",
-        variant: "destructive",
-      });
+      // Only show error for admin users
+      if (canSeePreviewData) {
+        toast({
+          title: "로드 실패",
+          description: error.message || "수익 데이터 로드 중 오류가 발생했습니다.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -203,8 +221,51 @@ const Earnings = () => {
               <Loader2 className="h-8 w-8 animate-spin" />
               <span className="ml-2">수익 데이터 로드 중...</span>
             </div>
+          ) : !canSeePreviewData && (!earningsData || (earningsData.summary?.total === 0 && earningsData.rows?.length === 0)) ? (
+            // Empty State for New Users
+            <div className="text-center py-12">
+              <Card className="max-w-2xl mx-auto border-dashed border-2 border-muted-foreground/20">
+                <CardContent className="p-12">
+                  <div className="w-16 h-16 mx-auto mb-6 bg-muted/20 rounded-full flex items-center justify-center">
+                    <DollarSign className="w-8 h-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-4">승인된 UID가 없습니다</h3>
+                  <p className="text-muted-foreground mb-6">
+                    수익을 확인하려면 먼저 UID를 등록하고 승인을 받아야 합니다.
+                  </p>
+                  
+                  <Alert className="mb-6 text-left">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>
+                      승인된 고객 UID만 수익 계산에 포함됩니다. 승인 과정은 보통 24-48시간이 소요됩니다.
+                    </AlertDescription>
+                  </Alert>
+
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button onClick={() => navigate('/partner-hub?tab=uid')} className="flex items-center gap-2">
+                      <Plus className="w-4 h-4" />
+                      UID 등록하기
+                    </Button>
+                    <Button variant="outline" onClick={() => navigate('/partner-hub?tab=approvals')} className="flex items-center gap-2">
+                      <ExternalLink className="w-4 h-4" />
+                      승인 현황 보기
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           ) : (
             <>
+              {/* Admin Preview Notice */}
+              {canSeePreviewData && (
+                <Alert>
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    <strong>관리자 모드:</strong> 이 데이터는 미리보기용입니다. 실제 사용자에게는 빈 상태가 표시됩니다.
+                  </AlertDescription>
+                </Alert>
+              )}
+
               {/* Summary Cards */}
               {earningsData && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -214,7 +275,7 @@ const Earnings = () => {
                         <div>
                           <p className="text-sm text-muted-foreground">총 수익</p>
                           <p className="text-2xl font-bold text-accent">
-                            ${earningsData.summary.total.toLocaleString()}
+                            ${earningsData.summary?.total?.toLocaleString() || '0'}
                           </p>
                         </div>
                         <DollarSign className="w-8 h-8 text-accent" />
@@ -228,7 +289,7 @@ const Earnings = () => {
                         <div>
                           <p className="text-sm text-muted-foreground">기본연동 수익</p>
                           <p className="text-2xl font-bold text-primary">
-                            ${earningsData.summary.basic.toLocaleString()}
+                            ${earningsData.summary?.basic?.toLocaleString() || '0'}
                           </p>
                         </div>
                         <TrendingUp className="w-8 h-8 text-primary" />
@@ -242,7 +303,7 @@ const Earnings = () => {
                         <div>
                           <p className="text-sm text-muted-foreground">승인연동 수익</p>
                           <p className="text-2xl font-bold text-crypto-gold">
-                            ${earningsData.summary.approved.toLocaleString()}
+                            ${earningsData.summary?.approved?.toLocaleString() || '0'}
                           </p>
                         </div>
                         <Coins className="w-8 h-8 text-crypto-gold" />
@@ -259,7 +320,7 @@ const Earnings = () => {
                   <CardDescription>거래소별 상세 수익 현황</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {earningsData && earningsData.rows.length > 0 ? (
+                  {earningsData && earningsData.rows?.length > 0 ? (
                     <div className="space-y-4">
                       {earningsData.rows.map((row: any, index: number) => (
                         <div key={index} className="flex items-center justify-between p-4 rounded-lg border border-border/50 bg-muted/20">
@@ -277,7 +338,9 @@ const Earnings = () => {
                     </div>
                   ) : (
                     <div className="text-center py-8">
-                      <p className="text-muted-foreground">수익 데이터가 없습니다.</p>
+                      <p className="text-muted-foreground">
+                        {canSeePreviewData ? "수익 데이터가 없습니다." : "승인된 UID가 없습니다."}
+                      </p>
                     </div>
                   )}
                 </CardContent>

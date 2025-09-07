@@ -8,6 +8,12 @@ import type {
   EarningsQueryInput 
 } from './schemas';
 
+// Runtime guard for preview data
+const isProduction = process.env.NODE_ENV === 'production';
+const blockPreviewData = (userRoles: string[] = []) => {
+  return isProduction && !userRoles.some(role => ['SuperAdmin', 'Dev'].includes(role));
+};
+
 // Partner Exchange API
 export const partnerApi = {
   // Get exchanges with partner status
@@ -69,7 +75,19 @@ export const partnerApi = {
 // Earnings API
 export const earningsApi = {
   // Get earnings data
-  getEarnings: async (params: EarningsQueryInput) => {
+  getEarnings: async (params: EarningsQueryInput, userRoles: string[] = []) => {
+    // Block preview data for non-admin users
+    if (blockPreviewData(userRoles)) {
+      return {
+        success: true,
+        data: {
+          summary: { total: 0, basic: 0, approved: 0 },
+          grouped: [],
+          earnings: []
+        }
+      };
+    }
+
     const searchParams = new URLSearchParams();
     searchParams.append('period', params.period);
     searchParams.append('mode', params.mode);
@@ -113,7 +131,15 @@ export const settlementsApi = {
 };
 
 export const dashboardApi = {
-  generateKPI: async (input: any) => {
+  generateKPI: async (input: any, userRoles: string[] = []) => {
+    // Block preview data for non-admin users
+    if (blockPreviewData(userRoles)) {
+      return {
+        success: true,
+        data: null
+      };
+    }
+
     const { data, error } = await supabase.functions.invoke('generate-dashboard-kpi', {
       body: input,
     });
