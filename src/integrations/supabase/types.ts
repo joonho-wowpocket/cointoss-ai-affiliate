@@ -308,6 +308,8 @@ export type Database = {
         Row: {
           captured_at: string
           contact_info: Json
+          contact_info_hash: string | null
+          encrypted_contact_info: string | null
           id: string
           ip_address: unknown | null
           lead_magnet_id: string
@@ -318,6 +320,8 @@ export type Database = {
         Insert: {
           captured_at?: string
           contact_info: Json
+          contact_info_hash?: string | null
+          encrypted_contact_info?: string | null
           id?: string
           ip_address?: unknown | null
           lead_magnet_id: string
@@ -328,6 +332,8 @@ export type Database = {
         Update: {
           captured_at?: string
           contact_info?: Json
+          contact_info_hash?: string | null
+          encrypted_contact_info?: string | null
           id?: string
           ip_address?: unknown | null
           lead_magnet_id?: string
