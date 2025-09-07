@@ -1,301 +1,16 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useAdminAuth } from "@/hooks/useAdminAuth";
-import { Plus, Search, CheckCircle, Clock, XCircle, AlertTriangle, Users } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-
-interface UIDRecord {
-  id: string;
-  exchange: string;
-  uid: string;
-  status: 'active' | 'pending' | 'inactive' | 'rejected';
-  registeredAt: string;
-  totalCommission: number;
-}
-
-interface CustomerUID {
-  id: string;
-  customer_uid: string;
-  exchange_id: string;
-  status: string;
-  registered_at: string;
-  approved_at?: string;
-  rejection_reason?: string;
-}
+import { useRuntime } from "@/contexts/RuntimeContext";
+import { MyUIDManager } from "./MyUIDManager";
+import { CustomerUIDManager } from "./CustomerUIDManager";
+import { AlertTriangle, User, Users } from "lucide-react";
 
 export function UIDRegistry() {
-  const { toast } = useToast();
   const { user, isAuthenticated } = useAuth();
-  const { isAdmin, hasAnyRole } = useAdminAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [newUID, setNewUID] = useState("");
-  const [selectedExchange, setSelectedExchange] = useState("");
-  const [addModalOpen, setAddModalOpen] = useState(false);
-  
-  // Customer UID Registration
-  const [customerUID, setCustomerUID] = useState("");
-  const [customerExchange, setCustomerExchange] = useState("");
-  const [customerModalOpen, setCustomerModalOpen] = useState(false);
-  const [customerUIDs, setCustomerUIDs] = useState<CustomerUID[]>([]);
-  const [filterStatus, setFilterStatus] = useState<string>("all");
-
-  // Check if user should see preview data
-  const canSeePreviewData = isAdmin || hasAnyRole(['SuperAdmin', 'Dev']);
-  
-  // Mock data - only for admin/dev users
-  const getMockUIDs = (): UIDRecord[] => {
-    if (!canSeePreviewData) return [];
-    return [
-      {
-        id: "1",
-        exchange: "Binance",
-        uid: "12345678",
-        status: "active",
-        registeredAt: "2024-01-15",
-        totalCommission: 1250.50
-      },
-      {
-        id: "2",
-        exchange: "Bybit", 
-        uid: "87654321",
-        status: "pending",
-        registeredAt: "2024-01-10",
-        totalCommission: 0
-      }
-    ];
-  };
-
-  const [uids, setUids] = useState<UIDRecord[]>([]);
-
-  const exchanges = [
-    { code: "binance", name: "Binance" },
-    { code: "bybit", name: "Bybit" },
-    { code: "okx", name: "OKX" },
-    { code: "gate", name: "Gate.io" }
-  ];
-
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      loadMyUIDs();
-      loadCustomerUIDs();
-    }
-  }, [isAuthenticated, user, canSeePreviewData]);
-
-  const loadMyUIDs = async () => {
-    if (!isAuthenticated || !user) return;
-    
-    try {
-      // Load real UIDs from database
-      const { data, error } = await supabase
-        .from('uids')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      // Transform data to match UIDRecord interface
-      const transformedUIDs = data?.map(uid => ({
-        id: uid.id,
-        exchange: uid.exchange_id,
-        uid: uid.uid,
-        status: uid.status.toLowerCase() as 'active' | 'pending' | 'inactive' | 'rejected',
-        registeredAt: uid.created_at.split('T')[0],
-        totalCommission: 0 // Will be calculated from earnings
-      })) || [];
-
-      // Add mock data for admin users
-      const mockUIDs = getMockUIDs();
-      setUids([...transformedUIDs, ...mockUIDs]);
-    } catch (error) {
-      console.error('Error loading UIDs:', error);
-    }
-  };
-
-  const loadCustomerUIDs = async () => {
-    if (!isAuthenticated || !user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('customer_uid_registrations')
-        .select('*')
-        .eq('partner_id', user.id)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setCustomerUIDs(data || []);
-    } catch (error) {
-      console.error('Error loading customer UIDs:', error);
-    }
-  };
-
-  const validateUID = (uid: string, exchange: string): boolean => {
-    const patterns: Record<string, RegExp> = {
-      binance: /^[0-9]{8,12}$/,
-      bybit: /^[0-9]{5,12}$/,
-      okx: /^[A-Za-z0-9]{6,20}$/,
-      gate: /^[0-9]{6,15}$/
-    };
-    
-    const pattern = patterns[exchange.toLowerCase()];
-    return pattern ? pattern.test(uid) : /^[A-Za-z0-9_-]{3,32}$/.test(uid);
-  };
-
-  const handleAddUID = async () => {
-    if (!newUID || !selectedExchange) return;
-    
-    const exchangeCode = exchanges.find(e => e.name === selectedExchange)?.code;
-    if (!exchangeCode) return;
-
-    if (!validateUID(newUID, exchangeCode)) {
-      toast({
-        title: "잘못된 UID 형식",
-        description: `${selectedExchange}의 UID 형식이 올바르지 않습니다.`,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      const { error } = await supabase
-        .from('uids')
-        .insert({
-          user_id: user!.id,
-          exchange_id: exchangeCode,
-          uid: newUID,
-          status: 'Pending'
-        });
-
-      if (error) throw error;
-
-      toast({
-        title: "UID 등록 완료",
-        description: `${selectedExchange} UID가 등록되었습니다. 심사 후 활성화됩니다.`,
-      });
-      
-      setNewUID("");
-      setSelectedExchange("");
-      setAddModalOpen(false);
-      loadMyUIDs();
-    } catch (error: any) {
-      toast({
-        title: "등록 실패",
-        description: error.message || "UID 등록 중 오류가 발생했습니다.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleAddCustomerUID = async () => {
-    if (!customerUID || !customerExchange) return;
-    
-    const exchangeCode = exchanges.find(e => e.name === customerExchange)?.code;
-    if (!exchangeCode) return;
-
-    if (!validateUID(customerUID, exchangeCode)) {
-      toast({
-        title: "잘못된 UID 형식",
-        description: `${customerExchange}의 UID 형식이 올바르지 않습니다.`,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      const { error } = await supabase
-        .from('customer_uid_registrations')
-        .insert({
-          partner_id: user!.id,
-          exchange_id: exchangeCode,
-          customer_uid: customerUID,
-          status: 'pending'
-        });
-
-      if (error) throw error;
-
-      toast({
-        title: "고객 UID 등록 완료",
-        description: `고객 UID가 등록되었습니다. 승인 후 수익 연동이 시작됩니다.`,
-      });
-      
-      setCustomerUID("");
-      setCustomerExchange("");
-      setCustomerModalOpen(false);
-      loadCustomerUIDs();
-    } catch (error: any) {
-      toast({
-        title: "등록 실패",
-        description: error.message || "고객 UID 등록 중 오류가 발생했습니다.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const filteredUIDs = uids.filter(uid => 
-    uid.exchange.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    uid.uid.includes(searchQuery)
-  );
-
-  const filteredCustomerUIDs = customerUIDs.filter(uid => {
-    const matchesSearch = uid.exchange_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      uid.customer_uid.includes(searchQuery);
-    const matchesFilter = filterStatus === "all" || uid.status === filterStatus;
-    return matchesSearch && matchesFilter;
-  });
-
-  const getStatusIcon = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-      case 'approved':
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case 'pending':
-        return <Clock className="w-4 h-4 text-yellow-500" />;
-      case 'inactive':
-      case 'rejected':
-        return <XCircle className="w-4 h-4 text-gray-500" />;
-      default:
-        return null;
-    }
-  };
-
-  const getStatusBadge = (status: string) => {
-    const normalizedStatus = status.toLowerCase();
-    const variants = {
-      active: 'default',
-      approved: 'default',
-      pending: 'secondary',
-      inactive: 'outline',
-      rejected: 'destructive'
-    } as const;
-
-    const labels = {
-      active: '활성',
-      approved: '승인됨',
-      pending: '대기중',
-      inactive: '비활성',
-      rejected: '거부됨'
-    };
-
-    return (
-      <Badge variant={variants[normalizedStatus as keyof typeof variants] || 'outline'} className="flex items-center gap-1">
-        {getStatusIcon(status)}
-        {labels[normalizedStatus as keyof typeof labels] || status}
-      </Badge>
-    );
-  };
-
-  // Empty state check
-  const hasNoData = !canSeePreviewData && uids.length === 0 && customerUIDs.length === 0;
+  const { isPreviewBlocked } = useRuntime();
 
   if (!isAuthenticated || !user) {
     return (
@@ -306,6 +21,73 @@ export function UIDRegistry() {
       </Card>
     );
   }
+
+  if (isPreviewBlocked) {
+    return (
+      <Card>
+        <CardContent className="p-12 text-center space-y-4">
+          <AlertTriangle className="w-12 h-12 text-muted-foreground mx-auto" />
+          <div>
+            <h3 className="text-lg font-semibold mb-2">UID 관리 시스템</h3>
+            <p className="text-muted-foreground">
+              거래소 연동 후 UID 등록 기능을 이용할 수 있습니다.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Guide Banner */}
+      <Alert>
+        <AlertTriangle className="h-4 w-4" />
+        <AlertDescription>
+          <div className="space-y-2">
+            <p className="font-medium">UID 등록 가이드:</p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li><strong>내 UID:</strong> 본인의 거래소 UID를 등록하여 승인 받으면 최대 85% 요율 적용</li>
+              <li><strong>고객 UID:</strong> 고객의 동의 하에 UID를 등록하여 수익 공유</li>
+              <li><strong>승인 과정:</strong> 모든 UID는 심사 후 승인되며, 승인된 UID만 수익 계산에 포함</li>
+            </ul>
+          </div>
+        </AlertDescription>
+      </Alert>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>UID 관리</CardTitle>
+          <CardDescription>
+            본인 UID와 고객 UID를 구분하여 관리하고 수익을 추적하세요.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="my-uid" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="my-uid" className="flex items-center gap-2">
+                <User className="w-4 h-4" />
+                내 UID
+              </TabsTrigger>
+              <TabsTrigger value="customer-uid" className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                고객 UID
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="my-uid" className="space-y-4">
+              <MyUIDManager />
+            </TabsContent>
+
+            <TabsContent value="customer-uid" className="space-y-4">
+              <CustomerUIDManager />
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
   return (
     <div className="space-y-6">

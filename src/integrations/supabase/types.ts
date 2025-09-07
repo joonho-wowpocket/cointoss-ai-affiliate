@@ -218,44 +218,59 @@ export type Database = {
         Row: {
           approved_at: string | null
           approved_by: string | null
+          commission_rate: number | null
           created_at: string
           customer_uid: string
           exchange_confirmation_hash: string | null
           exchange_id: string
           id: string
           partner_id: string
+          partner_notes: string | null
           registered_at: string
           rejection_reason: string | null
           status: string
           updated_at: string
+          validation_status:
+            | Database["public"]["Enums"]["uid_validation_status"]
+            | null
         }
         Insert: {
           approved_at?: string | null
           approved_by?: string | null
+          commission_rate?: number | null
           created_at?: string
           customer_uid: string
           exchange_confirmation_hash?: string | null
           exchange_id: string
           id?: string
           partner_id: string
+          partner_notes?: string | null
           registered_at?: string
           rejection_reason?: string | null
           status?: string
           updated_at?: string
+          validation_status?:
+            | Database["public"]["Enums"]["uid_validation_status"]
+            | null
         }
         Update: {
           approved_at?: string | null
           approved_by?: string | null
+          commission_rate?: number | null
           created_at?: string
           customer_uid?: string
           exchange_confirmation_hash?: string | null
           exchange_id?: string
           id?: string
           partner_id?: string
+          partner_notes?: string | null
           registered_at?: string
           rejection_reason?: string | null
           status?: string
           updated_at?: string
+          validation_status?:
+            | Database["public"]["Enums"]["uid_validation_status"]
+            | null
         }
         Relationships: []
       }
@@ -510,10 +525,14 @@ export type Database = {
       partner_exchange_status: {
         Row: {
           application_data: Json | null
+          approval_notes: string | null
+          approved_at: string | null
+          approved_by: string | null
           created_at: string
           exchange_id: string
           id: string
           mode: string
+          partner_uid: string | null
           ref_code: string | null
           state: string
           updated_at: string
@@ -521,10 +540,14 @@ export type Database = {
         }
         Insert: {
           application_data?: Json | null
+          approval_notes?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
           created_at?: string
           exchange_id: string
           id?: string
           mode: string
+          partner_uid?: string | null
           ref_code?: string | null
           state: string
           updated_at?: string
@@ -532,10 +555,14 @@ export type Database = {
         }
         Update: {
           application_data?: Json | null
+          approval_notes?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
           created_at?: string
           exchange_id?: string
           id?: string
           mode?: string
+          partner_uid?: string | null
           ref_code?: string | null
           state?: string
           updated_at?: string
@@ -827,6 +854,9 @@ export type Database = {
           uid: string
           updated_at: string
           user_id: string
+          validation_status:
+            | Database["public"]["Enums"]["uid_validation_status"]
+            | null
         }
         Insert: {
           created_at?: string
@@ -840,6 +870,9 @@ export type Database = {
           uid: string
           updated_at?: string
           user_id: string
+          validation_status?:
+            | Database["public"]["Enums"]["uid_validation_status"]
+            | null
         }
         Update: {
           created_at?: string
@@ -853,6 +886,9 @@ export type Database = {
           uid?: string
           updated_at?: string
           user_id?: string
+          validation_status?:
+            | Database["public"]["Enums"]["uid_validation_status"]
+            | null
         }
         Relationships: [
           {
@@ -934,6 +970,10 @@ export type Database = {
       }
     }
     Functions: {
+      get_partner_uid_stats: {
+        Args: { p_user_id: string }
+        Returns: Json
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -948,6 +988,15 @@ export type Database = {
       is_admin: {
         Args: { _user_id: string }
         Returns: boolean
+      }
+      validate_and_register_uid: {
+        Args: {
+          p_exchange_id: string
+          p_uid: string
+          p_uid_type?: string
+          p_user_id: string
+        }
+        Returns: Json
       }
       validate_uid_format: {
         Args: { exchange: string; uid: string }
@@ -971,6 +1020,7 @@ export type Database = {
         | "Growth"
         | "Support"
         | "Dev"
+      uid_validation_status: "pending" | "valid" | "invalid" | "duplicate"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1116,6 +1166,7 @@ export const Constants = {
         "Support",
         "Dev",
       ],
+      uid_validation_status: ["pending", "valid", "invalid", "duplicate"],
     },
   },
 } as const
