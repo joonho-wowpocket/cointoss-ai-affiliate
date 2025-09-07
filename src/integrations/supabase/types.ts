@@ -214,11 +214,57 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_uid_registrations: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string
+          customer_uid: string
+          exchange_confirmation_hash: string | null
+          exchange_id: string
+          id: string
+          partner_id: string
+          registered_at: string
+          rejection_reason: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          customer_uid: string
+          exchange_confirmation_hash?: string | null
+          exchange_id: string
+          id?: string
+          partner_id: string
+          registered_at?: string
+          rejection_reason?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string
+          customer_uid?: string
+          exchange_confirmation_hash?: string | null
+          exchange_id?: string
+          id?: string
+          partner_id?: string
+          registered_at?: string
+          rejection_reason?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       earnings: {
         Row: {
           amount: number
           created_at: string
           currency: string
+          customer_uid_registration_id: string | null
           date: string
           exchange_id: string
           id: string
@@ -230,6 +276,7 @@ export type Database = {
           amount: number
           created_at?: string
           currency?: string
+          customer_uid_registration_id?: string | null
           date: string
           exchange_id: string
           id?: string
@@ -241,6 +288,7 @@ export type Database = {
           amount?: number
           created_at?: string
           currency?: string
+          customer_uid_registration_id?: string | null
           date?: string
           exchange_id?: string
           id?: string
@@ -249,6 +297,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "earnings_customer_uid_registration_id_fkey"
+            columns: ["customer_uid_registration_id"]
+            isOneToOne: false
+            referencedRelation: "customer_uid_registrations"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "earnings_exchange_id_fkey"
             columns: ["exchange_id"]
@@ -865,7 +920,18 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      customer_uid_stats: {
+        Row: {
+          approved_count: number | null
+          exchange_id: string | null
+          last_registration: string | null
+          partner_id: string | null
+          pending_count: number | null
+          rejected_count: number | null
+          total_registrations: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
@@ -881,6 +947,10 @@ export type Database = {
       }
       is_admin: {
         Args: { _user_id: string }
+        Returns: boolean
+      }
+      validate_uid_format: {
+        Args: { exchange: string; uid: string }
         Returns: boolean
       }
     }
