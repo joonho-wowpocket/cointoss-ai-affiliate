@@ -6,9 +6,10 @@ import { Progress } from '@/components/ui/progress';
 import { Loader2, ExternalLink, Copy, Users, TrendingUp, Shield, Star, Lock, UserPlus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import { LoginModal } from '@/components/auth/LoginModal';
-import { GuestBanner } from '@/components/GuestBanner';
+import { toast } from "sonner";
+import { LoginModal } from "@/components/auth/LoginModal";
+import { GuestBanner } from "@/components/GuestBanner";
+import { ApprovalProcessModal } from "@/components/ApprovalProcessModal";
 
 // 샘플 데이터 (게스트용)
 const SAMPLE_EXCHANGES = [
@@ -58,6 +59,8 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginTrigger, setLoginTrigger] = useState('general');
+  const [approvalModalOpen, setApprovalModalOpen] = useState(false);
+  const [selectedExchangeForApproval, setSelectedExchangeForApproval] = useState('');
 
   const handleActionClick = (action: string, exchangeId?: string) => {
     if (isGuest) {
@@ -107,8 +110,9 @@ export default function Dashboard() {
   const handleApplyApproved = (exchangeId?: string) => {
     if (isGuest) return handleActionClick('apply_approved', exchangeId);
     
-    // 승인 신청 로직
-    toast.success('승인 신청이 접수되었습니다');
+    // Open approval process modal
+    setApprovalModalOpen(true);
+    setSelectedExchangeForApproval(exchangeId || '');
   };
 
   const getStatusBadge = (status: string, hasApproval: boolean) => {
@@ -382,6 +386,13 @@ export default function Dashboard() {
             // 컨텍스트 유지하여 원래 클릭한 거래소 링크 복사
           }
         }}
+      />
+
+      <ApprovalProcessModal
+        open={approvalModalOpen}
+        onOpenChange={setApprovalModalOpen}
+        exchangeId={selectedExchangeForApproval}
+        exchangeName={SAMPLE_EXCHANGES.find(ex => ex.id === selectedExchangeForApproval)?.name}
       />
     </div>
   );

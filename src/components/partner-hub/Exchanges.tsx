@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { CampaignModal } from "@/components/CampaignModal";
+import { ApprovalProcessModal } from "@/components/ApprovalProcessModal";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Copy, 
@@ -49,7 +50,7 @@ export function Exchanges() {
   const [exchangeCards, setExchangeCards] = useState<ExchangeCard[]>([]);
   const [selectedExchange, setSelectedExchange] = useState<string>("");
   const [uidModalOpen, setUidModalOpen] = useState(false);
-  const [applyModalOpen, setApplyModalOpen] = useState(false);
+  const [approvalProcessModalOpen, setApprovalProcessModalOpen] = useState(false);
   const [uidValue, setUidValue] = useState("");
   const [partnerName, setPartnerName] = useState("");
   const [partnerEmail, setPartnerEmail] = useState("");
@@ -122,7 +123,7 @@ export function Exchanges() {
         break;
       case 'open_apply_modal':
         setSelectedExchange(payload.exchange);
-        setApplyModalOpen(true);
+        setApprovalProcessModalOpen(true);
         break;
       case 'open_external':
         window.open(payload.url, '_blank');
@@ -142,18 +143,7 @@ export function Exchanges() {
     setUidModalOpen(false);
   };
 
-  const submitApplication = async () => {
-    if (!partnerName || !partnerEmail || !selectedExchange) return;
-
-    toast({
-      title: "승인 신청 완료",
-      description: `${selectedExchange} 승인 연동 신청이 제출되었습니다.`,
-    });
-    
-    setPartnerName("");
-    setPartnerEmail("");
-    setApplyModalOpen(false);
-  };
+  // Remove old submitApplication function as it's now handled by ApprovalProcessModal
 
   const getStateIcon = (state: string) => {
     switch (state) {
@@ -353,46 +343,13 @@ export function Exchanges() {
         </DialogContent>
       </Dialog>
 
-      {/* Apply Modal */}
-      <Dialog open={applyModalOpen} onOpenChange={setApplyModalOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>승인 연동 신청</DialogTitle>
-            <DialogDescription>
-              {selectedExchange} 승인 연동을 위한 정보를 입력해주세요.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="partnerName">파트너 닉네임</Label>
-              <Input
-                id="partnerName"
-                value={partnerName}
-                onChange={(e) => setPartnerName(e.target.value)}
-                placeholder="닉네임을 입력하세요"
-              />
-            </div>
-            <div>
-              <Label htmlFor="partnerEmail">이메일</Label>
-              <Input
-                id="partnerEmail"
-                type="email"
-                value={partnerEmail}
-                onChange={(e) => setPartnerEmail(e.target.value)}
-                placeholder="이메일을 입력하세요"
-              />
-            </div>
-            <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={() => setApplyModalOpen(false)}>
-                취소
-              </Button>
-              <Button onClick={submitApplication}>
-                신청하기
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Approval Process Modal */}
+      <ApprovalProcessModal
+        open={approvalProcessModalOpen}
+        onOpenChange={setApprovalProcessModalOpen}
+        exchangeId={selectedExchange}
+        exchangeName={exchanges.find(ex => ex.code === selectedExchange)?.name}
+      />
     </div>
   );
 }
