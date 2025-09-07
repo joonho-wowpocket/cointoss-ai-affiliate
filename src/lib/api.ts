@@ -10,8 +10,38 @@ import type {
 
 // Runtime guard for preview data
 const isProduction = process.env.NODE_ENV === 'production';
-const blockPreviewData = (userRoles: string[] = []) => {
-  return isProduction && !userRoles.some(role => ['SuperAdmin', 'Dev'].includes(role));
+
+const blockPreviewData = (userRoles: string[] = [], allowPreviewFlag = false) => {
+  // Always block for regular users in production
+  if (isProduction && !userRoles.some(role => ['SuperAdmin', 'Dev'].includes(role))) {
+    return true;
+  }
+  
+  // Block if preview flag is disabled (even for admins in non-production)
+  if (!allowPreviewFlag && !userRoles.some(role => ['SuperAdmin', 'Dev'].includes(role))) {
+    return true;
+  }
+  
+  return false;
+};
+
+const validateApiResponse = (data: any) => {
+  // Check for common preview/mock data markers
+  const previewMarkers = ['preview', 'mock', 'dummy', 'sample', 'test'];
+  const dataString = JSON.stringify(data).toLowerCase();
+  
+  const hasPreviewMarkers = previewMarkers.some(marker => 
+    dataString.includes(marker) || 
+    (data.preview === true) ||
+    (data.isDummy === true) ||
+    (data.isMock === true)
+  );
+  
+  if (hasPreviewMarkers) {
+    throw new Error('Preview data blocked - contains dummy markers');
+  }
+  
+  return data;
 };
 
 // Partner Exchange API
@@ -75,9 +105,9 @@ export const partnerApi = {
 // Earnings API
 export const earningsApi = {
   // Get earnings data
-  getEarnings: async (params: EarningsQueryInput, userRoles: string[] = []) => {
+  getEarnings: async (params: EarningsQueryInput, userRoles: string[] = [], allowPreview = false) => {
     // Block preview data for non-admin users
-    if (blockPreviewData(userRoles)) {
+    if (blockPreviewData(userRoles, allowPreview)) {
       return {
         success: true,
         data: {
@@ -101,8 +131,10 @@ export const earningsApi = {
     });
     
     if (error) throw error;
-    return data;
-  },
+    
+    // Validate response doesn't contain preview data
+    return validateApiResponse(data);
+  }
 };
 
 // Settlements API
@@ -130,23 +162,120 @@ export const settlementsApi = {
   },
 };
 
+// Dashboard API
 export const dashboardApi = {
-  generateKPI: async (input: any, userRoles: string[] = []) => {
+  // Get dashboard KPI data
+  generateKPI: async (input: any, userRoles: string[] = [], allowPreview = false) => {
     // Block preview data for non-admin users
-    if (blockPreviewData(userRoles)) {
+    if (blockPreviewData(userRoles, allowPreview)) {
       return {
         success: true,
-        data: null
+        data: {
+          cards: [
+            { label: "Total Earnings", value: "$0", delta: "" },
+            { label: "Active Referrals", value: "0", delta: "" },
+            { label: "AI Tasks", value: "0", delta: "" },
+            { label: "Partner Tier", value: "Basic", delta: "" }
+          ],
+          insights: [],
+          next_best_actions: [
+            { label: "Connect your first exchange", link: "/partner-hub" }
+          ],
+          diagnostics: { warnings: [] }
+        }
       };
     }
 
     const { data, error } = await supabase.functions.invoke('generate-dashboard-kpi', {
-      body: input,
+      body: input
     });
     
     if (error) throw error;
-    return data;
+    
+    // Validate response doesn't contain preview data
+    return validateApiResponse(data);
   },
+
+  // Get exchanges list  
+  getExchanges: async () => {
+    const { data, error } = await supabase
+      .from('exchanges')
+      .select('*')
+      .eq('status', 'active');
+    
+    if (error) throw error;
+    return { success: true, data: data || [] };
+  },
+
+  // Get user profile
+  getProfile: async (userId: string) => {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
+    
+    if (error && error.code !== 'PGRST116') throw error;
+    return { success: true, data: data || {} };
+  }
+};
+
+// Profile API
+export const profileApi = {
+  getProfile: async (userId: string, userRoles: string[] = [], allowPreview = false) => {
+    if (blockPreviewData(userRoles, allowPreview)) {
+      return {
+        success: true,
+        data: {
+          ref_code: '',
+          partner_tier: 'Basic',
+          display_name: '',
+          linkages: [],
+          earnings_summary: { total: 0, this_month: 0 }
+        }
+      };
+    }
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
+    
+    if (error && error.code !== 'PGRST116') throw error;
+    return validateApiResponse({ success: true, data: data || {} });
+  },
+
+  getLinkages: async (userId: string, userRoles: string[] = [], allowPreview = false) => {
+    if (blockPreviewData(userRoles, allowPreview)) {
+      return { success: true, data: [] };
+    }
+
+    const { data, error } = await supabase
+      .from('partner_exchange_status')
+      .select('*')
+      .eq('user_id', userId);
+    
+    if (error) throw error;
+    return validateApiResponse({ success: true, data: data || [] });
+  }
+};
+
+// Marketplace API
+export const marketplaceApi = {
+  getItems: async (userRoles: string[] = [], allowPreview = false) => {
+    if (blockPreviewData(userRoles, allowPreview)) {
+      return { success: true, data: [] };
+    }
+
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('status', 'published');
+    
+    if (error) throw error;
+    return validateApiResponse({ success: true, data: data || [] });
+  }
 };
 
 // Partner Hub API (existing)

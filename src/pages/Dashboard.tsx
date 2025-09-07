@@ -21,11 +21,14 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
+import { useRuntime } from '@/contexts/RuntimeContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "sonner";
 import { LoginModal } from "@/components/auth/LoginModal";
 import { GuestBanner } from "@/components/GuestBanner";
 import { ApprovalProcessModal } from "@/components/ApprovalProcessModal";
+import { PreviewBlockedBanner, EmptyStateCard } from "@/components/PreviewBlockedBanner";
+import { dashboardApi, profileApi } from '@/lib/api';
 
 interface Exchange {
   id: string;
@@ -58,6 +61,7 @@ interface ExchangeStatus {
 export default function Dashboard() {
   const { user, isGuest, isAuthenticated } = useAuth();
   const { isAdmin, hasAnyRole } = useAdminAuth();
+  const { allowPreviewData, isPreviewBlocked, clearPreviewState } = useRuntime();
   const [isLoading, setIsLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginTrigger, setLoginTrigger] = useState('general');
@@ -75,19 +79,24 @@ export default function Dashboard() {
   const [exchangeStatuses, setExchangeStatuses] = useState<ExchangeStatus[]>([]);
   const [profile, setProfile] = useState<PartnerProfile>({});
   const [statsLoading, setStatsLoading] = useState(true);
+  const [hasPreviewDataError, setHasPreviewDataError] = useState(false);
   
-  // Runtime guards
-  const canSeePreviewData = isAdmin || hasAnyRole(['SuperAdmin', 'Dev']) || process.env.NODE_ENV !== 'production';
+  // Get user roles for API calls
+  const userRoles = isAdmin ? ['Admin'] : hasAnyRole(['SuperAdmin']) ? ['SuperAdmin'] : hasAnyRole(['Dev']) ? ['Dev'] : [];
 
   // Load dashboard data
   useEffect(() => {
     if (isAuthenticated) {
+      // Clear preview state on load and load real data
+      clearPreviewState();
       loadDashboardData();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, clearPreviewState]);
 
   const loadDashboardData = async () => {
     setStatsLoading(true);
+    setHasPreviewDataError(false);
+    
     try {
       await Promise.all([
         loadExchanges(),
@@ -95,8 +104,13 @@ export default function Dashboard() {
         loadEarnings(),
         loadExchangeStatuses()
       ]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Dashboard data loading error:', error);
+      
+      // Check if error is due to preview data blocking
+      if (error.message?.includes('Preview data blocked')) {
+        setHasPreviewDataError(true);
+      }
     } finally {
       setStatsLoading(false);
     }
@@ -104,12 +118,8 @@ export default function Dashboard() {
 
   const loadExchanges = async () => {
     try {
-      const { data: exchangeList, error } = await supabase
-        .from('exchanges')
-        .select('*')
-        .eq('status', 'active');
-
-      if (error) throw error;
+      const response = await dashboardApi.getExchanges();
+      const exchangeList = response.data;
       
       const typedExchanges = exchangeList?.map(ex => ({
         ...ex,
@@ -121,9 +131,9 @@ export default function Dashboard() {
         ...prev,
         supportedExchanges: typedExchanges.length
       }));
-    } catch (error) {
+    } catch (error: any) {
       console.error('Load exchanges error:', error);
-      if (!canSeePreviewData) {
+      if (isPreviewBlocked || error.message?.includes('Preview data blocked')) {
         setExchanges([]);
         setDashboardStats(prev => ({ ...prev, supportedExchanges: 0 }));
       }
@@ -131,26 +141,23 @@ export default function Dashboard() {
   };
 
   const loadProfile = async () => {
+    if (!user?.id) return;
+    
     try {
-      const { data: profile, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user?.id)
-        .single();
-
-      if (error && error.code !== 'PGRST116') throw error;
+      const response = await profileApi.getProfile(user.id, userRoles, allowPreviewData);
+      const profileData = response.data;
       
-      if (profile) {
-        setProfile(profile);
+      if (profileData) {
+        setProfile(profileData);
         setDashboardStats(prev => ({
           ...prev,
-          partnerTier: (profile as any).partner_tier || 'Basic',
-          referralCode: (profile as any).ref_code || user?.id?.slice(0, 8) || ''
+          partnerTier: (profileData as any).partner_tier || 'Basic',
+          referralCode: (profileData as any).ref_code || user.id.slice(0, 8) || ''
         }));
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Load profile error:', error);
-      if (!canSeePreviewData) {
+      if (isPreviewBlocked || error.message?.includes('Preview data blocked')) {
         setProfile({});
         setDashboardStats(prev => ({
           ...prev,
@@ -177,33 +184,31 @@ export default function Dashboard() {
         ...prev,
         monthlyEarnings: monthlyTotal
       }));
-    } catch (error) {
+    } catch (error: any) {
       console.error('Load earnings error:', error);
-      if (!canSeePreviewData) {
+      if (isPreviewBlocked || error.message?.includes('Preview data blocked')) {
         setDashboardStats(prev => ({ ...prev, monthlyEarnings: 0 }));
       }
     }
   };
 
   const loadExchangeStatuses = async () => {
+    if (!user?.id) return;
+    
     try {
-      const { data: statuses, error } = await supabase
-        .from('partner_exchange_status')
-        .select('exchange_id, state, updated_at')
-        .eq('user_id', user?.id);
-
-      if (error) throw error;
+      const response = await profileApi.getLinkages(user.id, userRoles, allowPreviewData);
+      const statuses = response.data;
       
-      const statusMap: ExchangeStatus[] = statuses?.map(status => ({
+      const statusMap: ExchangeStatus[] = statuses?.map((status: any) => ({
         exchangeId: status.exchange_id,
         status: status.state as 'Basic' | 'Pending' | 'Approved' | 'Rejected',
         lastSync: status.updated_at
       })) || [];
       
       setExchangeStatuses(statusMap);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Load exchange statuses error:', error);
-      if (!canSeePreviewData) {
+      if (isPreviewBlocked || error.message?.includes('Preview data blocked')) {
         setExchangeStatuses([]);
       }
     }
@@ -381,6 +386,29 @@ export default function Dashboard() {
       </div>
 
       <GuestBanner onLoginClick={() => setShowLoginModal(true)} />
+
+      {/* Preview Data Blocked Banner */}
+      {isPreviewBlocked && hasPreviewDataError && (
+        <PreviewBlockedBanner 
+          message="Preview data access blocked for security"
+          showAdminOverride={isAdmin || hasAnyRole(['SuperAdmin', 'Dev'])}
+        />
+      )}
+
+      {/* Empty State for New Users */}
+      {!isGuest && !statsLoading && exchanges.length === 0 && exchangeStatuses.length === 0 && dashboardStats.monthlyEarnings === 0 && (
+        <Card className="border-accent/30 bg-gradient-to-r from-accent/10 to-transparent">
+          <CardContent className="p-8">
+            <EmptyStateCard
+              title="Welcome to CoinToss!"
+              description="Connect your first exchange to start tracking earnings and managing your partner network."
+              ctaLabel="Get Started"
+              ctaAction={() => setApprovalModalOpen(true)}
+              icon={TrendingUp}
+            />
+          </CardContent>
+        </Card>
+      )}
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

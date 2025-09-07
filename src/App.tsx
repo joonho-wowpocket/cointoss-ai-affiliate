@@ -8,6 +8,7 @@ import { AppFooter } from "@/components/layout/AppFooter";
 import { ThemeProvider } from "next-themes";
 import { I18nProvider } from "@/contexts/I18nContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { RuntimeProvider } from "@/contexts/RuntimeContext";
 import Index from "./pages/Index";
 import LeadGenerator from "./pages/LeadGenerator";
 import PartnerHub from "./pages/PartnerHub";
@@ -36,7 +37,8 @@ const App = () => (
     >
       <I18nProvider>
         <AuthProvider>
-          <TooltipProvider>
+          <RuntimeProvider>
+            <TooltipProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -69,6 +71,7 @@ const App = () => (
             </div>
           </BrowserRouter>
           </TooltipProvider>
+          </RuntimeProvider>
         </AuthProvider>
       </I18nProvider>
     </ThemeProvider>
