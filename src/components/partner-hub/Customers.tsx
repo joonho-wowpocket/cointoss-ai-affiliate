@@ -196,12 +196,12 @@ export function Customers() {
               />
             </div>
             
-            <Select value={filterExchange} onValueChange={setFilterExchange}>
+            <Select value={filterExchange || "all"} onValueChange={(value) => setFilterExchange(value === "all" ? "" : value)}>
               <SelectTrigger className="w-32">
                 <SelectValue placeholder="거래소" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">전체</SelectItem>
+                <SelectItem value="all">전체</SelectItem>
                 {exchanges.map((exchange) => (
                   <SelectItem key={exchange} value={exchange}>
                     {exchange}
@@ -210,12 +210,12 @@ export function Customers() {
               </SelectContent>
             </Select>
             
-            <Select value={filterStatus} onValueChange={setFilterStatus}>
+            <Select value={filterStatus || "all"} onValueChange={(value) => setFilterStatus(value === "all" ? "" : value)}>
               <SelectTrigger className="w-32">
                 <SelectValue placeholder="상태" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">전체</SelectItem>
+                <SelectItem value="all">전체</SelectItem>
                 <SelectItem value="active">활성</SelectItem>
                 <SelectItem value="inactive">비활성</SelectItem>
                 <SelectItem value="vip">VIP</SelectItem>

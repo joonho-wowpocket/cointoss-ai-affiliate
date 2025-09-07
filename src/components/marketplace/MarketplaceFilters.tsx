@@ -75,14 +75,14 @@ export function MarketplaceFilters({ filters, onFiltersChange, onClearFilters }:
               <div>
                 <Label>카테고리</Label>
                 <Select 
-                  value={filters.category || ''} 
-                  onValueChange={(value) => updateFilter('category', value || undefined)}
+                  value={filters.category || 'all'} 
+                  onValueChange={(value) => updateFilter('category', value === 'all' ? undefined : value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="전체" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">전체</SelectItem>
+                    <SelectItem value="all">전체</SelectItem>
                     <SelectItem value="signals">시그널</SelectItem>
                     <SelectItem value="research">리서치</SelectItem>
                     <SelectItem value="bot">봇</SelectItem>
@@ -94,14 +94,14 @@ export function MarketplaceFilters({ filters, onFiltersChange, onClearFilters }:
               <div>
                 <Label>제공 주기</Label>
                 <Select 
-                  value={filters.deliveryCycle || ''} 
-                  onValueChange={(value) => updateFilter('deliveryCycle', value || undefined)}
+                  value={filters.deliveryCycle || 'all'} 
+                  onValueChange={(value) => updateFilter('deliveryCycle', value === 'all' ? undefined : value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="전체" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">전체</SelectItem>
+                    <SelectItem value="all">전체</SelectItem>
                     <SelectItem value="realtime">실시간</SelectItem>
                     <SelectItem value="daily">일간</SelectItem>
                     <SelectItem value="weekly">주간</SelectItem>
@@ -137,14 +137,14 @@ export function MarketplaceFilters({ filters, onFiltersChange, onClearFilters }:
             <div>
               <Label>정렬</Label>
               <Select 
-                value={filters.sort || ''} 
-                onValueChange={(value) => updateFilter('sort', value || undefined)}
+                value={filters.sort || 'latest'} 
+                onValueChange={(value) => updateFilter('sort', value === 'latest' ? undefined : value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="최신순" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">최신순</SelectItem>
+                  <SelectItem value="latest">최신순</SelectItem>
                   <SelectItem value="price_asc">가격 낮은순</SelectItem>
                   <SelectItem value="price_desc">가격 높은순</SelectItem>
                   <SelectItem value="popular">인기순</SelectItem>
