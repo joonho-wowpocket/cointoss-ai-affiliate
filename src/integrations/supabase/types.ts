@@ -178,6 +178,42 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_id: string | null
+          actor_role: string | null
+          after_json: Json | null
+          before_json: Json | null
+          created_at: string
+          id: string
+          resource: string
+          resource_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          actor_role?: string | null
+          after_json?: Json | null
+          before_json?: Json | null
+          created_at?: string
+          id?: string
+          resource: string
+          resource_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          actor_role?: string | null
+          after_json?: Json | null
+          before_json?: Json | null
+          created_at?: string
+          id?: string
+          resource?: string
+          resource_id?: string | null
+        }
+        Relationships: []
+      }
       earnings: {
         Row: {
           amount: number
@@ -604,6 +640,33 @@ export type Database = {
           },
         ]
       }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       settlements: {
         Row: {
           address: string
@@ -740,6 +803,30 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       vendors: {
         Row: {
           created_at: string | null
@@ -775,7 +862,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       ai_agent: "CREA" | "DANNY" | "RAY" | "LEO" | "ALPHA" | "GUARDIAN"
@@ -786,6 +883,14 @@ export type Database = {
         | "SUCCEEDED"
         | "FAILED"
       ai_task_status: "QUEUED" | "RUNNING" | "SUCCEEDED" | "FAILED" | "CANCELED"
+      app_role:
+        | "SuperAdmin"
+        | "Ops"
+        | "Compliance"
+        | "Finance"
+        | "Growth"
+        | "Support"
+        | "Dev"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -922,6 +1027,15 @@ export const Constants = {
         "FAILED",
       ],
       ai_task_status: ["QUEUED", "RUNNING", "SUCCEEDED", "FAILED", "CANCELED"],
+      app_role: [
+        "SuperAdmin",
+        "Ops",
+        "Compliance",
+        "Finance",
+        "Growth",
+        "Support",
+        "Dev",
+      ],
     },
   },
 } as const

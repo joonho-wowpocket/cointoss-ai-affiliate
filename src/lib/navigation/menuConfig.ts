@@ -46,6 +46,12 @@ export const NAV_ITEMS: NavItem[] = [
     protected: false, // 페이지는 볼 수 있지만 실제 기능은 로그인 필요
     testId: 'nav-marketplace'
   },
+  { 
+    key: 'admin', 
+    href: '/admin',
+    protected: true, // 관리자 전용
+    testId: 'nav-admin'
+  },
 ];
 
 export const ACCOUNT_MENU_ITEMS: NavItem[] = [
