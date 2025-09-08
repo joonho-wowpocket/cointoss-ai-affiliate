@@ -69,11 +69,13 @@ export function Exchanges() {
 
   // 퍼센티지 변환 헬퍼 함수
   const formatPercentage = (decimal: number): string => {
+    console.log(`Converting ${decimal} to percentage:`, `${(decimal * 100).toFixed(0)}%`);
     return `${(decimal * 100).toFixed(0)}%`;
   };
 
   // 미리보기용 더미 데이터
   const getPreviewCards = (tab: 'basic' | 'approved'): ExchangeCard[] => {
+    console.log('Generating preview cards for tab:', tab);
     const baseCards = [
       {
         exchange_code: "binance",
@@ -121,6 +123,8 @@ export function Exchanges() {
         ]
       }
     ];
+    
+    console.log('Generated preview cards:', baseCards);
     return baseCards;
   };
 
