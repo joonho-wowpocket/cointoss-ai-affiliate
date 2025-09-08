@@ -7,6 +7,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRuntime } from "@/contexts/RuntimeContext";
+import { PreviewBlockedBanner } from "@/components/PreviewBlockedBanner";
 import { CampaignModal } from "@/components/CampaignModal";
 import { ApprovalProcessModal } from "@/components/ApprovalProcessModal";
 import { supabase } from "@/integrations/supabase/client";
@@ -45,6 +48,8 @@ interface ExchangeCard {
 
 export function Exchanges() {
   const { toast } = useToast();
+  const { isAuthenticated, isGuest } = useAuth();
+  const { isPreviewBlocked, allowPreviewData } = useRuntime();
   const [activeTab, setActiveTab] = useState("basic");
   const [loading, setLoading] = useState(false);
   const [exchangeCards, setExchangeCards] = useState<ExchangeCard[]>([]);
@@ -62,9 +67,71 @@ export function Exchanges() {
     { code: "gate", name: "Gate.io", base_rate: "20%", approved_rate: "75%", state: "NotApplied" as const }
   ];
 
+  // 미리보기용 더미 데이터
+  const getPreviewCards = (tab: 'basic' | 'approved'): ExchangeCard[] => {
+    const baseCards = [
+      {
+        exchange_code: "binance",
+        exchange_name: "Binance",
+        rate_label: tab === 'basic' ? "기본 커미션: 30%" : "승인 커미션: 85%",
+        state_badge: tab === 'basic' ? "연결됨" : "승인됨",
+        ctas: tab === 'basic' ? [
+          { label: "링크 복사", action: "copy_basic_link", payload: { exchange: "binance" } },
+          { label: "UID 등록", action: "open_uid_modal", payload: { exchange: "binance" } }
+        ] : [
+          { label: "코드 복사", action: "copy_approved_code", payload: { exchange: "binance" } }
+        ]
+      },
+      {
+        exchange_code: "bybit",
+        exchange_name: "Bybit", 
+        rate_label: tab === 'basic' ? "기본 커미션: 25%" : "승인 커미션: 85%",
+        state_badge: tab === 'basic' ? "미연결" : "미신청",
+        ctas: tab === 'basic' ? [
+          { label: "연결하기", action: "open_external", payload: { url: "https://partner.bybit.com/b/cointoss" } }
+        ] : [
+          { label: "승인 신청", action: "open_apply_modal", payload: { exchange: "bybit" } }
+        ]
+      },
+      {
+        exchange_code: "okx",
+        exchange_name: "OKX",
+        rate_label: tab === 'basic' ? "기본 커미션: 25%" : "승인 커미션: 80%",
+        state_badge: tab === 'basic' ? "미연결" : "심사중",
+        ctas: tab === 'basic' ? [
+          { label: "연결하기", action: "open_external", payload: { url: "https://www.okx.com/join/cointoss" } }
+        ] : [
+          { label: "진행 상황", action: "open_external", payload: { url: "#" } }
+        ]
+      },
+      {
+        exchange_code: "gate",
+        exchange_name: "Gate.io",
+        rate_label: tab === 'basic' ? "기본 커미션: 20%" : "승인 커미션: 75%",
+        state_badge: tab === 'basic' ? "미연결" : "미신청",
+        ctas: tab === 'basic' ? [
+          { label: "연결하기", action: "open_external", payload: { url: "https://www.gate.io/ref/cointoss" } }
+        ] : [
+          { label: "승인 신청", action: "open_apply_modal", payload: { exchange: "gate" } }
+        ]
+      }
+    ];
+    return baseCards;
+  };
+
   const generatePartnerHub = async (tab: 'basic' | 'approved') => {
     setLoading(true);
     try {
+      // 게스트 또는 미리보기가 차단된 경우 더미 데이터 사용
+      if (isGuest || isPreviewBlocked) {
+        setTimeout(() => {
+          setExchangeCards(getPreviewCards(tab));
+          setLoading(false);
+        }, 800); // 실제 API 호출처럼 약간의 로딩 시간 추가
+        return;
+      }
+
+      // 인증된 사용자는 실제 API 호출
       const { data, error } = await supabase.functions.invoke('generate-partner-hub', {
         body: {
           locale: "ko",
@@ -160,6 +227,14 @@ export function Exchanges() {
 
   return (
     <div className="space-y-6">
+      {/* 미리보기 배너 - 게스트 사용자에게 표시 */}
+      {isGuest && (
+        <PreviewBlockedBanner 
+          message="거래소 관리 미리보기" 
+          showAdminOverride={false}
+        />
+      )}
+      
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="bg-muted/50">
           <TabsTrigger value="basic" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">

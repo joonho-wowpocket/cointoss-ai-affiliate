@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, TrendingUp, Users, DollarSign, Calendar } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRuntime } from "@/contexts/RuntimeContext";
+import { PreviewBlockedBanner } from "@/components/PreviewBlockedBanner";
+import { supabase } from "@/integrations/supabase/client";
+import { Search, Filter, TrendingUp, Users, DollarSign, Calendar, Loader2 } from "lucide-react";
 
 interface Customer {
   id: string;
@@ -21,12 +25,16 @@ interface Customer {
 }
 
 export function Customers() {
+  const { isAuthenticated, isGuest } = useAuth();
+  const { isPreviewBlocked, allowPreviewData } = useRuntime();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterExchange, setFilterExchange] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data
-  const customers: Customer[] = [
+  // 미리보기용 더미 데이터
+  const getPreviewCustomers = (): Customer[] => [
     {
       id: "1",
       uid: "12345678",
@@ -72,6 +80,35 @@ export function Customers() {
       tier: "basic"
     }
   ];
+
+  // 고객 데이터 로드
+  const loadCustomers = async () => {
+    setLoading(true);
+    try {
+      // 게스트 또는 미리보기가 차단된 경우 더미 데이터 사용
+      if (isGuest || isPreviewBlocked) {
+        setTimeout(() => {
+          setCustomers(getPreviewCustomers());
+          setLoading(false);
+        }, 800);
+        return;
+      }
+
+      // 인증된 사용자는 실제 데이터 로드 (현재는 더미 데이터 사용)
+      // TODO: 실제 API 연동 시 아래 코드로 교체
+      // const { data, error } = await supabase.from('customer_uid_registrations')...
+      setCustomers(getPreviewCustomers());
+    } catch (error) {
+      console.error('고객 데이터 로드 오류:', error);
+      setCustomers([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCustomers();
+  }, [isGuest, isPreviewBlocked]);
 
   const exchanges = ["Binance", "Bybit", "OKX", "Gate.io"];
   
@@ -133,6 +170,20 @@ export function Customers() {
 
   return (
     <div className="space-y-6">
+      {/* 미리보기 배너 - 게스트 사용자에게 표시 */}
+      {isGuest && (
+        <PreviewBlockedBanner 
+          message="고객 관리 미리보기" 
+          showAdminOverride={false}
+        />
+      )}
+
+      {loading ? (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      ) : (
+        <>
       {/* Stats Overview */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
@@ -274,6 +325,8 @@ export function Customers() {
           </div>
         </CardContent>
       </Card>
+        </>
+      )}
     </div>
   );
 }

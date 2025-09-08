@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, Clock, XCircle, Eye, FileText, Calendar } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRuntime } from "@/contexts/RuntimeContext";
+import { PreviewBlockedBanner } from "@/components/PreviewBlockedBanner";
+import { supabase } from "@/integrations/supabase/client";
+import { CheckCircle, Clock, XCircle, Eye, FileText, Calendar, Loader2 } from "lucide-react";
 
 interface ApprovalRecord {
   id: string;
@@ -19,11 +23,15 @@ interface ApprovalRecord {
 }
 
 export function Approvals() {
+  const { isAuthenticated, isGuest } = useAuth();
+  const { isPreviewBlocked, allowPreviewData } = useRuntime();
   const [selectedRecord, setSelectedRecord] = useState<ApprovalRecord | null>(null);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [approvals, setApprovals] = useState<ApprovalRecord[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data
-  const approvals: ApprovalRecord[] = [
+  // 미리보기용 더미 데이터
+  const getPreviewApprovals = (): ApprovalRecord[] => [
     {
       id: "1",
       exchange: "Binance",
@@ -65,6 +73,35 @@ export function Approvals() {
       notes: "최소 거래량 요구사항 미충족으로 반려. 3개월 후 재신청 가능."
     }
   ];
+
+  // 승인 데이터 로드
+  const loadApprovals = async () => {
+    setLoading(true);
+    try {
+      // 게스트 또는 미리보기가 차단된 경우 더미 데이터 사용
+      if (isGuest || isPreviewBlocked) {
+        setTimeout(() => {
+          setApprovals(getPreviewApprovals());
+          setLoading(false);
+        }, 800);
+        return;
+      }
+
+      // 인증된 사용자는 실제 데이터 로드 (현재는 더미 데이터 사용)
+      // TODO: 실제 API 연동 시 아래 코드로 교체
+      // const { data, error } = await supabase.from('applications')...
+      setApprovals(getPreviewApprovals());
+    } catch (error) {
+      console.error('승인 데이터 로드 오류:', error);
+      setApprovals([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadApprovals();
+  }, [isGuest, isPreviewBlocked]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -128,90 +165,104 @@ export function Approvals() {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>승인 현황</CardTitle>
-          <CardDescription>
-            거래소 파트너십 및 UID 검증 신청의 현재 상태를 확인하세요.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {/* Summary Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-muted/50 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">
-                  {approvals.filter(a => a.status === 'approved').length}
-                </div>
-                <div className="text-sm text-muted-foreground">승인됨</div>
-              </div>
-              <div className="text-center p-4 bg-muted/50 rounded-lg">
-                <div className="text-2xl font-bold text-blue-600">
-                  {approvals.filter(a => a.status === 'reviewing').length}
-                </div>
-                <div className="text-sm text-muted-foreground">심사중</div>
-              </div>
-              <div className="text-center p-4 bg-muted/50 rounded-lg">
-                <div className="text-2xl font-bold text-yellow-600">
-                  {approvals.filter(a => a.status === 'pending').length}
-                </div>
-                <div className="text-sm text-muted-foreground">대기중</div>
-              </div>
-              <div className="text-center p-4 bg-muted/50 rounded-lg">
-                <div className="text-2xl font-bold text-red-600">
-                  {approvals.filter(a => a.status === 'rejected').length}
-                </div>
-                <div className="text-sm text-muted-foreground">반려됨</div>
-              </div>
-            </div>
+      {/* 미리보기 배너 - 게스트 사용자에게 표시 */}
+      {isGuest && (
+        <PreviewBlockedBanner 
+          message="승인 현황 미리보기" 
+          showAdminOverride={false}
+        />
+      )}
 
-            {/* Approvals Table */}
-            <div className="border rounded-md">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>거래소</TableHead>
-                    <TableHead>신청 유형</TableHead>
-                    <TableHead>상태</TableHead>
-                    <TableHead>진행률</TableHead>
-                    <TableHead>신청일</TableHead>
-                    <TableHead>예상 기간</TableHead>
-                    <TableHead></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {approvals.map((approval) => (
-                    <TableRow key={approval.id}>
-                      <TableCell className="font-medium">{approval.exchange}</TableCell>
-                      <TableCell>{getTypeLabel(approval.type)}</TableCell>
-                      <TableCell>{getStatusBadge(approval.status)}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Progress value={approval.progress} className="w-16" />
-                          <span className="text-sm text-muted-foreground">
-                            {approval.progress}%
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell>{approval.submittedAt}</TableCell>
-                      <TableCell>{approval.expectedDays}일</TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleViewDetails(approval)}
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                      </TableCell>
+      {loading ? (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle>승인 현황</CardTitle>
+            <CardDescription>
+              거래소 파트너십 및 UID 검증 신청의 현재 상태를 확인하세요.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {/* Summary Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center p-4 bg-muted/50 rounded-lg">
+                  <div className="text-2xl font-bold text-green-600">
+                    {approvals.filter(a => a.status === 'approved').length}
+                  </div>
+                  <div className="text-sm text-muted-foreground">승인됨</div>
+                </div>
+                <div className="text-center p-4 bg-muted/50 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {approvals.filter(a => a.status === 'reviewing').length}
+                  </div>
+                  <div className="text-sm text-muted-foreground">심사중</div>
+                </div>
+                <div className="text-center p-4 bg-muted/50 rounded-lg">
+                  <div className="text-2xl font-bold text-yellow-600">
+                    {approvals.filter(a => a.status === 'pending').length}
+                  </div>
+                  <div className="text-sm text-muted-foreground">대기중</div>
+                </div>
+                <div className="text-center p-4 bg-muted/50 rounded-lg">
+                  <div className="text-2xl font-bold text-red-600">
+                    {approvals.filter(a => a.status === 'rejected').length}
+                  </div>
+                  <div className="text-sm text-muted-foreground">반려됨</div>
+                </div>
+              </div>
+
+              {/* Approvals Table */}
+              <div className="border rounded-md">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>거래소</TableHead>
+                      <TableHead>신청 유형</TableHead>
+                      <TableHead>상태</TableHead>
+                      <TableHead>진행률</TableHead>
+                      <TableHead>신청일</TableHead>
+                      <TableHead>예상 기간</TableHead>
+                      <TableHead></TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {approvals.map((approval) => (
+                      <TableRow key={approval.id}>
+                        <TableCell className="font-medium">{approval.exchange}</TableCell>
+                        <TableCell>{getTypeLabel(approval.type)}</TableCell>
+                        <TableCell>{getStatusBadge(approval.status)}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Progress value={approval.progress} className="w-16" />
+                            <span className="text-sm text-muted-foreground">
+                              {approval.progress}%
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell>{approval.submittedAt}</TableCell>
+                        <TableCell>{approval.expectedDays}일</TableCell>
+                        <TableCell>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleViewDetails(approval)}
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Details Modal */}
       <Dialog open={detailsModalOpen} onOpenChange={setDetailsModalOpen}>
