@@ -12,8 +12,8 @@ interface PartnerHubInput {
   exchanges: Array<{
     code: string;
     name: string;
-    base_rate: string;
-    approved_rate: string;
+    base_rate: number;
+    approved_rate: number;
     state: 'NotApplied' | 'Applied' | 'Approved' | 'Rejected';
   }>;
 }
@@ -53,6 +53,8 @@ Language defaults to Korean unless "locale" says otherwise.
 Never invent financial promises. Include compliance notes when needed.
 Use placeholders {{...}} when values are not provided by the caller.
 Keep copy concise, scannable, and implementation-ready.
+
+IMPORTANT: When displaying rates, convert decimal values to percentages (e.g., 0.25 becomes "25%", 0.85 becomes "85%").
 
 Generate exchange list cards for Partner Hub with Basic/Approved tabs, 
 showing rates, state badges, and CTAs.`;

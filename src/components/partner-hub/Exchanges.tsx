@@ -61,11 +61,16 @@ export function Exchanges() {
   const [partnerEmail, setPartnerEmail] = useState("");
 
   const exchanges = [
-    { code: "bybit", name: "Bybit", base_rate: "25%", approved_rate: "85%", state: "NotApplied" as const },
-    { code: "binance", name: "Binance", base_rate: "30%", approved_rate: "85%", state: "Approved" as const },
-    { code: "okx", name: "OKX", base_rate: "25%", approved_rate: "80%", state: "Applied" as const },
-    { code: "gate", name: "Gate.io", base_rate: "20%", approved_rate: "75%", state: "NotApplied" as const }
+    { code: "bybit", name: "Bybit", base_rate: 0.25, approved_rate: 0.85, state: "NotApplied" as const },
+    { code: "binance", name: "Binance", base_rate: 0.30, approved_rate: 0.85, state: "Approved" as const },
+    { code: "okx", name: "OKX", base_rate: 0.25, approved_rate: 0.80, state: "Applied" as const },
+    { code: "gate", name: "Gate.io", base_rate: 0.20, approved_rate: 0.75, state: "NotApplied" as const }
   ];
+
+  // 퍼센티지 변환 헬퍼 함수
+  const formatPercentage = (decimal: number): string => {
+    return `${(decimal * 100).toFixed(0)}%`;
+  };
 
   // 미리보기용 더미 데이터
   const getPreviewCards = (tab: 'basic' | 'approved'): ExchangeCard[] => {
@@ -73,7 +78,7 @@ export function Exchanges() {
       {
         exchange_code: "binance",
         exchange_name: "Binance",
-        rate_label: tab === 'basic' ? "기본 커미션: 30%" : "승인 커미션: 85%",
+        rate_label: tab === 'basic' ? `기본 커미션: ${formatPercentage(0.30)}` : `승인 커미션: ${formatPercentage(0.85)}`,
         state_badge: tab === 'basic' ? "연결됨" : "승인됨",
         ctas: tab === 'basic' ? [
           { label: "링크 복사", action: "copy_basic_link", payload: { exchange: "binance" } },
@@ -85,7 +90,7 @@ export function Exchanges() {
       {
         exchange_code: "bybit",
         exchange_name: "Bybit", 
-        rate_label: tab === 'basic' ? "기본 커미션: 25%" : "승인 커미션: 85%",
+        rate_label: tab === 'basic' ? `기본 커미션: ${formatPercentage(0.25)}` : `승인 커미션: ${formatPercentage(0.85)}`,
         state_badge: tab === 'basic' ? "미연결" : "미신청",
         ctas: tab === 'basic' ? [
           { label: "연결하기", action: "open_external", payload: { url: "https://partner.bybit.com/b/cointoss" } }
@@ -96,7 +101,7 @@ export function Exchanges() {
       {
         exchange_code: "okx",
         exchange_name: "OKX",
-        rate_label: tab === 'basic' ? "기본 커미션: 25%" : "승인 커미션: 80%",
+        rate_label: tab === 'basic' ? `기본 커미션: ${formatPercentage(0.25)}` : `승인 커미션: ${formatPercentage(0.80)}`,
         state_badge: tab === 'basic' ? "미연결" : "심사중",
         ctas: tab === 'basic' ? [
           { label: "연결하기", action: "open_external", payload: { url: "https://www.okx.com/join/cointoss" } }
@@ -107,7 +112,7 @@ export function Exchanges() {
       {
         exchange_code: "gate",
         exchange_name: "Gate.io",
-        rate_label: tab === 'basic' ? "기본 커미션: 20%" : "승인 커미션: 75%",
+        rate_label: tab === 'basic' ? `기본 커미션: ${formatPercentage(0.20)}` : `승인 커미션: ${formatPercentage(0.75)}`,
         state_badge: tab === 'basic' ? "미연결" : "미신청",
         ctas: tab === 'basic' ? [
           { label: "연결하기", action: "open_external", payload: { url: "https://www.gate.io/ref/cointoss" } }
@@ -131,16 +136,31 @@ export function Exchanges() {
         return;
       }
 
-      // 인증된 사용자는 실제 API 호출
-      const { data, error } = await supabase.functions.invoke('generate-partner-hub', {
+      // 인증된 사용자는 실제 데이터베이스에서 exchanges 가져오기
+      const { data: dbExchanges, error } = await supabase
+        .from('exchanges')
+        .select('*')
+        .eq('status', 'active');
+
+      if (error) throw error;
+
+      const exchangesWithRates = (dbExchanges || []).map((exchange: any) => ({
+        code: exchange.id,
+        name: exchange.name,
+        base_rate: exchange.base_rate,
+        approved_rate: exchange.approved_rate,
+        state: exchanges.find(e => e.code === exchange.id)?.state || 'NotApplied'
+      }));
+
+      const { data, error: functionError } = await supabase.functions.invoke('generate-partner-hub', {
         body: {
           locale: "ko",
           tab: tab,
-          exchanges: exchanges
+          exchanges: exchangesWithRates
         }
       });
 
-      if (error) throw error;
+      if (functionError) throw functionError;
 
       if (data.success) {
         // Normalize the data to ensure ctas is always an array
