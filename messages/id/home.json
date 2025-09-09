@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "title": "Mulai revolusi referral kripto",
+    "titleHighlight": "dengan tingkat 85% terdepan di industri",
+    "titleEnd": "",
+    "subtitle": "Rasakan kemitraan yang lebih mudah dan menguntungkan dengan otomasi AI dan penyelesaian transparan",
+    "startFree": "Mulai Gratis",
+    "viewDemo": "Lihat Demo"
+  },
+  "socialProof": {
+    "title": "Kemitraan dengan Bursa Global Utama",
+    "testimonials": {
+      "title": "Ulasan Mitra Nyata"
+    }
+  },
+  "testimonials": [
+    {
+      "name": "Min-soo Kim",
+      "role": "Manajer Mitra",
+      "company": "CryptoMax",
+      "quote": "Pendapatan bulanan saya meningkat 300% dengan CoinToss. Fitur otomasi AI benar-benar mengesankan."
+    },
+    {
+      "name": "Ji-young Park",
+      "role": "Investor",
+      "company": "BlockChain Ventures",
+      "quote": "Penyelesaian transparan dan tingkat komisi tinggi sangat menarik. Reward token CTOSS juga bagus."
+    },
+    {
+      "name": "Jun-ho Lee",
+      "role": "Pemasar",
+      "company": "Digital Assets Co.",
+      "quote": "Saya puas dapat membuat beragam sumber pendapatan melalui fitur MyLink dan Marketplace."
+    }
+  ],
+  "features": [
+    {
+      "title": "Partner Hub",
+      "description": "Integrasi bursa, manajemen UID, dan status persetujuan dalam satu tempat",
+      "highlights": ["Pelacakan pendapatan real-time", "Penyelesaian otomatis", "Dukungan multi-bursa"]
+    },
+    {
+      "title": "AI Partner Team", 
+      "description": "Crea dan Danny bekerja otomatis 24/7",
+      "highlights": ["Generasi konten otomatis", "Analisis pelanggan", "Optimasi kinerja"]
+    },
+    {
+      "title": "MyLink",
+      "description": "Link merek personal dan halaman portofolio",
+      "highlights": ["Landing page kustom", "Showcase kinerja", "Pembangunan merek"]
+    },
+    {
+      "title": "Marketplace",
+      "description": "Hasilkan pendapatan tambahan dengan menjual strategi dan wawasan",
+      "highlights": ["Penjualan produk digital", "Layanan berlangganan", "Monetisasi pengetahuan"]
+    }
+  ],
+  "stats": {
+    "commission": "Tingkat Komisi Rata-rata",
+    "partners": "Mitra Aktif",
+    "automated": "Tugas Otomatis",
+    "exchanges": "Bursa yang Didukung"
+  },
+  "cta": {
+    "title": "Mulai sekarang untuk memaksimalkan pendapatan Anda",
+    "description": "Daftar dalam 3 menit! Rasakan standar baru referral kripto dengan CoinToss.",
+    "getStarted": "Mulai Gratis"
+  },
+  "faq": {
+    "title": "Pertanyaan yang Sering Diajukan",
+    "items": [
+      {
+        "question": "Apa itu CoinToss?",
+        "answer": "CoinToss adalah platform all-in-one untuk referral bursa cryptocurrency. Kami menyediakan tingkat komisi terdepan di industri (hingga 85%) dan fitur otomasi AI untuk membantu mitra menghasilkan pendapatan lebih efisien."
+      },
+      {
+        "question": "Bursa mana yang terintegrasi?",
+        "answer": "Kami bermitra dengan lebih dari 12 bursa global utama termasuk Binance, OKX, Bybit, Gate.io, MEXC, KuCoin, dan terus berkembang."
+      },
+      {
+        "question": "Apa itu fitur otomasi AI?",
+        "answer": "Dua asisten AI, Crea (generasi konten) dan Danny (analisis data), secara otomatis melakukan pembuatan konten marketing, analisis pelanggan, dan optimasi kinerja 24/7."
+      },
+      {
+        "question": "Bagaimana komisi diselesaikan?",
+        "answer": "Melalui sistem penyelesaian berbasis blockchain yang transparan, otomatis dibayar dalam USDT pada tanggal 1 setiap bulan. Semua detail transaksi tersedia secara real-time."
+      },
+      {
+        "question": "Apa itu token CTOSS?",
+        "answer": "Token utilitas dalam ekosistem CoinToss yang digunakan untuk reward tambahan, fitur premium, dan partisipasi governance. Diperoleh secara otomatis berdasarkan aktivitas."
+      }
+    ]
+  }
+}

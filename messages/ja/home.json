@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "title": "業界最高85％の手数料率で",
+    "titleHighlight": "暗号通貨リファラル革命",
+    "titleEnd": "を始めよう",
+    "subtitle": "AI自動化と透明な決済でより簡単で収益性の高いパートナーシップを体験してください",
+    "startFree": "無料で始める",
+    "viewDemo": "デモを見る"
+  },
+  "socialProof": {
+    "title": "グローバル主要取引所とのパートナーシップ",
+    "testimonials": {
+      "title": "パートナーの生の声"
+    }
+  },
+  "testimonials": [
+    {
+      "name": "김민수",
+      "role": "パートナーマネージャー",
+      "company": "CryptoMax",
+      "quote": "CoinTossで月収が300%増加しました。AI自動化機能が本当に印象的です。"
+    },
+    {
+      "name": "박지영",
+      "role": "投資家",
+      "company": "BlockChain Ventures",
+      "quote": "透明な決済と高い手数料率が魅力的です。CTOSSトークン報酬も良いです。"
+    },
+    {
+      "name": "이준호",
+      "role": "マーケター",
+      "company": "Digital Assets Co.",
+      "quote": "MyLinkとマーケットプレイス機能で多様な収益源を作れて満足しています。"
+    }
+  ],
+  "features": [
+    {
+      "title": "Partner Hub",
+      "description": "取引所連携、UID管理、承認状況を一箇所で",
+      "highlights": ["リアルタイム収益追跡", "自動決済", "マルチ取引所対応"]
+    },
+    {
+      "title": "AI Partner Team",
+      "description": "クレアとダニーが24時間自動で業務実行",
+      "highlights": ["コンテンツ自動生成", "顧客分析", "成果最適化"]
+    },
+    {
+      "title": "MyLink",
+      "description": "個人ブランドリンクとポートフォリオページ",
+      "highlights": ["カスタムランディングページ", "成果展示", "ブランド構築"]
+    },
+    {
+      "title": "Marketplace",
+      "description": "戦略とインサイトを販売して追加収益創出",
+      "highlights": ["デジタル商品販売", "サブスクリプションサービス", "知識収益化"]
+    }
+  ],
+  "stats": {
+    "commission": "平均手数料率",
+    "partners": "アクティブパートナー",
+    "automated": "自動化されたタスク",
+    "exchanges": "対応取引所"
+  },
+  "cta": {
+    "title": "今すぐ始めて収益を最大化しよう",
+    "description": "3分で登録完了！CoinTossと一緒に暗号通貨リファラルの新基準を体験してください。",
+    "getStarted": "無料で始める"
+  },
+  "faq": {
+    "title": "よくある質問",
+    "items": [
+      {
+        "question": "CoinTossとはどのようなサービスですか？",
+        "answer": "CoinTossは暗号通貨取引所リファラルのためのオールインワンプラットフォームです。業界最高レベルの手数料率（最大85%）とAI自動化機能を提供し、パートナーがより効率的に収益を創出できるよう支援します。"
+      },
+      {
+        "question": "どの取引所と連携していますか？",
+        "answer": "Binance、OKX、Bybit、Gate.io、MEXC、KuCoinなど世界の主要取引所12箇所以上とパートナーシップを結んでおり、継続的に拡張しています。"
+      },
+      {
+        "question": "AI自動化機能とは何ですか？",
+        "answer": "クレア（コンテンツ生成）とダニー（データ分析）の2つのAIアシスタントが24時間自動でマーケティングコンテンツ生成、顧客分析、成果最適化業務を実行します。"
+      },
+      {
+        "question": "手数料はどのように決済されますか？",
+        "answer": "透明なブロックチェーンベースの決済システムで毎月1日にUSDTで自動支給されます。すべての取引詳細はリアルタイムで確認可能です。"
+      },
+      {
+        "question": "CTOSSトークンとは何ですか？",
+        "answer": "CoinTossエコシステムのユーティリティトークンで、追加報酬、プレミアム機能利用、ガバナンス参加などに使用されます。活動に応じて自動で積立されます。"
+      }
+    ]
+  }
+}

@@ -29,87 +29,106 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { exchanges } from '@/lib/data/exchanges';
 import { ExchangeLogos } from '@/components/icons/ExchangeLogos';
+import { useTranslations } from '@/contexts/I18nContext';
 
 const Index = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const t = useTranslations('home');
 
+  // 번역된 데이터를 직접 사용
   const testimonials = [
     {
-      name: "김민수",
-      role: "파트너 매니저",
-      company: "CryptoMax",
-      quote: "CoinToss로 월 수익이 300% 증가했습니다. AI 자동화 기능이 정말 인상적이에요.",
+      name: t('testimonials.0.name'),
+      role: t('testimonials.0.role'),
+      company: t('testimonials.0.company'),
+      quote: t('testimonials.0.quote'),
       rating: 5
     },
     {
-      name: "박지영",
-      role: "투자자",
-      company: "BlockChain Ventures",
-      quote: "투명한 정산과 높은 커미션율이 매력적입니다. CTOSS 토큰 보상도 좋아요.",
+      name: t('testimonials.1.name'),
+      role: t('testimonials.1.role'),
+      company: t('testimonials.1.company'),
+      quote: t('testimonials.1.quote'),
       rating: 5
     },
     {
-      name: "이준호",
-      role: "마케터",
-      company: "Digital Assets Co.",
-      quote: "MyLink와 마켓플레이스 기능으로 다양한 수익원을 만들 수 있어서 만족합니다.",
+      name: t('testimonials.2.name'),
+      role: t('testimonials.2.role'),
+      company: t('testimonials.2.company'),
+      quote: t('testimonials.2.quote'),
       rating: 5
     }
   ];
 
   const features = [
     {
-      title: "Partner Hub",
-      description: "거래소 연동, UID 관리, 승인 현황을 한 곳에서",
+      title: t('features.0.title'),
+      description: t('features.0.description'),
       icon: <Building2 className="w-8 h-8" />,
       image: "📊",
-      highlights: ["실시간 수익 추적", "자동 정산", "다중 거래소 지원"]
+      highlights: [
+        t('features.0.highlights.0'),
+        t('features.0.highlights.1'),
+        t('features.0.highlights.2')
+      ]
     },
     {
-      title: "AI Partner Team",
-      description: "크레아와 대니가 24시간 자동으로 업무 수행",
+      title: t('features.1.title'),
+      description: t('features.1.description'),
       icon: <Bot className="w-8 h-8" />,
       image: "🤖",
-      highlights: ["콘텐츠 자동 생성", "고객 분석", "성과 최적화"]
+      highlights: [
+        t('features.1.highlights.0'),
+        t('features.1.highlights.1'),
+        t('features.1.highlights.2')
+      ]
     },
     {
-      title: "MyLink",
-      description: "개인 브랜드 링크와 포트폴리오 페이지",
+      title: t('features.2.title'),
+      description: t('features.2.description'),
       icon: <ExternalLink className="w-8 h-8" />,
       image: "🔗",
-      highlights: ["맞춤형 랜딩페이지", "성과 전시", "브랜드 구축"]
+      highlights: [
+        t('features.2.highlights.0'),
+        t('features.2.highlights.1'),
+        t('features.2.highlights.2')
+      ]
     },
     {
-      title: "Marketplace",
-      description: "전략과 인사이트를 판매하여 추가 수익 창출",
+      title: t('features.3.title'),
+      description: t('features.3.description'),
       icon: <ShoppingBag className="w-8 h-8" />,
       image: "🛒",
-      highlights: ["디지털 상품 판매", "구독 서비스", "지식 수익화"]
+      highlights: [
+        t('features.3.highlights.0'),
+        t('features.3.highlights.1'),
+        t('features.3.highlights.2')
+      ]
     }
   ];
 
   const faqItems = [
     {
-      question: "CoinToss 가입 조건이 있나요?",
-      answer: "별도의 가입 조건은 없습니다. 이메일만 있으면 바로 시작할 수 있으며, 암호화폐 거래 경험이 있으면 더욱 좋습니다."
+      question: t('faq.items.0.question'),
+      answer: t('faq.items.0.answer')
     },
     {
-      question: "커미션은 언제 정산되나요?",
-      answer: "매일 자동으로 정산되며, 최소 출금 금액($50)에 도달하면 언제든 출금 가능합니다. 투명한 정산 내역도 실시간으로 확인할 수 있습니다."
+      question: t('faq.items.1.question'),
+      answer: t('faq.items.1.answer')
     },
     {
-      question: "AI 어시스턴트는 어떤 일을 하나요?",
-      answer: "크레아는 마케팅 콘텐츠를 자동 생성하고, 대니는 고객 데이터를 분석하여 최적의 전략을 제안합니다. 24시간 자동으로 작업을 수행합니다."
+      question: t('faq.items.2.question'),
+      answer: t('faq.items.2.answer')
     },
     {
-      question: "CTOSS 토큰의 용도는 무엇인가요?",
-      answer: "CTOSS 토큰을 스테이킹하면 추가 커미션 보너스, 프리미엄 기능 이용권, 신규 서비스 우선 접근 등의 혜택을 받을 수 있습니다."
+      question: t('faq.items.3.question'),
+      answer: t('faq.items.3.answer')
     },
     {
-      question: "지원하는 거래소는 어디인가요?",
-      answer: "바이낸스, OKX, 바이비트, Gate.io, MEXC, 쿠코인 등 주요 글로벌 거래소를 지원하며, 지속적으로 추가하고 있습니다."
+      question: t('faq.items.4.question'),
+      answer: t('faq.items.4.answer')
     }
   ];
 
@@ -127,7 +146,7 @@ const Index = () => {
             {/* Badge */}
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium">
               <Sparkles className="w-4 h-4 mr-2" />
-              업계 최고 85% 커미션율 • 2,000+ 활성 파트너
+              {t('hero.titleHighlight')} • 2,000+ 활성 파트너
             </div>
 
             {/* Main Headlines */}
@@ -141,8 +160,7 @@ const Index = () => {
               
               <div className="max-w-3xl mx-auto space-y-4">
                 <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
-                  업계 최고 커미션율과 AI 자동화 기술로<br />
-                  암호화폐 파트너 수익을 극대화하세요
+                  {t('hero.subtitle')}
                 </p>
                 <p className="text-lg text-muted-foreground/80">
                   투명한 정산 • CTOSS 토큰 보상 • 24시간 AI 지원
@@ -267,7 +285,7 @@ const Index = () => {
           {/* Exchange Logos */}
           <div className="text-center mb-16">
             <h3 className="text-2xl font-semibold mb-8 text-muted-foreground">
-              글로벌 주요 거래소와 파트너십
+              {t('socialProof.title')}
             </h3>
             <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
               {exchanges.map((exchange) => {

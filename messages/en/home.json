@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "title": "Start the crypto referral revolution",
+    "titleHighlight": "with industry-leading 85% rates",
+    "titleEnd": "",
+    "subtitle": "Experience easier and more profitable partnerships with AI automation and transparent settlement",
+    "startFree": "Start Free",
+    "viewDemo": "View Demo"
+  },
+  "socialProof": {
+    "title": "Partnership with Major Global Exchanges",
+    "testimonials": {
+      "title": "Real Partner Reviews"
+    }
+  },
+  "testimonials": [
+    {
+      "name": "Min-soo Kim",
+      "role": "Partner Manager",
+      "company": "CryptoMax",
+      "quote": "My monthly revenue increased 300% with CoinToss. The AI automation features are truly impressive."
+    },
+    {
+      "name": "Ji-young Park",
+      "role": "Investor",
+      "company": "BlockChain Ventures",
+      "quote": "Transparent settlement and high commission rates are attractive. CTOSS token rewards are great too."
+    },
+    {
+      "name": "Jun-ho Lee",
+      "role": "Marketer",
+      "company": "Digital Assets Co.",
+      "quote": "I'm satisfied with creating diverse revenue streams through MyLink and Marketplace features."
+    }
+  ],
+  "features": [
+    {
+      "title": "Partner Hub",
+      "description": "Exchange integration, UID management, and approval status in one place",
+      "highlights": ["Real-time earnings tracking", "Automated settlement", "Multi-exchange support"]
+    },
+    {
+      "title": "AI Partner Team",
+      "description": "Crea and Danny work automatically 24/7",
+      "highlights": ["Automated content generation", "Customer analysis", "Performance optimization"]
+    },
+    {
+      "title": "MyLink",
+      "description": "Personal brand links and portfolio pages",
+      "highlights": ["Custom landing pages", "Performance showcase", "Brand building"]
+    },
+    {
+      "title": "Marketplace",
+      "description": "Generate additional revenue by selling strategies and insights",
+      "highlights": ["Digital product sales", "Subscription services", "Knowledge monetization"]
+    }
+  ],
+  "stats": {
+    "commission": "Average Commission Rate",
+    "partners": "Active Partners",
+    "automated": "Automated Tasks",
+    "exchanges": "Supported Exchanges"
+  },
+  "cta": {
+    "title": "Start now to maximize your earnings",
+    "description": "Sign up in 3 minutes! Experience the new standard of crypto referrals with CoinToss.",
+    "getStarted": "Get Started Free"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "What is CoinToss?",
+        "answer": "CoinToss is an all-in-one platform for cryptocurrency exchange referrals. We provide industry-leading commission rates (up to 85%) and AI automation features to help partners generate revenue more efficiently."
+      },
+      {
+        "question": "Which exchanges are integrated?",
+        "answer": "We partner with over 12 major global exchanges including Binance, OKX, Bybit, Gate.io, MEXC, KuCoin, and are continuously expanding."
+      },
+      {
+        "question": "What are the AI automation features?",
+        "answer": "Two AI assistants, Crea (content generation) and Danny (data analysis), automatically perform marketing content creation, customer analysis, and performance optimization 24/7."
+      },
+      {
+        "question": "How are commissions settled?",
+        "answer": "Through a transparent blockchain-based settlement system, automatically paid in USDT on the 1st of each month. All transaction details are available in real-time."
+      },
+      {
+        "question": "What are CTOSS tokens?",
+        "answer": "Utility tokens in the CoinToss ecosystem used for additional rewards, premium features, and governance participation. They are automatically earned based on activity."
+      }
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "title": "업계 최고 85% 요율로",
+    "titleHighlight": "암호화폐 레퍼럴 혁명",
+    "titleEnd": "을 시작하세요",
+    "subtitle": "AI 자동화와 투명한 정산으로 더 쉽고 수익성 높은 파트너십을 경험하세요",
+    "startFree": "무료로 시작하기",
+    "viewDemo": "데모 보기"
+  },
+  "socialProof": {
+    "title": "글로벌 주요 거래소와 파트너십",
+    "testimonials": {
+      "title": "파트너들의 생생한 후기"
+    }
+  },
+  "testimonials": [
+    {
+      "name": "김민수",
+      "role": "파트너 매니저",
+      "company": "CryptoMax",
+      "quote": "CoinToss로 월 수익이 300% 증가했습니다. AI 자동화 기능이 정말 인상적이에요."
+    },
+    {
+      "name": "박지영",
+      "role": "투자자",
+      "company": "BlockChain Ventures",
+      "quote": "투명한 정산과 높은 커미션율이 매력적입니다. CTOSS 토큰 보상도 좋아요."
+    },
+    {
+      "name": "이준호",
+      "role": "마케터",
+      "company": "Digital Assets Co.",
+      "quote": "MyLink와 마켓플레이스 기능으로 다양한 수익원을 만들 수 있어서 만족합니다."
+    }
+  ],
+  "features": [
+    {
+      "title": "Partner Hub",
+      "description": "거래소 연동, UID 관리, 승인 현황을 한 곳에서",
+      "highlights": ["실시간 수익 추적", "자동 정산", "다중 거래소 지원"]
+    },
+    {
+      "title": "AI Partner Team",
+      "description": "크레아와 대니가 24시간 자동으로 업무 수행",
+      "highlights": ["콘텐츠 자동 생성", "고객 분석", "성과 최적화"]
+    },
+    {
+      "title": "MyLink",
+      "description": "개인 브랜드 링크와 포트폴리오 페이지",
+      "highlights": ["맞춤형 랜딩페이지", "성과 전시", "브랜드 구축"]
+    },
+    {
+      "title": "Marketplace",
+      "description": "전략과 인사이트를 판매하여 추가 수익 창출",
+      "highlights": ["디지털 상품 판매", "구독 서비스", "지식 수익화"]
+    }
+  ],
+  "stats": {
+    "commission": "평균 수수료율",
+    "partners": "활성 파트너",
+    "automated": "자동화된 작업",
+    "exchanges": "지원 거래소"
+  },
+  "cta": {
+    "title": "지금 시작하여 수익을 극대화하세요",
+    "description": "3분이면 가입 완료! CoinToss와 함께 암호화폐 레퍼럴의 새로운 기준을 경험해보세요.",
+    "getStarted": "무료로 시작하기"
+  },
+  "faq": {
+    "title": "자주 묻는 질문",
+    "items": [
+      {
+        "question": "CoinToss는 어떤 서비스인가요?",
+        "answer": "CoinToss는 암호화폐 거래소 레퍼럴을 위한 올인원 플랫폼입니다. 업계 최고 수준의 커미션율(최대 85%)과 AI 자동화 기능을 제공하여 파트너들이 더 효율적으로 수익을 창출할 수 있도록 돕습니다."
+      },
+      {
+        "question": "어떤 거래소들과 연동되나요?",
+        "answer": "Binance, OKX, Bybit, Gate.io, MEXC, KuCoin 등 전 세계 주요 거래소 12곳 이상과 파트너십을 맺고 있으며, 지속적으로 확장하고 있습니다."
+      },
+      {
+        "question": "AI 자동화 기능은 무엇인가요?",
+        "answer": "크레아(콘텐츠 생성)와 대니(데이터 분석) 두 AI 어시스턴트가 24시간 자동으로 마케팅 콘텐츠 생성, 고객 분석, 성과 최적화 업무를 수행합니다."
+      },
+      {
+        "question": "수수료는 어떻게 정산되나요?",
+        "answer": "투명한 블록체인 기반 정산 시스템으로 매월 1일 USDT로 자동 지급됩니다. 모든 거래 내역은 실시간으로 확인 가능합니다."
+      },
+      {
+        "question": "CTOSS 토큰은 무엇인가요?",
+        "answer": "CoinToss 생태계의 유틸리티 토큰으로, 추가 보상, 프리미엄 기능 이용, 거버넌스 참여 등에 사용됩니다. 활동에 따라 자동으로 적립됩니다."
+      }
+    ]
+  }
+}

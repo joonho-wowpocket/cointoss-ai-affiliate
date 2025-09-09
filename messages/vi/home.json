@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "title": "Bắt đầu cuộc cách mạng giới thiệu crypto",
+    "titleHighlight": "với tỷ lệ 85% hàng đầu ngành",
+    "titleEnd": "",
+    "subtitle": "Trải nghiệm đối tác dễ dàng và có lợi nhuận hơn với tự động hóa AI và thanh toán minh bạch",
+    "startFree": "Bắt đầu Miễn phí",
+    "viewDemo": "Xem Demo"
+  },
+  "socialProof": {
+    "title": "Đối tác với các Sàn giao dịch Toàn cầu Hàng đầu",
+    "testimonials": {
+      "title": "Đánh giá Đối tác Thực tế"
+    }
+  },
+  "testimonials": [
+    {
+      "name": "Min-soo Kim",
+      "role": "Quản lý Đối tác",
+      "company": "CryptoMax",
+      "quote": "Thu nhập hàng tháng của tôi tăng 300% với CoinToss. Các tính năng tự động hóa AI thực sự ấn tượng."
+    },
+    {
+      "name": "Ji-young Park",
+      "role": "Nhà đầu tư",
+      "company": "BlockChain Ventures",
+      "quote": "Thanh toán minh bạch và tỷ lệ hoa hồng cao rất hấp dẫn. Phần thưởng token CTOSS cũng tuyệt vời."
+    },
+    {
+      "name": "Jun-ho Lee",
+      "role": "Nhà tiếp thị",
+      "company": "Digital Assets Co.",
+      "quote": "Tôi hài lòng với việc tạo ra các nguồn thu nhập đa dạng thông qua các tính năng MyLink và Marketplace."
+    }
+  ],
+  "features": [
+    {
+      "title": "Partner Hub",
+      "description": "Tích hợp sàn giao dịch, quản lý UID và trạng thái phê duyệt trong một nơi",
+      "highlights": ["Theo dõi thu nhập thời gian thực", "Thanh toán tự động", "Hỗ trợ đa sàn giao dịch"]
+    },
+    {
+      "title": "AI Partner Team",
+      "description": "Crea và Danny làm việc tự động 24/7",
+      "highlights": ["Tạo nội dung tự động", "Phân tích khách hàng", "Tối ưu hóa hiệu suất"]
+    },
+    {
+      "title": "MyLink",
+      "description": "Liên kết thương hiệu cá nhân và trang portfolio",
+      "highlights": ["Trang landing tùy chỉnh", "Trưng bày hiệu suất", "Xây dựng thương hiệu"]
+    },
+    {
+      "title": "Marketplace",
+      "description": "Tạo thu nhập bổ sung bằng cách bán chiến lược và thông tin chi tiết",
+      "highlights": ["Bán sản phẩm kỹ thuật số", "Dịch vụ đăng ký", "Kiếm tiền từ kiến thức"]
+    }
+  ],
+  "stats": {
+    "commission": "Tỷ lệ Hoa hồng Trung bình",
+    "partners": "Đối tác Hoạt động",
+    "automated": "Tác vụ Tự động",
+    "exchanges": "Sàn giao dịch Được hỗ trợ"
+  },
+  "cta": {
+    "title": "Bắt đầu ngay để tối đa hóa thu nhập của bạn",
+    "description": "Đăng ký trong 3 phút! Trải nghiệm tiêu chuẩn mới của giới thiệu crypto với CoinToss.",
+    "getStarted": "Bắt đầu Miễn phí"
+  },
+  "faq": {
+    "title": "Câu hỏi Thường gặp",
+    "items": [
+      {
+        "question": "CoinToss là gì?",
+        "answer": "CoinToss là nền tảng tất cả trong một cho giới thiệu sàn giao dịch cryptocurrency. Chúng tôi cung cấp tỷ lệ hoa hồng hàng đầu ngành (lên đến 85%) và các tính năng tự động hóa AI để giúp đối tác tạo ra doanh thu hiệu quả hơn."
+      },
+      {
+        "question": "Những sàn giao dịch nào được tích hợp?",
+        "answer": "Chúng tôi hợp tác với hơn 12 sàn giao dịch toàn cầu lớn bao gồm Binance, OKX, Bybit, Gate.io, MEXC, KuCoin và đang liên tục mở rộng."
+      },
+      {
+        "question": "Các tính năng tự động hóa AI là gì?",
+        "answer": "Hai trợ lý AI, Crea (tạo nội dung) và Danny (phân tích dữ liệu), tự động thực hiện tạo nội dung marketing, phân tích khách hàng và tối ưu hóa hiệu suất 24/7."
+      },
+      {
+        "question": "Hoa hồng được thanh toán như thế nào?",
+        "answer": "Thông qua hệ thống thanh toán dựa trên blockchain minh bạch, tự động thanh toán bằng USDT vào ngày 1 hàng tháng. Tất cả chi tiết giao dịch có sẵn theo thời gian thực."
+      },
+      {
+        "question": "Token CTOSS là gì?",
+        "answer": "Token tiện ích trong hệ sinh thái CoinToss được sử dụng cho phần thưởng bổ sung, tính năng premium và tham gia quản trị. Được tự động kiếm dựa trên hoạt động."
+      }
+    ]
+  }
+}
