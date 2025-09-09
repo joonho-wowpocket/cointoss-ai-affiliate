@@ -45,7 +45,6 @@ export function HeaderNav() {
               className="h-8 w-auto"
             />
             <div className="flex flex-col">
-              <span className="text-lg font-bold leading-none">CoinToss</span>
               <span className="hidden text-xs text-muted-foreground sm:block leading-none">
                 Referral Revolution
               </span>
