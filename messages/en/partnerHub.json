@@ -1,0 +1,55 @@
+{
+  "title": "Partner Hub",
+  "description": "Exchange integration management and revenue optimization",
+  "guestDescription": "Preview exchange integration status and partner features",
+  "freeStart": "Start Free",
+  "tabs": {
+    "overview": "Overview",
+    "exchanges": "Exchange Management",
+    "uid": "UID Registration",
+    "approvals": "Approval Status",
+    "customers": "My Partners/Customers"
+  },
+  "overview": {
+    "connectedExchanges": "Connected Exchanges",
+    "totalSupported": "Total {count} supported",
+    "connectExchange": "Connect Exchange",
+    "registeredUID": "Registered UIDs",
+    "loginToCheck": "Check after login",
+    "pendingApproval": "Pending approval: {count}",
+    "registerUID": "Register UID",
+    "approvalStatus": "Approval Status",
+    "averageApproval": "Average approval rate",
+    "applyApproval": "Apply for Approval",
+    "monthlyEarnings": "This Month's Earnings",
+    "comparedToLastMonth": "+{percentage}% vs last month",
+    "earningsAfterLogin": "Earnings available after login"
+  },
+  "features": {
+    "realTimeTracking": {
+      "title": "Real-time Performance Tracking",
+      "description": "Monitor every step from link clicks to revenue generation in real-time",
+      "clickRate": "Click Rate Tracking",
+      "conversionRate": "Signup Conversion Rate",
+      "revenueAnalysis": "Revenue Analysis",
+      "realTime": "Real-time",
+      "autoCalculation": "Auto Calculation",
+      "detailedReport": "Detailed Report"
+    },
+    "automatedSettlement": {
+      "title": "Automated Settlement System",
+      "description": "Receive USDT automatically every month without complex settlement processes",
+      "transparentCalculation": "Transparent Revenue Calculation",
+      "autoUSDTPayout": "Auto USDT Payout",
+      "minWithdrawalFee": "Minimum Withdrawal Fee",
+      "blockchain": "Blockchain",
+      "monthlyFirst": "1st of every month"
+    }
+  },
+  "cta": {
+    "title": "Start now and get up to 85% commission rates",
+    "description": "Sign up in 3 minutes! Start crypto referrals with industry-leading conditions",
+    "startFree": "Start for Free",
+    "noCreditCard": "No credit card required • Start immediately"
+  }
+}

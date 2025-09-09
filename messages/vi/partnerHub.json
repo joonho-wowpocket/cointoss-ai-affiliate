@@ -1,0 +1,55 @@
+{
+  "title": "Hub Đối tác",
+  "description": "Quản lý tích hợp sàn giao dịch và tối ưu hóa doanh thu",
+  "guestDescription": "Xem trước trạng thái tích hợp sàn giao dịch và tính năng đối tác",
+  "freeStart": "Bắt đầu Miễn phí",
+  "tabs": {
+    "overview": "Tổng quan",
+    "exchanges": "Quản lý Sàn giao dịch",
+    "uid": "Đăng ký UID",
+    "approvals": "Trạng thái Phê duyệt",
+    "customers": "Đối tác/Khách hàng của tôi"
+  },
+  "overview": {
+    "connectedExchanges": "Sàn giao dịch đã kết nối",
+    "totalSupported": "Tổng {count} được hỗ trợ",
+    "connectExchange": "Kết nối Sàn giao dịch",
+    "registeredUID": "UID đã đăng ký",
+    "loginToCheck": "Kiểm tra sau khi đăng nhập",
+    "pendingApproval": "Chờ phê duyệt: {count}",
+    "registerUID": "Đăng ký UID",
+    "approvalStatus": "Trạng thái Phê duyệt",
+    "averageApproval": "Tỷ lệ phê duyệt trung bình",
+    "applyApproval": "Nộp đơn Phê duyệt",
+    "monthlyEarnings": "Thu nhập Tháng này",
+    "comparedToLastMonth": "+{percentage}% so với tháng trước",
+    "earningsAfterLogin": "Thu nhập có sẵn sau khi đăng nhập"
+  },
+  "features": {
+    "realTimeTracking": {
+      "title": "Theo dõi Hiệu suất Thời gian thực",
+      "description": "Giám sát từng bước từ nhấp chuột liên kết đến tạo doanh thu theo thời gian thực",
+      "clickRate": "Theo dõi Tỷ lệ Nhấp chuột",
+      "conversionRate": "Tỷ lệ Chuyển đổi Đăng ký",
+      "revenueAnalysis": "Phân tích Doanh thu",
+      "realTime": "Thời gian thực",
+      "autoCalculation": "Tính toán Tự động",
+      "detailedReport": "Báo cáo Chi tiết"
+    },
+    "automatedSettlement": {
+      "title": "Hệ thống Thanh toán Tự động",
+      "description": "Nhận USDT tự động hàng tháng mà không cần quy trình thanh toán phức tạp",
+      "transparentCalculation": "Tính toán Doanh thu Minh bạch",
+      "autoUSDTPayout": "Thanh toán USDT Tự động",
+      "minWithdrawalFee": "Phí Rút tối thiểu",
+      "blockchain": "Blockchain",
+      "monthlyFirst": "Ngày 1 hàng tháng"
+    }
+  },
+  "cta": {
+    "title": "Bắt đầu ngay và nhận tỷ lệ hoa hồng lên đến 85%",
+    "description": "Đăng ký trong 3 phút! Bắt đầu giới thiệu crypto với điều kiện hàng đầu ngành",
+    "startFree": "Bắt đầu Miễn phí",
+    "noCreditCard": "Không cần thẻ tín dụng • Bắt đầu ngay lập tức"
+  }
+}

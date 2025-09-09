@@ -1,0 +1,55 @@
+{
+  "title": "パートナーハブ",
+  "description": "取引所連携管理と収益最適化",
+  "guestDescription": "取引所連携状況とパートナー機能をプレビューできます",
+  "freeStart": "無料で始める",
+  "tabs": {
+    "overview": "概要",
+    "exchanges": "取引所管理",
+    "uid": "UID登録",
+    "approvals": "承認状況",
+    "customers": "私のパートナー/顧客"
+  },
+  "overview": {
+    "connectedExchanges": "連携済み取引所",
+    "totalSupported": "合計{count}ヶ所対応",
+    "connectExchange": "取引所に接続",
+    "registeredUID": "登録済みUID",
+    "loginToCheck": "ログイン後確認",
+    "pendingApproval": "承認待ち: {count}件",
+    "registerUID": "UID登録",
+    "approvalStatus": "承認状況",
+    "averageApproval": "平均承認率",
+    "applyApproval": "承認申請",
+    "monthlyEarnings": "今月の収益",
+    "comparedToLastMonth": "前月比+{percentage}%",
+    "earningsAfterLogin": "収益詳細はログイン後確認"
+  },
+  "features": {
+    "realTimeTracking": {
+      "title": "リアルタイム成果追跡",
+      "description": "リンククリックから収益発生まで全工程をリアルタイムで監視",
+      "clickRate": "クリック率追跡",
+      "conversionRate": "登録転換率",
+      "revenueAnalysis": "収益分析",
+      "realTime": "リアルタイム",
+      "autoCalculation": "自動計算",
+      "detailedReport": "詳細レポート"
+    },
+    "automatedSettlement": {
+      "title": "自動化された精算システム",
+      "description": "複雑な精算過程なしに毎月自動でUSDTを受取",
+      "transparentCalculation": "透明な収益計算",
+      "autoUSDTPayout": "自動USDT支給",
+      "minWithdrawalFee": "最小出金手数料",
+      "blockchain": "ブロックチェーン",
+      "monthlyFirst": "毎月1日"
+    }
+  },
+  "cta": {
+    "title": "今すぐ始めて最大85%の手数料率を受け取る",
+    "description": "3分で登録完了！業界最高条件で暗号通貨リファラルを開始",
+    "startFree": "無料で始める",
+    "noCreditCard": "クレジットカード不要 • すぐに開始可能"
+  }
+}

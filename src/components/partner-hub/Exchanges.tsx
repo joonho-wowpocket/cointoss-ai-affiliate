@@ -13,6 +13,7 @@ import { PreviewBlockedBanner } from "@/components/PreviewBlockedBanner";
 import { CampaignModal } from "@/components/CampaignModal";
 import { ApprovalProcessModal } from "@/components/ApprovalProcessModal";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslations } from "@/contexts/I18nContext";
 import { 
   Copy, 
   ExternalLink, 

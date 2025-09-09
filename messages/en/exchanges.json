@@ -1,0 +1,31 @@
+{
+  "title": "Exchange Management",
+  "description": "Manage connected exchanges and commission rates",
+  "tabs": {
+    "basic": "Basic Integration",
+    "approved": "Approved Integration"
+  },
+  "basic": {
+    "title": "Basic Integration",
+    "description": "Basic partnership through CoinToss shared links",
+    "rate": "Rate"
+  },
+  "approved": {
+    "title": "Approved Integration", 
+    "description": "High commission rates through direct exchange approval",
+    "rate": "Approved Rate"
+  },
+  "actions": {
+    "copyLink": "Copy Link",
+    "applyApproval": "Apply for Approval",
+    "manageUIDs": "Manage UIDs",
+    "reapply": "Reapply",
+    "pending": "Pending Approval"
+  },
+  "status": {
+    "basic": "Basic",
+    "pending": "Pending", 
+    "approved": "Approved",
+    "rejected": "Rejected"
+  }
+}

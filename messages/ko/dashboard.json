@@ -1,0 +1,45 @@
+{
+  "title": "거래소 관리",
+  "description": "연동된 거래소를 관리하고 수익을 확인하세요",
+  "guestDescription": "지원되는 거래소와 요율을 확인하세요. 가입하여 내 전용 링크를 받아보세요.",
+  "stats": {
+    "supportedExchanges": "지원 거래소",
+    "worldwideExchanges": "전 세계 주요 거래소",
+    "monthlyEarnings": "이번 달 수익",
+    "loginToCheck": "로그인 시 확인 가능",
+    "approvedUIDOnly": "승인 UID 기준",
+    "partnerTier": "파트너 등급",
+    "checkAfterSignup": "가입 후 확인",
+    "currentTier": "현재 등급",
+    "myReferralLink": "내 추천 링크",
+    "copyLink": "링크 복사",
+    "loginToUse": "로그인 후 이용",
+    "code": "코드: {code}"
+  },
+  "emptyState": {
+    "title": "거래소 연동을 시작하세요",
+    "description": "첫 번째 거래소에 승인 신청하여 수익 추적을 시작하고 전체 기능을 이용해보세요.",
+    "featuresTitle": "승인 후 이용 가능한 기능",
+    "features": [
+      "실시간 수익 추적 및 분석",
+      "UID 등록 및 고객 관리",
+      "자동 정산 및 리포트"
+    ]
+  },
+  "status": {
+    "basic": "기본 연동",
+    "pending": "승인 대기",
+    "approved": "승인 완료",
+    "rejected": "승인 거부"
+  },
+  "actions": {
+    "applyApproval": "승인 신청하기",
+    "waitingApproval": "승인 대기중",
+    "manageUID": "UID 관리",
+    "reapply": "재신청하기"
+  },
+  "messages": {
+    "linkCopied": "링크가 복사되었습니다",
+    "linkCopyFailed": "링크 복사에 실패했습니다"
+  }
+}

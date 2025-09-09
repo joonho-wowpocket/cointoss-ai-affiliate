@@ -22,6 +22,7 @@ import {
   Shield,
   Link as LinkIcon
 } from "lucide-react";
+import { useTranslations } from "@/contexts/I18nContext";
 
 // 게스트용 샘플 데이터
 const GUEST_OVERVIEW_DATA = {
@@ -51,6 +52,7 @@ const PartnerHub = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { isAuthenticated, isGuest, loading } = useAuth();
+  const t = useTranslations('partnerHub');
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginTrigger, setLoginTrigger] = useState('general');
   const activeTab = searchParams.get('tab') || 'overview';
@@ -128,11 +130,11 @@ const PartnerHub = () => {
         <div className="container mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">파트너 허브</h1>
+              <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
               <p className="text-muted-foreground mt-2">
                 {isGuest 
-                  ? "거래소 연동 현황과 파트너 기능을 미리 확인해보세요" 
-                  : "거래소 연동 관리 및 수익 최적화"
+                  ? t('guestDescription')
+                  : t('description')
                 }
               </p>
             </div>
@@ -143,7 +145,7 @@ const PartnerHub = () => {
                 className="flex items-center gap-2"
               >
                 <UserPlus className="w-4 h-4" />
-                무료 시작하기
+                {t('freeStart')}
               </Button>
             )}
           </div>
@@ -164,31 +166,31 @@ const PartnerHub = () => {
                   value="overview"
                   className="relative h-12 px-4 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap"
                 >
-                  개요
+                  {t('tabs.overview')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="exchanges"
                   className="relative h-12 px-4 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap"
                 >
-                  거래소 관리
+                  {t('tabs.exchanges')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="uid"
                   className="relative h-12 px-4 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap"
                 >
-                  UID 등록
+                  {t('tabs.uid')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="approvals"
                   className="relative h-12 px-4 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap"
                 >
-                  승인 현황
+                  {t('tabs.approvals')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="customers"
                   className="relative h-12 px-4 sm:px-0 py-0 bg-transparent border-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none rounded-none font-medium text-muted-foreground data-[state=active]:text-foreground hover:text-foreground transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 after:scale-x-0 data-[state=active]:after:scale-x-100 whitespace-nowrap"
                 >
-                  내 파트너/고객
+                  {t('tabs.customers')}
                 </TabsTrigger>
               </TabsList>
             </div>

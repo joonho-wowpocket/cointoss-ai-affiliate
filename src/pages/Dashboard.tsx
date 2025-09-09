@@ -29,6 +29,7 @@ import { GuestBanner } from "@/components/GuestBanner";
 import { ApprovalProcessModal } from "@/components/ApprovalProcessModal";
 import { PreviewBlockedBanner, EmptyStateCard } from "@/components/PreviewBlockedBanner";
 import { dashboardApi, profileApi } from '@/lib/api';
+import { useTranslations } from "@/contexts/I18nContext";
 
 interface Exchange {
   id: string;
@@ -62,6 +63,7 @@ export default function Dashboard() {
   const { user, isGuest, isAuthenticated } = useAuth();
   const { isAdmin, hasAnyRole } = useAdminAuth();
   const { allowPreviewData, isPreviewBlocked, clearPreviewState } = useRuntime();
+  const t = useTranslations('dashboard');
   const [isLoading, setIsLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginTrigger, setLoginTrigger] = useState('general');
@@ -375,11 +377,11 @@ export default function Dashboard() {
     <div className="container mx-auto px-6 py-8 space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">거래소 관리</h1>
+          <h1 className="text-3xl font-bold text-foreground">{t('title')}</h1>
           <p className="text-muted-foreground">
             {isGuest 
-              ? "지원되는 거래소와 요율을 확인하세요. 가입하여 내 전용 링크를 받아보세요."
-              : "연동된 거래소를 관리하고 수익을 확인하세요"
+              ? t('guestDescription')
+              : t('description')
             }
           </p>
         </div>
@@ -414,7 +416,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">지원 거래소</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('stats.supportedExchanges')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -426,7 +428,7 @@ export default function Dashboard() {
               </div>
             )}
             <p className="text-xs text-muted-foreground">
-              전 세계 주요 거래소
+              {t('stats.worldwideExchanges')}
             </p>
           </CardContent>
         </Card>

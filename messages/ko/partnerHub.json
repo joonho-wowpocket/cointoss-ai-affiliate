@@ -1,0 +1,55 @@
+{
+  "title": "파트너 허브",
+  "description": "거래소 연동 관리 및 수익 최적화",
+  "guestDescription": "거래소 연동 현황과 파트너 기능을 미리 확인해보세요",
+  "freeStart": "무료 시작하기",
+  "tabs": {
+    "overview": "개요",
+    "exchanges": "거래소 관리",
+    "uid": "UID 등록",
+    "approvals": "승인 현황",
+    "customers": "내 파트너/고객"
+  },
+  "overview": {
+    "connectedExchanges": "연결된 거래소",
+    "totalSupported": "총 {count}개 지원",
+    "connectExchange": "거래소 연결하기",
+    "registeredUID": "등록된 UID",
+    "loginToCheck": "로그인 시 확인",
+    "pendingApproval": "승인 대기: {count}개",
+    "registerUID": "UID 등록하기",
+    "approvalStatus": "승인 현황",
+    "averageApproval": "평균 승인율",
+    "applyApproval": "승인 신청하기",
+    "monthlyEarnings": "이번 달 수익",
+    "comparedToLastMonth": "+{percentage}% 전월 대비",
+    "earningsAfterLogin": "수익 내역은 로그인 후 확인"
+  },
+  "features": {
+    "realTimeTracking": {
+      "title": "실시간 성과 추적",
+      "description": "링크 클릭부터 수익 발생까지 모든 과정을 실시간으로 모니터링하세요",
+      "clickRate": "클릭률 추적",
+      "conversionRate": "가입 전환율",
+      "revenueAnalysis": "수익 분석",
+      "realTime": "실시간",
+      "autoCalculation": "자동 계산",
+      "detailedReport": "상세 리포트"
+    },
+    "automatedSettlement": {
+      "title": "자동화된 정산 시스템",
+      "description": "복잡한 정산 과정 없이 매월 자동으로 USDT를 받아보세요",
+      "transparentCalculation": "투명한 수익 계산",
+      "autoUSDTPayout": "자동 USDT 지급",
+      "minWithdrawalFee": "최소 출금 수수료",
+      "blockchain": "블록체인",
+      "monthlyFirst": "매월 1일"
+    }
+  },
+  "cta": {
+    "title": "지금 시작하여 최고 85% 요율을 받아보세요",
+    "description": "3분이면 가입 완료! 업계 최고 조건으로 암호화폐 레퍼럴을 시작하세요",
+    "startFree": "무료로 시작하기",
+    "noCreditCard": "신용카드 불필요 • 즉시 시작 가능"
+  }
+}

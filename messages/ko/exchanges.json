@@ -1,0 +1,31 @@
+{
+  "title": "거래소 관리",
+  "description": "연결된 거래소와 수수료율을 관리하세요",
+  "tabs": {
+    "basic": "기본 연동",
+    "approved": "승인 연동"
+  },
+  "basic": {
+    "title": "기본 연동",
+    "description": "CoinToss 공유 링크를 통한 기본 파트너십",
+    "rate": "요율"
+  },
+  "approved": {
+    "title": "승인 연동", 
+    "description": "거래소 직접 승인을 통한 높은 수수료율",
+    "rate": "승인 요율"
+  },
+  "actions": {
+    "copyLink": "링크 복사",
+    "applyApproval": "승인 신청",
+    "manageUIDs": "UID 관리",
+    "reapply": "재신청",
+    "pending": "승인 대기중"
+  },
+  "status": {
+    "basic": "기본",
+    "pending": "대기중", 
+    "approved": "승인됨",
+    "rejected": "거부됨"
+  }
+}

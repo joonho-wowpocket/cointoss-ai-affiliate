@@ -1,0 +1,55 @@
+{
+  "title": "Hub Mitra",
+  "description": "Manajemen integrasi bursa dan optimasi pendapatan",
+  "guestDescription": "Preview status integrasi bursa dan fitur mitra",
+  "freeStart": "Mulai Gratis",
+  "tabs": {
+    "overview": "Ikhtisar",
+    "exchanges": "Manajemen Bursa",
+    "uid": "Registrasi UID",
+    "approvals": "Status Persetujuan",
+    "customers": "Mitra/Pelanggan Saya"
+  },
+  "overview": {
+    "connectedExchanges": "Bursa Terhubung",
+    "totalSupported": "Total {count} didukung",
+    "connectExchange": "Hubungkan Bursa",
+    "registeredUID": "UID Terdaftar",
+    "loginToCheck": "Periksa setelah login",
+    "pendingApproval": "Menunggu persetujuan: {count}",
+    "registerUID": "Daftarkan UID",
+    "approvalStatus": "Status Persetujuan",
+    "averageApproval": "Tingkat persetujuan rata-rata",
+    "applyApproval": "Ajukan Persetujuan",
+    "monthlyEarnings": "Pendapatan Bulan Ini",
+    "comparedToLastMonth": "+{percentage}% vs bulan lalu",
+    "earningsAfterLogin": "Pendapatan tersedia setelah login"
+  },
+  "features": {
+    "realTimeTracking": {
+      "title": "Pelacakan Kinerja Real-time",
+      "description": "Pantau setiap langkah dari klik link hingga generasi pendapatan secara real-time",
+      "clickRate": "Pelacakan Tingkat Klik",
+      "conversionRate": "Tingkat Konversi Pendaftaran",
+      "revenueAnalysis": "Analisis Pendapatan",
+      "realTime": "Real-time",
+      "autoCalculation": "Perhitungan Otomatis",
+      "detailedReport": "Laporan Terperinci"
+    },
+    "automatedSettlement": {
+      "title": "Sistem Penyelesaian Otomatis",
+      "description": "Terima USDT secara otomatis setiap bulan tanpa proses penyelesaian yang rumit",
+      "transparentCalculation": "Perhitungan Pendapatan Transparan",
+      "autoUSDTPayout": "Pembayaran USDT Otomatis",
+      "minWithdrawalFee": "Biaya Penarikan Minimum",
+      "blockchain": "Blockchain",
+      "monthlyFirst": "Tanggal 1 setiap bulan"
+    }
+  },
+  "cta": {
+    "title": "Mulai sekarang dan dapatkan tingkat komisi hingga 85%",
+    "description": "Daftar dalam 3 menit! Mulai referral kripto dengan kondisi terdepan di industri",
+    "startFree": "Mulai Gratis",
+    "noCreditCard": "Tidak perlu kartu kredit • Mulai segera"
+  }
+}
