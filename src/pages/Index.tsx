@@ -27,6 +27,8 @@ import {
   ChevronRight
 } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
+import { exchanges } from '@/lib/data/exchanges';
+import { ExchangeLogos } from '@/components/icons/ExchangeLogos';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -55,15 +57,6 @@ const Index = () => {
       quote: "MyLink와 마켓플레이스 기능으로 다양한 수익원을 만들 수 있어서 만족합니다.",
       rating: 5
     }
-  ];
-
-  const exchanges = [
-    { name: "Binance", logo: "🔶" },
-    { name: "OKX", logo: "⚫" },
-    { name: "Bybit", logo: "🟡" },
-    { name: "Gate.io", logo: "🔵" },
-    { name: "MEXC", logo: "🔴" },
-    { name: "KuCoin", logo: "🟢" }
   ];
 
   const features = [
@@ -277,12 +270,15 @@ const Index = () => {
               글로벌 주요 거래소와 파트너십
             </h3>
             <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-              {exchanges.map((exchange) => (
-                <div key={exchange.name} className="flex items-center space-x-3 hover:opacity-100 transition-opacity">
-                  <span className="text-3xl">{exchange.logo}</span>
-                  <span className="text-lg font-medium text-muted-foreground">{exchange.name}</span>
-                </div>
-              ))}
+              {exchanges.map((exchange) => {
+                const LogoComponent = ExchangeLogos[exchange.logoKey];
+                return (
+                  <div key={exchange.name} className="flex items-center space-x-3 hover:opacity-100 transition-opacity">
+                    <LogoComponent size={32} className="transition-transform hover:scale-110" />
+                    <span className="text-lg font-medium text-muted-foreground">{exchange.name}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
