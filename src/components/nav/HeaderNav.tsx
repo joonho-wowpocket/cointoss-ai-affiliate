@@ -39,9 +39,11 @@ export function HeaderNav() {
             className="flex items-center space-x-2 transition-opacity hover:opacity-80"
             aria-label="CoinToss Home"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80">
-              <Coins className="h-5 w-5 text-primary-foreground" />
-            </div>
+            <img 
+              src="/lovable-uploads/abeca2e1-b42d-4922-998b-24bf2f495f7c.png" 
+              alt="CoinToss Logo" 
+              className="h-8 w-auto"
+            />
             <div className="flex flex-col">
               <span className="text-lg font-bold leading-none">CoinToss</span>
               <span className="hidden text-xs text-muted-foreground sm:block leading-none">
