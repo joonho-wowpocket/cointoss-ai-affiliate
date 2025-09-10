@@ -9,6 +9,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
+import { GuestBanner } from "@/components/GuestBanner";
+import { LoginModal } from "@/components/auth/LoginModal";
 import { earningsApi } from "@/lib/api";
 import { 
   Coins, 
@@ -26,22 +28,40 @@ import {
 const Earnings = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isGuest } = useAuth();
   const { isAdmin, hasAnyRole, roles } = useAdminAuth();
   const [loading, setLoading] = useState(false);
   const [earningsData, setEarningsData] = useState<any>(null);
   const [period, setPeriod] = useState('30d');
   const [mode, setMode] = useState('all');
   const [selectedExchanges, setSelectedExchanges] = useState<string[]>([]);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  // Guest preview data
+  const guestEarningsData = {
+    summary: {
+      total: 4280,
+      basic: 1650,
+      approved: 2630
+    },
+    rows: [
+      { exchange: 'Bybit', mode: '승인', amount: '$1,420' },
+      { exchange: 'Binance', mode: '승인', amount: '$1,210' },
+      { exchange: 'OKX', mode: '기본', amount: '$890' },
+      { exchange: 'Gate.io', mode: '기본', amount: '$760' }
+    ]
+  };
 
   // Check if user should see preview data
   const canSeePreviewData = isAdmin || hasAnyRole(['SuperAdmin', 'Dev']);
 
   useEffect(() => {
-    if (isAuthenticated && user) {
+    if (isGuest) {
+      setEarningsData(guestEarningsData);
+    } else if (isAuthenticated && user) {
       loadEarnings();
     }
-  }, [period, mode, selectedExchanges, isAuthenticated, user, canSeePreviewData]);
+  }, [period, mode, selectedExchanges, isAuthenticated, user, canSeePreviewData, isGuest]);
 
   const loadEarnings = async () => {
     if (!isAuthenticated || !user) return;
@@ -149,13 +169,18 @@ const Earnings = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
+        {isGuest && <GuestBanner onLoginClick={() => setShowLoginModal(true)} className="mb-8" />}
         <div className="space-y-8">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-foreground">수익 현황</h1>
               <p className="text-muted-foreground">거래소별 커미션 수익 및 정산 관리</p>
             </div>
-            <Button variant="outline">
+            <Button 
+              variant="outline"
+              onClick={() => isGuest ? setShowLoginModal(true) : undefined}
+              disabled={isGuest}
+            >
               <Download className="w-4 h-4 mr-2" />
               리포트 다운로드
             </Button>
@@ -221,7 +246,7 @@ const Earnings = () => {
               <Loader2 className="h-8 w-8 animate-spin" />
               <span className="ml-2">수익 데이터 로드 중...</span>
             </div>
-          ) : !canSeePreviewData && (!earningsData || (earningsData.summary?.total === 0 && earningsData.rows?.length === 0)) ? (
+          ) : !isGuest && !canSeePreviewData && (!earningsData || (earningsData.summary?.total === 0 && earningsData.rows?.length === 0)) ? (
             // Empty State for New Users
             <div className="text-center py-12">
               <Card className="max-w-2xl mx-auto border-dashed border-2 border-muted-foreground/20">
@@ -256,8 +281,18 @@ const Earnings = () => {
             </div>
           ) : (
             <>
+              {/* Guest Preview Notice */}
+              {isGuest && (
+                <Alert className="mb-6">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    <strong>미리보기 모드:</strong> 실제 수익 데이터를 확인하려면 로그인이 필요합니다.
+                  </AlertDescription>
+                </Alert>
+              )}
+              
               {/* Admin Preview Notice */}
-              {canSeePreviewData && (
+              {!isGuest && canSeePreviewData && (
                 <Alert>
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription>
@@ -349,6 +384,11 @@ const Earnings = () => {
           )}
         </div>
       </div>
+      
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => setShowLoginModal(false)} 
+      />
     </div>
   );
 };
