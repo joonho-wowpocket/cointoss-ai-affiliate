@@ -193,7 +193,7 @@ export const ChatInterface = () => {
 
         {/* Action Panel */}
         <div className="lg:col-span-1">
-          <ActionPanel />
+          <ActionPanel agent={selectedAgent} />
         </div>
       </div>
       
